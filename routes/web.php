@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/quotes/{quote}/like', [QuoteController::class, 'toggleLike'])->name('quotes.like');
     Route::post('/quotes/{quote}/favorite', [QuoteController::class, 'toggleFavorite'])->name('quotes.favorite');
     Route::post('/quotes/{quote}/report', [QuoteController::class, 'report'])->name('quotes.report');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/comments/{comment}/report', [CommentController::class, 'report'])->name('comments.report');
 

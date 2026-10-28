@@ -268,5 +268,9 @@
     "Browse by your mood, from motivation to love and wisdom.": "تصفّح الاقتباسات حسب اهتمامك.",
     "The members": "الأعضاء",
     "Share your quotes and connect with people who love words.": "تعرّف على من يشاركك اهتماماتك واقتباساته.",
-    "Menu": "القائمة"
+    "Menu": "القائمة",
+    "edited": "معدّل",
+    "Your comment was updated.": "تم تعديل تعليقك.",
+    "Editing closes :minutes minutes after posting.": "التعديل متاح لمدة :minutes دقائق بعد النشر فقط.",
+    "You can edit your quote for :minutes minutes after posting.": "تقدر تعدّل اقتباسك خلال :minutes دقائق بعد نشره."
 }

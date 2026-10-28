@@ -4,15 +4,22 @@ namespace App\Policies;
 
 use App\Models\Quote;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class QuotePolicy
 {
     /**
-     * Only the owner can edit the quote (FR-06).
+     * Only the owner can edit the quote (FR-06), and only in the first 10 minutes after posting it.
      */
-    public function update(User $user, Quote $quote): bool
+    public function update(User $user, Quote $quote): Response
     {
-        return $user->id === $quote->user_id;
+        if ($user->id !== $quote->user_id) {
+            return Response::deny();
+        }
+
+        return $quote->created_at->gt(now()->subMinutes(config('moderation.edit_minutes')))
+            ? Response::allow()
+            : Response::deny(__('Editing closes :minutes minutes after posting.', ['minutes' => config('moderation.edit_minutes')]));
     }
 
     /**

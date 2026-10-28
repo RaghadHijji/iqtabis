@@ -46,7 +46,7 @@ class QuoteController extends Controller
     }
 
     /**
-     * PUT /api/quotes/{id} -> 200, or 403 if it's not your quote
+     * PUT /api/quotes/{id} -> 200, or 403 if it's not your quote or the 10 minutes to edit are over
      */
     public function update(StoreQuoteRequest $request, Quote $quote)
     {

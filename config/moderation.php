@@ -24,6 +24,9 @@ return [
         'hate you',
     ],
 
+    // the owner can edit a quote or a comment for this many minutes after posting it, then it's locked
+    'edit_minutes' => 10,
+
     // a quote with this many reports is hidden from everyone
     'hide_after_reports' => 3,
 

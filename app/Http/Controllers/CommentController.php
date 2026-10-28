@@ -24,6 +24,24 @@ class CommentController extends Controller
     }
 
     /**
+     * Edit your own comment, in the first 10 minutes only. After that it is locked.
+     */
+    public function update(StoreCommentRequest $request, Comment $comment)
+    {
+        $check = Gate::inspect('update', $comment);
+
+        if ($check->denied()) {
+            abort_unless($request->user()->id === $comment->user_id, 403);
+
+            return redirect(route('quotes.show', $comment->quote_id).'#comments')->with('status', $check->message());
+        }
+
+        $comment->update($request->validated());
+
+        return redirect(route('quotes.show', $comment->quote_id).'#comment-'.$comment->id)->with('status', __('Your comment was updated.'));
+    }
+
+    /**
      * Delete a comment: its writer, the quote's owner or an admin can.
      */
     public function destroy(Comment $comment)

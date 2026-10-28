@@ -139,11 +139,19 @@ class QuoteController extends Controller
     }
 
     /**
-     * Edit a quote, only the owner can (FR-06).
+     * Edit a quote, only the owner can, in the first 10 minutes (FR-06).
      */
     public function update(StoreQuoteRequest $request, Quote $quote)
     {
-        Gate::authorize('update', $quote);
+        $check = Gate::inspect('update', $quote);
+
+        // after 10 minutes the quote is locked: say so instead of an error page
+        if ($check->denied()) {
+            abort_unless($request->user()->id === $quote->user_id, 403);
+
+            return redirect()->route('home', $request->only(['filter', 'q', 'view', 'sort', 'page']))
+                ->with('status', $check->message());
+        }
 
         $quote->update($request->validated());
 

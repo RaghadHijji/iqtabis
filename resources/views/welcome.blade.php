@@ -330,7 +330,7 @@
 
             <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 @forelse ($quotes as $quote)
-                    @if ($quote->id === $editingId && auth()->id() === $quote->user_id)
+                    @if ($quote->id === $editingId && auth()->user()?->can('update', $quote))
                         {{-- Edit form (FR-06) --}}
                         <form method="POST" action="{{ route('quotes.update', [$quote, ...$state, 'page' => $quotes->currentPage()]) }}"
                             class="flex flex-col gap-3 rounded-3xl border-2 border-accent bg-card p-6">
@@ -355,12 +355,14 @@
                             <div class="flex items-center gap-2">
                                 <span class="me-auto h-8 w-8 text-accent/40">{!! $quoteMark !!}</span>
 
-                                {{-- Only the owner sees edit / delete (FR-06, FR-07) --}}
+                                {{-- Only the owner sees edit / delete (FR-06, FR-07); edit closes after 10 minutes, delete stays --}}
                                 @can('update', $quote)
                                     <a href="{{ route('home', [...$state, 'page' => $quotes->currentPage(), 'edit' => $quote->id]) }}" title="{{ __('Edit') }}" aria-label="{{ __('Edit') }}" class="icon-btn px-0">{!! $pen !!}</a>
+                                @endcan
+                                @if (auth()->id() === $quote->user_id)
                                     {{-- asks "are you sure?" first (see #delete-dialog) --}}
                                     <button type="button" data-delete="{{ route('quotes.destroy', $quote) }}" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="icon-btn px-0 hover:bg-red-500/10 hover:text-red-600">{!! $trash !!}</button>
-                                @endcan
+                                @endif
 
                                 {{-- Report a bad quote (FR-15), not on my own quotes --}}
                                 @auth
@@ -506,6 +508,8 @@
                     placeholder="{{ __('Who said it? (optional)') }}" class="input">
 
                 <button type="submit" class="btn-primary w-full">{{ __('Send') }}</button>
+                {{-- the edit window (FR-06), so it's no surprise later --}}
+                <p class="-mt-2 text-center text-xs text-ink/60">{{ __('You can edit your quote for :minutes minutes after posting.', ['minutes' => config('moderation.edit_minutes')]) }}</p>
             </form>
         </div>
 

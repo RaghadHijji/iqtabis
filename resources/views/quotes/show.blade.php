@@ -106,7 +106,7 @@
             @endauth
 
             @forelse ($quote->comments as $comment)
-                <div class="flex gap-3 rounded-3xl border border-ink/10 bg-card p-5 shadow-sm">
+                <div id="comment-{{ $comment->id }}" class="flex scroll-mt-28 gap-3 rounded-3xl border border-ink/10 bg-card p-5 shadow-sm">
                     <a href="{{ route('home', ['by' => $comment->user_id]) }}"><x-avatar :user="$comment->user" /></a>
                     <div class="flex min-w-0 flex-1 flex-col gap-1">
                         <div class="flex items-center gap-2 text-sm">
@@ -114,20 +114,36 @@
                             @if ($comment->user_id === $quote->user_id)
                                 <span class="rounded-full bg-sand/15 px-2 py-0.5 text-[11px] font-bold text-sand">{{ __('Poster') }}</span>
                             @endif
-                            <span class="text-xs text-ink/70">{{ $comment->created_at->diffForHumans() }}</span>
+                            <span class="text-xs text-ink/70">{{ $comment->created_at->diffForHumans() }}@if ($comment->updated_at->gt($comment->created_at)) · {{ __('edited') }}@endif</span>
                             @if (auth()->check() && auth()->id() !== $comment->user_id)
                                 <button type="button" data-report="{{ route('comments.report', $comment) }}" title="{{ __('Report') }}" aria-label="{{ __('Report') }}"
                                     class="tap ms-auto grid h-9 w-9 place-items-center rounded-full text-ink/70 transition hover:bg-red-500/10 hover:text-red-600"><x-icon name="flag" class="h-4 w-4" /></button>
                             @endif
+                            {{-- the writer can edit for 10 minutes after writing --}}
+                            @can('update', $comment)
+                                <button type="button" data-edit-comment="{{ $comment->id }}" title="{{ __('Edit') }}" aria-label="{{ __('Edit') }}"
+                                    class="tap ms-auto grid h-9 w-9 place-items-center rounded-full text-ink/70 transition hover:bg-ink/5 hover:text-accent"><x-icon name="pen" class="h-4 w-4" /></button>
+                            @endcan
                             @can('delete', $comment)
-                                <form method="POST" action="{{ route('comments.destroy', $comment) }}" data-confirm="{{ __('Delete this comment?') }}" class="{{ auth()->id() !== $comment->user_id ? '' : 'ms-auto' }}">
+                                <form method="POST" action="{{ route('comments.destroy', $comment) }}" data-confirm="{{ __('Delete this comment?') }}" class="{{ auth()->id() !== $comment->user_id || auth()->user()->can('update', $comment) ? '' : 'ms-auto' }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="tap grid h-9 w-9 place-items-center rounded-full text-ink/70 transition hover:bg-red-500/10 hover:text-red-600"><x-icon name="trash" class="h-4 w-4" /></button>
                                 </form>
                             @endcan
                         </div>
-                        <p class="whitespace-pre-line break-words leading-relaxed" dir="auto">{{ $comment->body }}</p>
+                        <p data-comment-body="{{ $comment->id }}" class="whitespace-pre-line break-words leading-relaxed" dir="auto">{{ $comment->body }}</p>
+                        @can('update', $comment)
+                            <form method="POST" action="{{ route('comments.update', $comment) }}" data-comment-form="{{ $comment->id }}" class="hidden flex-col gap-2">
+                                @csrf
+                                @method('PUT')
+                                <textarea name="body" rows="2" required minlength="2" maxlength="300" dir="auto" class="input resize-none">{{ $comment->body }}</textarea>
+                                <div class="flex items-center gap-2">
+                                    <button type="submit" class="btn-primary px-4 py-1.5 text-sm">{{ __('Save') }}</button>
+                                    <button type="button" data-edit-comment="{{ $comment->id }}" class="rounded-2xl px-4 py-1.5 text-sm font-bold text-ink/70 hover:bg-ink/5">{{ __('Cancel') }}</button>
+                                </div>
+                            </form>
+                        @endcan
                     </div>
                 </div>
             @empty
@@ -160,4 +176,19 @@
     @endauth
 
     <x-confirm-dialog />
+
+    {{-- the pen opens the edit box in place of the comment, Cancel closes it --}}
+    <script>
+        document.addEventListener('click', (event) => {
+            const toggle = event.target.closest('[data-edit-comment]');
+            if (!toggle) return;
+            const id = toggle.dataset.editComment;
+            const form = document.querySelector(`[data-comment-form="${id}"]`);
+            const open = form.classList.contains('hidden');
+            form.classList.toggle('hidden', !open);
+            form.classList.toggle('flex', open);
+            document.querySelector(`[data-comment-body="${id}"]`).classList.toggle('hidden', open);
+            if (open) form.querySelector('textarea').focus();
+        });
+    </script>
 @endsection
