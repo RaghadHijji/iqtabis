@@ -358,7 +358,7 @@
                                 @can('update', $quote)
                                     <a href="{{ route('home', [...$state, 'page' => $quotes->currentPage(), 'edit' => $quote->id]) }}" title="{{ __('Edit') }}" aria-label="{{ __('Edit') }}" class="icon-btn px-0">{!! $pen !!}</a>
                                     {{-- asks "are you sure?" first (see #delete-dialog) --}}
-                                    <button type="button" data-delete="{{ route('quotes.destroy', $quote) }}" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="icon-btn px-0 hover:border-red-400 hover:text-red-600">{!! $trash !!}</button>
+                                    <button type="button" data-delete="{{ route('quotes.destroy', $quote) }}" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="icon-btn px-0 hover:bg-red-500/10 hover:text-red-600">{!! $trash !!}</button>
                                 @endcan
 
                                 {{-- Report a bad quote (FR-15), not on my own quotes --}}
@@ -385,25 +385,27 @@
                                 @endif
                             </div>
 
-                            <div class="flex flex-wrap items-center gap-2 border-t border-ink/5 pt-4">
+                            <div class="flex items-center gap-2 border-t border-ink/5 pt-4">
                                 {{-- the poster's name opens their page --}}
                                 <a data-soft data-to-quotes href="{{ route('home', ['by' => $quote->user_id]) }}" title="{{ __('Open :name\'s page', ['name' => $quote->user->name]) }}"
-                                    class="group me-auto flex items-center gap-2">
+                                    class="group me-auto flex min-w-0 items-center gap-2">
                                     <x-avatar :user="$quote->user" />
-                                    <span class="flex flex-col leading-tight">
-                                        <span class="text-sm font-bold group-hover:text-accent group-hover:underline">{{ auth()->id() === $quote->user_id ? __('You') : $quote->user->name }}</span>
+                                    <span class="flex min-w-0 flex-col leading-tight">
+                                        <span class="truncate text-sm font-bold group-hover:text-accent group-hover:underline">{{ auth()->id() === $quote->user_id ? __('You') : $quote->user->name }}</span>
                                         <span class="text-xs text-ink/70">{{ $quote->created_at->format('Y-m-d') }}</span>
                                         <span class="hidden text-xs text-ink/70 sm:block">{{ $quote->created_at->hijri() }}</span>
                                     </span>
                                 </a>
 
+                                {{-- the buttons stay together on one line, even on small phones --}}
+                                <div class="flex shrink-0 items-center gap-0.5">
                                 {{-- Like: everyone sees the count, logged-in users can like (FR-08) --}}
                                 @auth
                                     @php $liked = in_array($quote->id, $likedIds); @endphp
                                     <form data-soft method="POST" action="{{ route('quotes.like', $quote) }}">
                                         @csrf
                                         <button type="submit" title="{{ $liked ? __('Unlike') : __('Like') }}" aria-pressed="{{ $liked ? 'true' : 'false' }}"
-                                            class="icon-btn {{ $liked ? 'border-red-300 bg-red-500/10 text-red-600' : '' }}">{!! $liked ? $heart : $heartLine !!}{{ $quote->likes_count }}</button>
+                                            class="icon-btn {{ $liked ? 'text-red-600' : '' }}">{!! $liked ? $heart : $heartLine !!}{{ $quote->likes_count }}</button>
                                     </form>
 
                                     {{-- Save to my favorites (FR-09) --}}
@@ -411,7 +413,7 @@
                                     <form data-soft method="POST" action="{{ route('quotes.favorite', $quote) }}">
                                         @csrf
                                         <button type="submit" title="{{ $saved ? __('Unsave') : __('Save') }}" aria-label="{{ $saved ? __('Unsave') : __('Save') }}" aria-pressed="{{ $saved ? 'true' : 'false' }}"
-                                            class="icon-btn px-0 {{ $saved ? 'border-accent text-accent' : '' }}">{!! $saved ? $bookmarkFull : $bookmark !!}</button>
+                                            class="icon-btn px-0 {{ $saved ? 'text-accent' : '' }}">{!! $saved ? $bookmarkFull : $bookmark !!}</button>
                                     </form>
 
                                 @else
@@ -420,6 +422,7 @@
 
                                 {{-- comments are on the quote's own page (FR-22) --}}
                                 <a href="{{ route('quotes.show', $quote) }}#comments" title="{{ __('Comments') }}" aria-label="{{ __('Comments') }}" class="icon-btn"><x-icon name="comment" />{{ $quote->comments_count }}</a>
+                            </div>
                             </div>
                         </article>
                     @endif

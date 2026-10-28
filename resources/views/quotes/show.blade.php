@@ -44,12 +44,12 @@
                     <form method="POST" action="{{ route('quotes.like', $quote) }}">
                         @csrf
                         <button type="submit" title="{{ $liked ? __('Unlike') : __('Like') }}" aria-pressed="{{ $liked ? 'true' : 'false' }}"
-                            class="icon-btn {{ $liked ? 'border-red-300 bg-red-500/10 text-red-600' : '' }}"><x-icon name="heart" class="{{ $liked ? 'fill-current' : '' }}" />{{ $quote->likes_count }}</button>
+                            class="icon-btn {{ $liked ? 'text-red-600' : '' }}"><x-icon name="heart" class="{{ $liked ? 'fill-current' : '' }}" />{{ $quote->likes_count }}</button>
                     </form>
                     <form method="POST" action="{{ route('quotes.favorite', $quote) }}">
                         @csrf
                         <button type="submit" title="{{ $saved ? __('Unsave') : __('Save') }}" aria-label="{{ $saved ? __('Unsave') : __('Save') }}" aria-pressed="{{ $saved ? 'true' : 'false' }}"
-                            class="icon-btn px-0 {{ $saved ? 'border-accent text-accent' : '' }}"><x-icon name="bookmark" class="{{ $saved ? 'fill-current' : '' }}" /></button>
+                            class="icon-btn px-0 {{ $saved ? 'text-accent' : '' }}"><x-icon name="bookmark" class="{{ $saved ? 'fill-current' : '' }}" /></button>
                     </form>
                 @else
                     <a href="{{ route('login') }}" title="{{ __('Like') }}" class="icon-btn"><x-icon name="heart" />{{ $quote->likes_count }}</a>
@@ -65,7 +65,7 @@
                     <form method="POST" action="{{ route('quotes.destroy', $quote) }}" data-confirm="{{ __('Delete this quote?') }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="icon-btn px-0 hover:border-red-400 hover:text-red-600"><x-icon name="trash" /></button>
+                        <button type="submit" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="icon-btn px-0 hover:bg-red-500/10 hover:text-red-600"><x-icon name="trash" /></button>
                     </form>
                 @endcan
             </div>
