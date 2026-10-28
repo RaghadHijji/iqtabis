@@ -22,4 +22,16 @@
             <a href="{{ route('home') }}" class="font-bold text-accent hover:underline">{{ __('Browse quotes for now') }}</a>
         </p>
     </x-auth-page>
+
+    {{-- once the link is opened in another tab, this page notices and moves on by itself --}}
+    <script>
+        (() => {
+            const check = () => fetch(@json(route('verification.notice')), { headers: { Accept: 'text/html' } })
+                .then((response) => { if (response.redirected) location.href = response.url; })
+                .catch(() => {});
+
+            setInterval(check, 4000);
+            addEventListener('focus', check);
+        })();
+    </script>
 @endsection
