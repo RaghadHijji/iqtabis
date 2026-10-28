@@ -273,3 +273,13 @@ body.footer-in-view .float-lift { transform: translateY(calc(-1 * var(--footer-l
 .share-fab.is-open .fab-label,
 .share-fab:hover .fab-label,
 .share-fab:focus-visible .fab-label { max-width: 22rem; margin-inline-start: .5rem; opacity: 1; }
+
+/* on tall phone screens the photo is zoomed a little from the top, so the arches and the sea fill the screen
+   down to the authors strip instead of the dark stone ledge at the bottom of the picture */
+@media (max-aspect-ratio: 4/5) {
+    #hero-bg { background-size: auto 132%; background-position: 50% 0; }
+}
+/* on short phones (like the iPhone SE) there's no room for "scroll to explore" under the quote, so it hides */
+@media (max-width: 639px) and (max-height: 700px) {
+    .scroll-hint { display: none; }
+}
