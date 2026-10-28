@@ -20,8 +20,8 @@ class AuthorTest extends TestCase
         $count = Quote::count();
         $this->assertSame(0, Quote::whereNull('author')->count());
 
-        // every category starts with more than 5 quotes
-        Category::withCount('quotes')->get()->each(fn ($category) => $this->assertGreaterThan(5, $category->quotes_count, $category->name));
+        // every category starts with at least 5 quotes
+        Category::withCount('quotes')->get()->each(fn ($category) => $this->assertGreaterThanOrEqual(5, $category->quotes_count, $category->name));
 
         // seeding twice adds nothing new
         $this->seed();

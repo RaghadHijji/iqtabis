@@ -79,7 +79,7 @@ class QuoteSeeder extends Seeder
             ['Sad', 'يذكّرني طلوعُ الشمس صخرًا، وأذكره لكل غروب شمسِ', 'الخنساء'],
             ['Humor', 'Life is far too important a thing ever to talk seriously about it.', 'Oscar Wilde'],
             ['Humor', 'To love oneself is the beginning of a lifelong romance.', 'Oscar Wilde'],
-            ['Humor', 'رجع بخُفَّي حُنين', 'مثل عربي'],
+            ['Sad', 'رجع بخُفَّي حُنين', 'مثل عربي'],
             ['Facts', 'يغلي الماء عند 100 درجة مئوية عند مستوى سطح البحر.', 'حقيقة علمية'],
         ];
 
@@ -87,7 +87,7 @@ class QuoteSeeder extends Seeder
             $quote = Quote::firstOrNew(['content' => $content]);
             $quote->forceFill([
                 'author' => $author,
-                'category_id' => $quote->category_id ?? Category::where('name', $category)->value('id'),
+                'category_id' => Category::where('name', $category)->value('id'),
                 'user_id' => $members[$i % $members->count()]->id,
             ])->save();
         }
