@@ -5,6 +5,8 @@
     <x-auth-page :title="__('Confirm your email')" :intro="__('We sent a confirmation link to :email. Open it to start sharing quotes and comments.', ['email' => auth()->user()->email])">
         <span class="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-full bg-accent/10 text-accent"><x-icon name="mail" class="h-8 w-8" /></span>
 
+        <p class="mb-5 text-center text-sm text-ink/70">{{ __("Can't find it? Check your Spam folder and mark it as not spam, so the button works.") }}</p>
+
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
             <button type="submit" class="h-11 w-full rounded-xl bg-ink font-bold text-page transition hover:-translate-y-0.5 hover:shadow-lg">{{ __('Send the link again') }}</button>
