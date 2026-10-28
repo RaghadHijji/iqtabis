@@ -42,7 +42,7 @@
             </div>
 
             {{-- scroll down to see the rest --}}
-            <a href="#explore" class="scroll-hint absolute bottom-24 sm:bottom-16 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
+            <a href="#explore" class="absolute bottom-24 sm:bottom-16 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
                 {{ __('Scroll to explore') }}
                 <svg class="h-6 w-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
             </a>
