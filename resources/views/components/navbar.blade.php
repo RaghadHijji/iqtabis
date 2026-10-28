@@ -130,7 +130,10 @@
         const nav = document.getElementById('navbar');
         const hero = document.getElementById('hero');
         if (!hero) return;
-        const update = () => nav.classList.toggle('on-hero', window.scrollY < hero.offsetHeight - nav.offsetHeight);
+        // on phones only the photo part of the opening screen is dark, the quote under it sits on the page color
+        const phone = matchMedia('(max-width: 639px)');
+        const edge = () => phone.matches ? document.getElementById('hero-bg').offsetHeight : hero.offsetHeight;
+        const update = () => nav.classList.toggle('on-hero', window.scrollY < edge() - nav.offsetHeight);
         update();
         window.addEventListener('scroll', update, { passive: true });
     });

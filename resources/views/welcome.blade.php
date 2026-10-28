@@ -24,7 +24,7 @@
     @if ($browsing && $quoteOfDay)
         <section id="hero" class="relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
             <div id="hero-bg" class="absolute inset-x-0 -top-[10%] h-[120%] bg-cover bg-center" style="background-image: url('{{ asset('images/hero.jpg') }}')"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75"></div>
+            <div id="hero-shade" class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75"></div>
 
             <div id="hero-content" class="hero-in relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pb-36 pt-28 text-center">
                 <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-3xl' : 'font-display text-2xl italic' }} text-white/85">{{ __('A quote for every moment') }}</p>
@@ -42,7 +42,7 @@
             </div>
 
             {{-- scroll down to see the rest --}}
-            <a href="#explore" class="absolute bottom-24 sm:bottom-16 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
+            <a href="#explore" class="scroll-hint absolute bottom-24 sm:bottom-16 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
                 {{ __('Scroll to explore') }}
                 <svg class="h-6 w-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
             </a>
@@ -548,7 +548,7 @@
         // opening picture: the photo moves slower than the page and the quote fades away (parallax)
         const heroBg = document.getElementById('hero-bg');
         const heroContent = document.getElementById('hero-content');
-        if (heroBg && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (heroBg && !matchMedia('(prefers-reduced-motion: reduce)').matches && matchMedia('(min-width: 640px)').matches) {
             let ticking = false;
             const move = () => {
                 const y = Math.min(window.scrollY, window.innerHeight);
