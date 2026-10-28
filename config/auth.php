@@ -114,4 +114,9 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    // the link in the confirmation email works for 10 minutes (FR-24)
+    'verification' => [
+        'expire' => 10,
+    ],
+
 ];

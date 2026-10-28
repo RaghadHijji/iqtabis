@@ -34,6 +34,10 @@ Route::get('/theme/{mode}', function (string $mode) {
 })->whereIn('mode', ['light', 'dark'])->name('theme');
 
 // only guests (not logged in) can open sign up / log in
+// the button in the confirmation email: works even in a browser where you're not logged in (FR-24)
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('throttle:6,1,verify-link')->name('verification.verify');
+Route::post('/email/verify/{id}/{hash}/resend', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1,resend-link')->name('verification.resend');
+
 Route::middleware('guest')->group(function () {
     Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
     Route::post('/signup', [AuthController::class, 'signup'])->middleware('throttle:10,1');
@@ -71,7 +75,6 @@ Route::middleware('auth')->group(function () {
 
     // confirm your email (FR-24)
     Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
     Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');
 
     // sharing a quote or a comment needs a confirmed email

@@ -116,8 +116,26 @@ class CommunityPlusTest extends TestCase
         $this->post(route('verification.send'))->assertSessionHas('status');
 
         $link = URL::temporarySignedRoute('verification.verify', now()->addHour(), ['id' => $user->id, 'hash' => sha1($user->email)]);
-        $this->get($link)->assertRedirect(route('home'));
+        $this->get($link)->assertOk()->assertSee('تم تأكيد بريدك');
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
+
+        // the link also works in a browser where nobody is logged in, and a changed link is refused
+        $other = User::factory()->unverified()->create();
+        auth()->logout();
+        $this->get(URL::temporarySignedRoute('verification.verify', now()->addHour(), ['id' => $other->id, 'hash' => sha1('wrong@example.com')]))->assertForbidden()->assertSee('انتهت صلاحية الرابط');
+        $this->get(URL::temporarySignedRoute('verification.verify', now()->addHour(), ['id' => $other->id, 'hash' => sha1($other->email)]))->assertOk();
+        $this->assertTrue($other->fresh()->hasVerifiedEmail());
+
+        // an expired link offers a new one, sent to the account's own email
+        $late = User::factory()->unverified()->create();
+        $old = URL::temporarySignedRoute('verification.verify', now()->subMinute(), ['id' => $late->id, 'hash' => sha1($late->email)]);
+        $this->get($old)->assertForbidden()->assertSee('أرسل الرابط مرة ثانية');
+        $this->assertFalse($late->fresh()->hasVerifiedEmail());
+        $this->post(route('verification.resend', ['id' => $late->id, 'hash' => sha1($late->email)]))->assertSessionHas('status');
+        Notification::assertSentTo($late, VerifyEmail::class);
+        $this->post(route('verification.resend', ['id' => $late->id, 'hash' => sha1('wrong@example.com')]));
+        Notification::assertSentToTimes($late, VerifyEmail::class, 1);
+        $this->actingAs($user->fresh());
 
         $this->post('/quotes', ['content' => 'My first quote', 'category_id' => Category::first()->id])->assertRedirect();
         $this->assertDatabaseHas('quotes', ['content' => 'My first quote']);

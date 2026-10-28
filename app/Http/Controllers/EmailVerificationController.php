@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Models\User;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
@@ -21,13 +22,56 @@ class EmailVerificationController extends Controller
     }
 
     /**
-     * The link in the email: the account is confirmed.
+     * The link in the email: the account is confirmed and a "done" page opens.
+     * The signed link is the proof, so no log in is needed (the Gmail app opens its own browser).
+     * An old or changed link gets a friendly page instead of an error.
      */
-    public function verify(EmailVerificationRequest $request)
+    public function verify(Request $request, string $id, string $hash)
     {
-        $request->fulfill();
+        $user = $this->linkOwner($id, $hash);
 
-        return redirect()->route('home')->with('status', __('Your email is confirmed. Welcome to Iqtabis!'));
+        if ($user?->hasVerifiedEmail()) {
+            return view('Authentication.EmailVerified', ['confirmed' => true]);
+        }
+
+        // an old link: offer to send a new one to the same email
+        if (! $user || ! $request->hasValidSignature()) {
+            return response()->view('Authentication.EmailVerified', [
+                'confirmed' => false,
+                'resendUrl' => $user ? route('verification.resend', ['id' => $id, 'hash' => $hash]) : null,
+            ], 403);
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+            event(new Verified($user));
+        }
+
+        return view('Authentication.EmailVerified', ['confirmed' => true]);
+    }
+
+    /**
+     * "Send the link again" on the expired link page: the new link goes to the account's own email only.
+     */
+    public function resend(string $id, string $hash)
+    {
+        $user = $this->linkOwner($id, $hash);
+
+        if ($user && ! $user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        return back()->with('status', __('We sent you a new confirmation link.'));
+    }
+
+    /**
+     * The account a confirmation link belongs to, or null if the link was changed.
+     */
+    private function linkOwner(string $id, string $hash): ?User
+    {
+        $user = User::find($id);
+
+        return $user && hash_equals(sha1($user->getEmailForVerification()), $hash) ? $user : null;
     }
 
     /**
@@ -55,7 +99,7 @@ class EmailVerificationController extends Controller
 
         $user = $request->user();
 
-        return URL::temporarySignedRoute('verification.verify', now()->addMinutes(60), [
+        return URL::temporarySignedRoute('verification.verify', now()->addMinutes(config('auth.verification.expire', 60)), [
             'id' => $user->getKey(),
             'hash' => sha1($user->getEmailForVerification()),
         ]);
