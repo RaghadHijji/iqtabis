@@ -279,17 +279,12 @@ body.footer-in-view .float-lift { transform: translateY(calc(-1 * var(--footer-l
     .share-fab { padding-inline: 0; width: 3.25rem; height: 3.25rem; }
 }
 
-/* phones: the whole photo sits on top at its own shape (no cropping, no dark band),
-   and the quote of the day comes under it on the page color */
+/* phones: the opening screen is only as tall as the quote on it (not the full screen),
+   so the photo is not stretched and there's no dark band under the quote */
 @media (max-width: 639px) {
-    #hero { display: block; min-height: 0; background: var(--color-page); color: var(--color-ink); }
-    #hero-bg, #hero-shade { position: relative; inset: auto; top: 0; height: auto; aspect-ratio: 16 / 9; margin-top: 74px; background-size: cover; animation: none; }
-    #hero-shade { position: absolute; top: 0; left: 0; right: 0; margin-top: 0; aspect-ratio: auto; height: 74px; background: var(--color-bar); }
-    #hero-content { padding: 2rem 1.25rem 2.5rem; gap: 1rem; }
-    #hero-content > p { color: color-mix(in srgb, var(--color-ink) 80%, transparent); filter: none; }
-    #hero-content > p:first-child { position: absolute; inset-inline: 0; top: calc(-28.125vw - 1.4rem); color: #fff; text-shadow: 0 2px 12px rgb(0 0 0 / .7); }
-    #hero-content > span:first-of-type { color: var(--color-sand); height: 2.5rem; width: 2.5rem; }
-    #hero-content blockquote { font-size: 1.9rem; filter: none; }
-    #hero-content .rounded-full { background: var(--color-card); border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent); backdrop-filter: none; }
+    #hero { min-height: 0; }
+    #hero-bg { inset: 0; top: 0; height: 100%; animation: none; background-position: 50% 45%; }
+    #hero-content { padding: 6.5rem 1.25rem 3.5rem; gap: 1rem; }
+    #hero-content blockquote { font-size: 1.9rem; }
     .scroll-hint { display: none; }
 }
