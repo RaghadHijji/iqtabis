@@ -135,7 +135,7 @@
         <section id="join" class="reveal mx-auto max-w-6xl px-6 pt-16">
             <div class="grid items-center gap-10 rounded-[2rem] border border-ink/10 bg-card p-8 shadow-sm md:grid-cols-2 md:p-12">
                 <div class="flex flex-col items-start gap-5">
-                    <h2 class="{{ app()->getLocale() === 'ar' ? 'font-quote text-5xl md:text-6xl leading-tight' : 'font-display text-5xl italic leading-tight' }} font-bold text-ink">{{ __('Join the Iqtabis community') }}</h2>
+                    <h2 class="{{ app()->getLocale() === 'ar' ? 'font-quote text-4xl sm:text-5xl lg:text-6xl leading-tight' : 'font-display text-4xl italic sm:text-5xl leading-tight' }} font-bold text-ink">{{ __('Join the Iqtabis community') }}</h2>
                     <p class="text-lg leading-loose text-ink/70">{{ __('A space for lovers of words and quotes: share your favorite quotes, discover what others picked, and keep the words that feel like you.') }}</p>
                     <a href="{{ route('signup') }}"
                         class="mt-2 inline-flex items-center gap-3 rounded-full bg-ink px-7 py-4 font-bold text-page shadow-lg transition hover:-translate-y-0.5 hover:bg-accent hover:text-on-accent hover:shadow-xl">
@@ -170,7 +170,7 @@
     <header id="explore" class="scroll-mt-24">
         <div class="mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 pb-10 pt-16 text-center">
             {{-- a sister line to the slogan, so it isn't repeated: Ruqaa script in Arabic, Playfair italic in English --}}
-            <h1 class="{{ app()->getLocale() === 'ar' ? 'font-brand text-5xl md:text-6xl leading-snug' : 'font-display text-5xl italic md:text-6xl leading-tight' }} font-bold">{{ __('Find a quote that matches your moment') }}</h1>
+            <h1 class="{{ app()->getLocale() === 'ar' ? 'font-brand text-4xl sm:text-5xl md:text-6xl leading-snug' : 'font-display text-4xl italic sm:text-5xl md:text-6xl leading-tight' }} font-bold">{{ __('Find a quote that matches your moment') }}</h1>
 
             {{-- Search (FR-11) --}}
             <form id="search-form" data-soft method="GET" action="{{ route('home') }}" class="flex w-full gap-2 rounded-2xl border border-ink/10 bg-card p-1.5 shadow-sm transition focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/30">
@@ -218,7 +218,7 @@
                 </div>
                 <div class="grid gap-5 md:grid-cols-3">
                     @foreach ($trending as $quote)
-                        <article class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-7 text-ink shadow-sm transition hover:shadow-md">
+                        <article class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 md:p-5 lg:p-7 text-ink shadow-sm transition hover:shadow-md">
                             <div class="flex items-center gap-3">
                                 <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-extrabold text-on-accent">{{ $loop->iteration }}</span>
                                 <span class="text-sm font-bold tracking-[0.15em] text-accent rtl:tracking-normal">{{ __($quote->category->name) }}</span>
@@ -327,7 +327,7 @@
                 </div>
             @endif
 
-            <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 @forelse ($quotes as $quote)
                     @if ($quote->id === $editingId && auth()->id() === $quote->user_id)
                         {{-- Edit form (FR-06) --}}
@@ -393,7 +393,7 @@
                                     <span class="flex min-w-0 flex-col leading-tight">
                                         <span class="truncate text-sm font-bold group-hover:text-accent group-hover:underline">{{ auth()->id() === $quote->user_id ? __('You') : $quote->user->name }}</span>
                                         <span class="text-xs text-ink/70">{{ $quote->created_at->format('Y-m-d') }}</span>
-                                        <span class="hidden text-xs text-ink/70 sm:block">{{ $quote->created_at->hijri() }}</span>
+                                        <span class="hidden whitespace-nowrap text-xs text-ink/70 sm:block">{{ $quote->created_at->hijri() }}</span>
                                     </span>
                                 </a>
 
@@ -461,7 +461,7 @@
     @auth
         {{-- Floating "Share a quote" button: a round "+" that opens up to show its words on the first screen and on hover --}}
         <button type="button" popovertarget="quote-popup" aria-label="{{ __('Share a quote') }}"
-            class="share-fab float-hide fixed bottom-8 end-8 z-40 flex h-14 min-w-14 items-center justify-center rounded-full bg-accent px-4 text-lg font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
+            class="share-fab float-hide fixed bottom-5 end-4 z-40 flex h-12 min-w-12 sm:bottom-8 sm:end-8 sm:h-14 sm:min-w-14 items-center justify-center rounded-full bg-accent px-4 text-lg font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-6 w-6 shrink-0" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
@@ -518,7 +518,7 @@
     @else
         {{-- Guests are asked to log in before sharing (US-01) --}}
         <a href="{{ route('login') }}" aria-label="{{ __('Log in and share your quote with us') }}"
-            class="share-fab float-hide fixed bottom-8 end-8 z-40 flex h-14 min-w-14 items-center justify-center rounded-full bg-accent px-4 font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110">
+            class="share-fab float-hide fixed bottom-5 end-4 z-40 flex h-12 min-w-12 sm:bottom-8 sm:end-8 sm:h-14 sm:min-w-14 items-center justify-center rounded-full bg-accent px-4 font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-6 w-6 shrink-0" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>

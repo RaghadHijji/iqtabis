@@ -43,7 +43,7 @@
 
     {{-- "Back to top": a round button that shows up once you scroll past the first screen --}}
     <button type="button" id="to-top" title="{{ __('Back to top') }}" aria-label="{{ __('Back to top') }}"
-        class="float-lift fixed bottom-8 start-4 z-40 grid h-12 w-12 translate-y-4 place-items-center rounded-full bg-sand text-on-accent opacity-0 shadow-lg shadow-sand/30 transition duration-300 pointer-events-none hover:-translate-y-0.5 hover:brightness-110 sm:start-8">
+        class="float-lift fixed bottom-5 start-4 z-40 grid h-11 w-11 sm:bottom-8 sm:h-12 sm:w-12 translate-y-4 place-items-center rounded-full bg-sand text-on-accent opacity-0 shadow-lg shadow-sand/30 transition duration-300 pointer-events-none hover:-translate-y-0.5 hover:brightness-110 sm:start-8">
         <x-icon name="arrow" class="h-5 w-5 -rotate-90" />
     </button>
     <script>

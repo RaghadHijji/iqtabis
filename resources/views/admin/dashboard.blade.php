@@ -109,9 +109,9 @@
             @endforelse
         </section>
 
-        <div class="grid gap-6 lg:grid-cols-2">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {{-- most liked --}}
-            <section class="flex flex-col gap-3 rounded-3xl border border-ink/10 bg-card p-6 shadow-sm">
+            <section class="flex min-w-0 flex-col gap-3 rounded-3xl border border-ink/10 bg-card p-6 shadow-sm">
                 <h2 class="text-xl font-extrabold text-ink">{{ __('Most liked quotes') }}</h2>
                 @forelse ($topQuotes as $quote)
                     <a href="{{ route('quotes.show', $quote) }}" class="flex items-center gap-3 rounded-2xl p-2 transition hover:bg-accent/5">
@@ -125,7 +125,7 @@
             </section>
 
             {{-- newest users --}}
-            <section class="flex flex-col gap-3 rounded-3xl border border-ink/10 bg-card p-6 shadow-sm">
+            <section class="flex min-w-0 flex-col gap-3 rounded-3xl border border-ink/10 bg-card p-6 shadow-sm">
                 <h2 class="text-xl font-extrabold text-ink">{{ __('Newest users') }}</h2>
                 @foreach ($newUsers as $member)
                     <a href="{{ route('home', ['by' => $member->id]) }}" class="flex items-center gap-3 rounded-2xl p-2 transition hover:bg-accent/5">

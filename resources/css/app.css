@@ -72,7 +72,7 @@
     }
     /* small square buttons on the cards (like, save, copy, edit, delete) */
     .icon-btn {
-        @apply inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-2.5 text-sm font-bold text-ink/70 transition duration-200 hover:bg-ink/5 hover:text-accent active:scale-95;
+        @apply inline-flex h-11 min-w-10 items-center justify-center gap-1.5 rounded-full px-2 text-sm sm:min-w-11 sm:px-2.5 font-bold text-ink/70 transition duration-200 hover:bg-ink/5 hover:text-accent active:scale-95;
     }
     .icon-btn svg {
         @apply h-[18px] w-[18px];
@@ -263,7 +263,8 @@ html::-webkit-scrollbar, .no-scrollbar::-webkit-scrollbar { display: none; }
 .float-lift, .float-hide { transition-property: transform, translate, opacity, filter, box-shadow, background-color, color, border-color; transition-duration: .3s; }
 body.footer-in-view .float-hide { opacity: 0; pointer-events: none; }
 body.footer-in-view .float-lift { transform: translateY(calc(-1 * var(--footer-lift, 0px))); }
-@media (max-width: 639px) {
+/* below laptop size the footer has no free corner, so "back to top" fades out there too */
+@media (max-width: 1279px) {
     body.footer-in-view .float-lift { opacity: 0; pointer-events: none; }
 }
 

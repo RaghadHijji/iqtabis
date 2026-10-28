@@ -40,6 +40,8 @@
                     </span>
                 </a>
 
+                {{-- the buttons: their own full line on phones, beside the name on bigger screens --}}
+                <div class="flex w-full items-center justify-between gap-1 sm:w-auto sm:justify-start sm:gap-2">
                 @auth
                     <form method="POST" action="{{ route('quotes.like', $quote) }}">
                         @csrf
@@ -68,6 +70,7 @@
                         <button type="submit" title="{{ __('Delete') }}" aria-label="{{ __('Delete') }}" class="icon-btn px-0 hover:bg-red-500/10 hover:text-red-600"><x-icon name="trash" /></button>
                     </form>
                 @endcan
+                </div>
             </div>
         </article>
 
