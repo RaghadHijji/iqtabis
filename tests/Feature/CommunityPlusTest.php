@@ -125,6 +125,8 @@ class CommunityPlusTest extends TestCase
         $this->get(URL::temporarySignedRoute('verification.verify', now()->addHour(), ['id' => $other->id, 'hash' => sha1('wrong@example.com')]))->assertForbidden()->assertSee('انتهت صلاحية الرابط');
         $this->get(URL::temporarySignedRoute('verification.verify', now()->addHour(), ['id' => $other->id, 'hash' => sha1($other->email)]))->assertOk();
         $this->assertTrue($other->fresh()->hasVerifiedEmail());
+        $this->assertAuthenticatedAs($other); // the confirmed link logs you in, no second log in needed
+        auth()->logout();
 
         // an expired link offers a new one, sent to the account's own email
         $late = User::factory()->unverified()->create();

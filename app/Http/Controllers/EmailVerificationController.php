@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 
 class EmailVerificationController extends Controller
@@ -22,29 +23,34 @@ class EmailVerificationController extends Controller
     }
 
     /**
-     * The link in the email: the account is confirmed and a "done" page opens.
-     * The signed link is the proof, so no log in is needed (the Gmail app opens its own browser).
+     * The link in the email: the account is confirmed, you're logged in, and a "done" page opens.
+     * The signed link is the proof (only the email's owner gets it), so it also logs you in:
+     * the Gmail app opens its own browser, where you weren't logged in yet.
      * An old or changed link gets a friendly page instead of an error.
      */
     public function verify(Request $request, string $id, string $hash)
     {
         $user = $this->linkOwner($id, $hash);
-
-        if ($user?->hasVerifiedEmail()) {
-            return view('Authentication.EmailVerified', ['confirmed' => true]);
-        }
+        $valid = $user && $request->hasValidSignature();
 
         // an old link: offer to send a new one to the same email
-        if (! $user || ! $request->hasValidSignature()) {
+        if (! $valid && ! $user?->hasVerifiedEmail()) {
             return response()->view('Authentication.EmailVerified', [
                 'confirmed' => false,
                 'resendUrl' => $user ? route('verification.resend', ['id' => $id, 'hash' => $hash]) : null,
             ], 403);
         }
 
-        if (! $user->hasVerifiedEmail()) {
-            $user->markEmailAsVerified();
-            event(new Verified($user));
+        if ($valid) {
+            if (! $user->hasVerifiedEmail()) {
+                $user->markEmailAsVerified();
+                event(new Verified($user));
+            }
+
+            if (Auth::guest()) {
+                Auth::login($user);
+                $request->session()->regenerate();
+            }
         }
 
         return view('Authentication.EmailVerified', ['confirmed' => true]);
