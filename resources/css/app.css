@@ -1,0 +1,274 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Tajawal', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-quote: 'Amiri', Georgia, serif;     /* the quotes themselves */
+    --font-brand: 'Aref Ruqaa', 'Amiri', serif; /* the name اقتبس and the Arabic slogan */
+    --font-display: 'Playfair Display', Georgia, serif; /* the English slogan */
+
+         /* Tuwaiq club theme */
+    --color-tuwaiq-purple: #1F2A44; /* ink navy */
+    --color-tuwaiq-purple-light: #2E3B5C;
+    --color-tuwaiq-orange: #C9A227; /* gold */
+    --color-tuwaiq-teal: #4fc9b0;
+    --color-tuwaiq-text: #1F2A44;
+
+    /* Iqtabis palette, taken from the arches picture: stone + sea */
+    --color-page: #F7F4EF;      /* page background: light stone */
+    --color-card: #FFFFFF;      /* quote cards, inputs, chips */
+    --color-ink: #2E2A25;       /* main text: dark stone */
+    --color-accent: #23708A;    /* buttons, badges: the sea */
+    --color-on-accent: #FFFFFF; /* text on accent */
+    --color-sand: #8A6844;      /* small warm touches (5.1:1 on white) */
+    --color-bar: #080416;       /* the logo box: same as the logo background */
+    --color-white: #ffffff;
+}
+/* dark mode: same 6 colors, darker values (the navbar stays the logo color) */
+.dark {
+    --color-page: #141A1D;
+    --color-card: #1E262A;
+    --color-ink: #EDE7DE;
+    --color-accent: #7BC3D6;
+    --color-on-accent: #10181B;
+    --color-sand: #D9B48C;
+}
+
+/* the sky picture at the top of every page, fading into the page color */
+.sky {
+    background-color: var(--color-page);
+    background-image: linear-gradient(to bottom, transparent 55%, var(--color-page) 100%), url('/images/hero.jpg');
+    background-size: 100% 760px;
+    background-repeat: no-repeat;
+}
+/* at night the sky gets darker */
+.dark .sky {
+    background-image: linear-gradient(to bottom, rgb(18 17 28 / 0.72) 0%, rgb(18 17 28 / 0.8) 55%, var(--color-page) 100%), url('/images/hero.jpg');
+}
+/* frosted glass boxes on top of the sky */
+.glass {
+    background-color: rgb(255 255 255 / 0.55);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgb(255 255 255 / 0.7);
+}
+.dark .glass {
+    background-color: rgb(30 28 43 / 0.6);
+    border-color: rgb(255 255 255 / 0.08);
+}
+
+@layer components {
+   .btn-primary {
+        @apply rounded-2xl bg-accent px-6 py-3 text-lg font-medium text-on-accent shadow-md transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:brightness-110 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-tuwaiq-purple/30
+
+    }
+    .btn-secondary {
+        @apply rounded-2xl bg-bar px-5 py-2 font-medium text-white shadow-md transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:brightness-125 active:scale-95;
+    }
+    .label {
+        @apply block mb-1 font-semibold text-ink;
+    }
+    /* small square buttons on the cards (like, save, copy, edit, delete) */
+    .icon-btn {
+        @apply inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl border border-ink/15 bg-card px-3 text-sm font-bold text-ink/70 transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:text-accent;
+    }
+    .icon-btn svg {
+        @apply h-[18px] w-[18px];
+    }
+    /* round buttons in the navbar */
+    .bar-btn {
+        @apply inline-flex h-9 min-w-9 shrink-0 items-center whitespace-nowrap justify-center rounded-full border border-ink/15 bg-card/60 px-2.5 text-sm text-ink sm:h-11 sm:min-w-11 sm:px-4 sm:text-base transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-on-accent hover:shadow-md active:scale-95 active:bg-accent active:text-on-accent focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30;
+    }
+    .input {
+        @apply w-full rounded-lg border border-ink/20 px-4 py-2 text-ink bg-card placeholder-gray-400 transition focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/30;
+    }
+}
+.site-name {
+    font-family: var(--font-brand);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-ink);
+    transition: color .3s;
+}
+
+/* parts of the page fade up when you scroll to them (only when JavaScript runs) */
+.js .reveal:not(.shown) {
+    opacity: 0;
+    transform: translateY(40px);
+}
+.js .reveal-side:not(.shown) {
+    transform: translateX(-60px);
+}
+[dir="rtl"] .js .reveal-side:not(.shown),
+.js[dir="rtl"] .reveal-side:not(.shown) {
+    transform: translateX(60px);
+}
+.js .reveal.shown:not(.settled) {
+    transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);
+    transition-delay: calc(var(--i, 0) * 110ms);
+}
+/* boxes whose children come in one after the other */
+.js .stagger:not(.shown) > * {
+    opacity: 0;
+    transform: translateY(30px);
+}
+.js .stagger-zoom:not(.shown) > * {
+    transform: translateY(30px) scale(0.9);
+}
+.js .stagger.shown:not(.settled) > * {
+    transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1);
+    transition-delay: calc(var(--i, 0) * 90ms + 150ms);
+}
+/* the opening picture: the quote's lines come in one after the other */
+.hero-in > * {
+    animation: fade-up 1s cubic-bezier(.2,.7,.2,1) both;
+}
+.hero-in > :nth-child(2) { animation-delay: .15s; }
+.hero-in > :nth-child(3) { animation-delay: .3s; }
+.hero-in > :nth-child(4) { animation-delay: .5s; }
+.hero-in > :nth-child(5) { animation-delay: .7s; }
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+}
+#hero-bg { will-change: transform; animation: hero-zoom 2.2s ease-out both; }
+@keyframes hero-zoom {
+    from { scale: 1.12; }
+}
+/* thin line under the navbar that fills as you scroll down */
+@media (prefers-reduced-motion: reduce) {
+    .js .reveal:not(.shown), .js .stagger:not(.shown) > * { opacity: 1; transform: none; }
+    .hero-in > *, #hero-bg { animation: none; }
+}
+
+/* the navbar is see-through while it sits on the opening picture */
+#navbar {
+    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+#navbar.on-hero {
+    background-color: transparent;
+    border-color: transparent;
+    backdrop-filter: none;
+}
+#navbar.on-hero .nav-text {
+    color: #FFFFFF;
+}
+#navbar.on-hero .bar-btn {
+    color: #FFFFFF;
+    background-color: rgb(255 255 255 / 0.12);
+    border-color: rgb(255 255 255 / 0.4);
+}
+/* over the picture the buttons still take the main color on hover / press */
+#navbar.on-hero .bar-btn:hover,
+#navbar.on-hero .bar-btn:active {
+    color: var(--color-on-accent);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+/* the little message at the bottom slides up, waits, then fades away */
+.toast { opacity: 0; transform: translateY(16px); transition: opacity .35s, transform .35s; pointer-events: none; }
+.toast.toast-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+
+/* bigger name on wider screens */
+@media (min-width: 640px) {
+    .site-name { font-size: 2.6rem; }
+}
+#navbar.on-hero .site-name {
+    color: #FFFFFF;
+}
+
+/* the logos have no box now, so on the light bar the white parts turn dark */
+.nav-logo { filter: invert(1) hue-rotate(180deg); transition: filter .3s; }
+.dark .nav-logo,
+#navbar.on-hero .nav-logo { filter: none; }
+
+/* log in / sign up pop-up: frosted card with underlined fields */
+.auth-card { background-color: rgb(255 255 255 / 0.4); backdrop-filter: blur(24px) saturate(140%); }
+.dark .auth-card { background-color: rgb(20 26 29 / 0.55); }
+.auth-field { position: relative; display: block; margin-bottom: 1.25rem; border-bottom: 2px solid var(--color-ink); color: var(--color-ink); }
+.auth-field input { width: 100%; height: 2.75rem; background: transparent; outline: none; padding-inline: .25rem 2rem; padding-top: .9rem; color: var(--color-ink); }
+.auth-field span { position: absolute; inset-inline-start: .25rem; top: 50%; translate: 0 -50%; pointer-events: none; transition: all .2s; font-weight: 500; }
+.auth-field input:focus + span,
+.auth-field input:not(:placeholder-shown) + span { top: .35rem; translate: 0 0; font-size: .75rem; opacity: .75; }
+.auth-field svg { position: absolute; inset-inline-end: .25rem; top: 50%; translate: 0 -50%; }
+.auth-field:focus-within { border-color: var(--color-accent); }
+/* the eye that shows / hides the password */
+.auth-field .pw-toggle { position: absolute; inset-inline-end: 0; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; color: var(--color-ink); opacity: .7; cursor: pointer; }
+.auth-field .pw-toggle:hover { opacity: 1; background: rgb(0 0 0 / .06); }
+/* sign up has one more field, so it is a bit tighter */
+.auth-compact h2 { margin-bottom: 1rem; font-size: 1.35rem; }
+.auth-compact .auth-field { margin-bottom: 1rem; }
+
+/* under a password field: the Caps Lock warning and the strength bar */
+.pw-hint { margin: -.6rem 0 .9rem; font-size: .75rem; font-weight: 700; color: #b45309; }
+.pw-meter { display: flex; align-items: center; gap: .6rem; margin: -.6rem 0 .9rem; font-size: .75rem; font-weight: 700; }
+.pw-meter.hidden, .pw-hint.hidden { display: none; }
+.pw-bar { flex: 1; height: .3rem; border-radius: 9999px; background: rgb(127 127 127 / .25); overflow: hidden; }
+.pw-bar i { display: block; height: 100%; width: 33%; border-radius: inherit; background: #dc2626; transition: width .25s, background .25s; }
+.pw-meter[data-level="1"] .pw-bar i { width: 66%; background: #d97706; }
+.pw-meter[data-level="2"] .pw-bar i { width: 100%; background: #16a34a; }
+.pw-meter small { color: var(--color-ink); opacity: .8; white-space: nowrap; }
+.dark .pw-hint { color: #fbbf24; }
+.auth-compact .auth-field input { height: 2.5rem; font-size: .9rem; }
+.auth-compact button[type=submit] { height: 2.5rem; }
+.auth-compact p:last-child { margin-top: 1rem; }
+
+/* scrolls without showing the grey scrollbar (whole page + account pop-up);
+   the thin line under the navbar shows how far you scrolled instead */
+html, .no-scrollbar { scrollbar-width: none; }
+html::-webkit-scrollbar, .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* "Join the community": quote cards stacked like a fan; the JS moves each one to the next spot */
+.fan-card {
+    transform: translateY(-50%);
+    transition: transform 1.4s cubic-bezier(.4,0,.2,1), opacity 1.4s ease, filter 1.4s ease;
+}
+.fan-card.pos-front { z-index: 3; opacity: 1; }
+.fan-card.pos-right { z-index: 2; opacity: .7; filter: blur(.5px); }
+.fan-card.pos-left  { z-index: 1; opacity: .7; filter: blur(.5px); }
+.fan-card.pos-hidden { z-index: 0; opacity: 0; }
+.reveal.shown .fan-card.pos-front  { transform: translate(0, -50%) rotate(0deg); }
+.reveal.shown .fan-card.pos-right  { transform: translate(8%, -54%) rotate(5deg); }
+.reveal.shown .fan-card.pos-left   { transform: translate(-9%, -46%) rotate(-7deg); }
+.reveal.shown .fan-card.pos-hidden { transform: translate(0, -44%) rotate(0deg) scale(.92); }
+@media (prefers-reduced-motion: reduce) { .fan-card { transition: none; } }
+
+/* phones: small round buttons get an invisible 44px touch area around them */
+@media (max-width: 639px) {
+    .tap, .bar-btn { position: relative; }
+    .tap::after, .bar-btn::after { content: ''; position: absolute; inset: -4px; }
+}
+
+/* the authors strip: two copies of the list slide by forever; it stops under the mouse or keyboard */
+.marquee-track { animation: marquee 45s linear infinite; }
+[dir="rtl"] .marquee-track { animation-name: marquee-rtl; }
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes marquee-rtl { to { transform: translateX(50%); } }
+@media (prefers-reduced-motion: reduce) {
+    .marquee { overflow-x: auto; }
+    .marquee-track { animation: none; }
+}
+
+/* privacy and terms pages: headings and lists inside the text card */
+.legal h2 { margin-bottom: .5rem; font-size: 1.25rem; font-weight: 800; color: var(--color-accent); }
+.legal ul { display: flex; flex-direction: column; gap: .5rem; padding-inline-start: 1.25rem; list-style: disc; }
+.legal li::marker { color: var(--color-sand); }
+
+/* at the footer the floating buttons get out of the way (see the script in Layout/app) */
+.float-lift, .float-hide { transition-property: transform, translate, opacity, filter, box-shadow, background-color, color, border-color; transition-duration: .3s; }
+body.footer-in-view .float-hide { opacity: 0; pointer-events: none; }
+body.footer-in-view .float-lift { transform: translateY(calc(-1 * var(--footer-lift, 0px))); }
+@media (max-width: 639px) {
+    body.footer-in-view .float-lift { opacity: 0; pointer-events: none; }
+}
+
+/* the floating share button: a round "+" whose words slide out on the first screen, on hover and on keyboard focus */
+.share-fab .fab-label { max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0; transition: max-width .35s, opacity .25s, margin .35s; }
+.share-fab.is-open .fab-label,
+.share-fab:hover .fab-label,
+.share-fab:focus-visible .fab-label { max-width: 22rem; margin-inline-start: .5rem; opacity: 1; }
