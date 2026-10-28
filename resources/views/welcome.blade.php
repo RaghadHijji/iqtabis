@@ -169,8 +169,8 @@
     {{-- Slogan and search --}}
     <header id="explore" class="scroll-mt-24">
         <div class="mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 pb-10 pt-16 text-center">
-            {{-- the slogan: Ruqaa script in Arabic, Playfair italic in English --}}
-            <h1 class="{{ app()->getLocale() === 'ar' ? 'font-brand text-5xl md:text-6xl leading-snug' : 'font-display text-5xl italic md:text-6xl leading-tight' }} font-bold">{{ __('A quote for every moment') }}</h1>
+            {{-- a sister line to the slogan, so it isn't repeated: Ruqaa script in Arabic, Playfair italic in English --}}
+            <h1 class="{{ app()->getLocale() === 'ar' ? 'font-brand text-5xl md:text-6xl leading-snug' : 'font-display text-5xl italic md:text-6xl leading-tight' }} font-bold">{{ __('Find a quote that matches your moment') }}</h1>
 
             {{-- Search (FR-11) --}}
             <form id="search-form" data-soft method="GET" action="{{ route('home') }}" class="flex w-full gap-2 rounded-2xl border border-ink/10 bg-card p-1.5 shadow-sm transition focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/30">
