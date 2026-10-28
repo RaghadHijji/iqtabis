@@ -218,7 +218,8 @@
                 </div>
                 <div class="grid gap-5 md:grid-cols-3">
                     @foreach ($trending as $quote)
-                        <article class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 md:p-5 lg:p-7 text-ink shadow-sm transition hover:shadow-md">
+                        {{-- the whole card opens the quote's page, with its comments --}}
+                        <a href="{{ route('quotes.show', $quote) }}" class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 md:p-5 lg:p-7 text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
                             <div class="flex items-center gap-3">
                                 <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-extrabold text-on-accent">{{ $loop->iteration }}</span>
                                 <span class="text-sm font-bold tracking-[0.15em] text-accent rtl:tracking-normal">{{ __($quote->category->name) }}</span>
@@ -228,7 +229,7 @@
                                 <span dir="auto">— {{ $quote->author ?: $quote->user->name }}</span>
                                 <span class="flex items-center gap-1.5 font-bold text-rose-500"><span class="h-4 w-4">{!! $heart !!}</span>{{ $quote->likes_count }}</span>
                             </div>
-                        </article>
+                        </a>
                     @endforeach
                 </div>
             </section>

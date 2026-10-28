@@ -17,17 +17,20 @@ class AuthorTest extends TestCase
     {
         $this->seed();
 
-        $this->assertSame(14, Quote::count());
+        $count = Quote::count();
         $this->assertSame(0, Quote::whereNull('author')->count());
+
+        // every category starts with more than 5 quotes
+        Category::withCount('quotes')->get()->each(fn ($category) => $this->assertGreaterThan(5, $category->quotes_count, $category->name));
 
         // seeding twice adds nothing new
         $this->seed();
-        $this->assertSame(14, Quote::count());
+        $this->assertSame($count, Quote::count());
 
         $this->get('/')->assertOk()->assertSee('المتنبي');
 
         // search finds quotes by who said it too
-        $this->get('/?q=الشافعي')->assertOk()->assertSee('وعين الرضا');
+        $this->get('/?q=الشافعي')->assertOk()->assertSee('ومن لم يذق');
         $this->getJson('/api/quotes?q=Einstein')->assertOk()->assertJsonCount(1);
     }
 

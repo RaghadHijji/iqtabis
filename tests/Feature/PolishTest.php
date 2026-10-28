@@ -117,7 +117,7 @@ class PolishTest extends TestCase
 
         $this->get('/?filter=Love')->assertOk()
             ->assertSee('id="trending"', false)
-            ->assertSeeInOrder(['id="trending"', 'a liked love quote', 'id="quotes"'], false)
+            ->assertSeeInOrder(['id="trending"', 'href="'.route('quotes.show', $loved).'"', 'a liked love quote', 'id="quotes"'], false)
             ->assertDontSee('a liked sad quote');
     }
 
