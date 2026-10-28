@@ -79,7 +79,7 @@
     }
     /* round buttons in the navbar */
     .bar-btn {
-        @apply inline-flex h-9 min-w-9 shrink-0 items-center whitespace-nowrap justify-center rounded-full border border-ink/15 bg-card/60 px-2.5 text-sm text-ink sm:h-11 sm:min-w-11 sm:px-4 sm:text-base transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-on-accent hover:shadow-md active:scale-95 active:bg-accent active:text-on-accent focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30;
+        @apply inline-flex h-[26px] min-w-[26px] shrink-0 items-center whitespace-nowrap justify-center rounded-full border border-ink/15 bg-card/60 px-2 text-[10px] leading-none text-ink sm:h-11 sm:min-w-11 sm:px-4 sm:text-base transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-on-accent hover:shadow-md active:scale-95 active:bg-accent active:text-on-accent focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30;
     }
     .input {
         @apply w-full rounded-lg border border-ink/20 px-4 py-2 text-ink bg-card placeholder-gray-400 transition focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/30;
@@ -87,7 +87,7 @@
 }
 .site-name {
     font-family: var(--font-brand);
-    font-size: 1.6rem;
+    font-size: 1.15rem;
     font-weight: 700;
     line-height: 1;
     color: var(--color-ink);
@@ -308,3 +308,8 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
 .fab-item:hover, .fab-item:active { background: color-mix(in srgb, var(--color-ink) 6%, transparent); }
 .fab-ico { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; flex-shrink: 0; border-radius: 9999px; }
 .fab-ico svg { width: 1.15rem; height: 1.15rem; }
+
+/* phones: smaller icons inside the navbar buttons */
+@media (max-width: 639px) {
+    .bar-btn svg { width: .8rem; height: .8rem; flex-shrink: 0; }
+}
