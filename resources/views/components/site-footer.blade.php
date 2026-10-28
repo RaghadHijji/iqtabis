@@ -27,7 +27,7 @@
                 <span class="font-brand text-3xl font-bold leading-none text-ink">اقتبس</span>
                 <span class="text-[10px] font-bold tracking-[0.35em] text-sand">IQTABIS</span>
             </p>
-            <p class="{{ $arabic ? 'font-brand text-lg' : 'font-display italic' }} text-ink">{{ __('A quote for every moment') }}</p>
+            <p class="{{ $arabic ? 'font-brand text-lg' : 'font-display italic' }} text-ink">{{ __('Here the page ends, not the words') }}</p>
         </div>
 
         <nav aria-label="{{ __('Categories') }}" class="md:max-w-xs md:justify-self-center md:text-center">
