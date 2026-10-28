@@ -279,12 +279,29 @@ body.footer-in-view .float-lift { transform: translateY(calc(-1 * var(--footer-l
     .share-fab { padding-inline: 0; width: 3.25rem; height: 3.25rem; }
 }
 
-/* phones: the opening screen is only as tall as the quote on it (not the full screen),
-   so the photo is not stretched and there's no dark band under the quote */
+/* phones: the whole photo sits on top at its own shape (no cropping, no dark band) and fades into the page,
+   with the quote of the day right under it on the same first screen */
 @media (max-width: 639px) {
-    #hero { min-height: 0; }
-    #hero-bg { inset: 0; top: 0; height: 100%; animation: none; background-position: 50% 45%; }
-    #hero-content { padding: 6.5rem 1.25rem 3.5rem; gap: 1rem; }
-    #hero-content blockquote { font-size: 1.9rem; }
+    #hero { display: block; min-height: 0; background: var(--color-page); color: var(--color-ink); }
+    #hero-bg { position: relative; inset: auto; top: 0; height: auto; aspect-ratio: 16 / 9; margin-top: 74px; animation: none; }
+    #hero-bg::after { content: ""; position: absolute; inset: 45% 0 -1px; background: linear-gradient(to bottom, transparent, var(--color-page)); }
+    #hero-shade { inset: 0 0 auto; height: 74px; background: var(--color-bar); }
+    #hero-content { margin-top: -2.5rem; padding: 0 1.25rem 2.5rem; gap: 1rem; }
+    #hero-content > p { color: color-mix(in srgb, var(--color-ink) 80%, transparent); filter: none; }
+    #hero-content > p:first-child { position: absolute; inset-inline: 0; top: calc(-28.125vw - 1rem); color: #fff; text-shadow: 0 2px 12px rgb(0 0 0 / .7); }
+    #hero-content > span:first-of-type { color: var(--color-sand); height: 2.5rem; width: 2.5rem; }
+    #hero-content blockquote { font-size: 1.9rem; filter: none; }
+    #hero-content .rounded-full { background: var(--color-card); border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent); backdrop-filter: none; }
     .scroll-hint { display: none; }
 }
+
+/* phones: the "+" menu that opens above the round button */
+.fab-phone { width: 3.25rem; height: 3.25rem; }
+body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
+.fab-menu { position: fixed; inset: auto; bottom: 5.25rem; inset-inline-end: 1rem; margin: 0; opacity: 0; translate: 0 10px; transition: opacity .2s, translate .2s, display .2s allow-discrete, overlay .2s allow-discrete; }
+.fab-menu:popover-open { opacity: 1; translate: 0 0; }
+@starting-style { .fab-menu:popover-open { opacity: 0; translate: 0 10px; } }
+.fab-item { display: flex; width: 100%; white-space: nowrap; align-items: center; gap: .75rem; border-radius: .9rem; padding: .7rem .75rem; text-align: start; font-weight: 700; font-size: .95rem; }
+.fab-item:hover, .fab-item:active { background: color-mix(in srgb, var(--color-ink) 6%, transparent); }
+.fab-ico { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; flex-shrink: 0; border-radius: 9999px; }
+.fab-ico svg { width: 1.15rem; height: 1.15rem; }

@@ -461,7 +461,7 @@
     @auth
         {{-- Floating "Share a quote" button: a round "+" that opens up to show its words on the first screen and on hover --}}
         <button type="button" popovertarget="quote-popup" aria-label="{{ __('Share a quote') }}"
-            class="share-fab float-hide fixed bottom-5 end-4 z-40 flex h-12 min-w-12 sm:bottom-8 sm:end-8 sm:h-14 sm:min-w-14 items-center justify-center rounded-full bg-accent px-4 text-lg font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
+            class="share-fab float-hide fixed bottom-5 end-4 z-40 hidden sm:flex h-12 min-w-12 sm:bottom-8 sm:end-8 sm:h-14 sm:min-w-14 items-center justify-center rounded-full bg-accent px-4 text-lg font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-6 w-6 shrink-0" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
@@ -518,13 +518,42 @@
     @else
         {{-- Guests are asked to log in before sharing (US-01) --}}
         <a href="{{ route('login') }}" aria-label="{{ __('Log in and share your quote with us') }}"
-            class="share-fab float-hide fixed bottom-5 end-4 z-40 flex h-12 min-w-12 sm:bottom-8 sm:end-8 sm:h-14 sm:min-w-14 items-center justify-center rounded-full bg-accent px-4 font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110">
+            class="share-fab float-hide fixed bottom-5 end-4 z-40 hidden sm:flex h-12 min-w-12 sm:bottom-8 sm:end-8 sm:h-14 sm:min-w-14 items-center justify-center rounded-full bg-accent px-4 font-bold text-on-accent shadow-xl shadow-accent/30 transition hover:-translate-y-1 hover:brightness-110">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-6 w-6 shrink-0" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             <span class="fab-label">{{ __('Log in and share your quote with us') }}</span>
         </a>
     @endauth
+
+    {{-- Phones: the round "+" opens a small menu, so it's clear what it's for --}}
+    <button type="button" popovertarget="fab-menu" aria-label="{{ __('Menu') }}"
+        class="fab-phone float-hide fixed bottom-5 end-4 z-40 grid h-13 w-13 place-items-center rounded-full bg-accent text-on-accent shadow-xl shadow-accent/30 transition active:scale-95 sm:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="h-6 w-6 transition-transform duration-300" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+    </button>
+    <div id="fab-menu" popover class="fab-menu rounded-2xl border border-ink/10 bg-card p-2 text-ink shadow-2xl">
+        @auth
+            <button type="button" popovertarget="quote-popup" class="fab-item">
+                <span class="fab-ico bg-accent text-on-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 4.5v15m7.5-7.5h-15"/></svg></span>
+                {{ __('Share a quote') }}
+            </button>
+        @else
+            <a href="{{ route('login') }}" class="fab-item">
+                <span class="fab-ico bg-accent text-on-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 4.5v15m7.5-7.5h-15"/></svg></span>
+                {{ __('Log in and share your quote with us') }}
+            </a>
+        @endauth
+        <a href="{{ route('quotes.random') }}" class="fab-item">
+            <span class="fab-ico bg-sand/15 text-sand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span>
+            {{ __('Quote me') }}
+        </a>
+    </div>
+    <script>
+        // the menu closes once you pick something (the log in pop-up opens over the page, not under the menu)
+        document.querySelectorAll('#fab-menu a.fab-item').forEach((item) => item.addEventListener('click', () => document.getElementById('fab-menu').hidePopover()));
+    </script>
 
     {{-- show each part with a soft fade when it scrolls into view --}}
     <script>

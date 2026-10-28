@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 class DemoActivitySeeder extends Seeder
 {
     /**
-     * A few sample members who like and comment on the team's quotes,
+     * A few sample members who like and comment on the shared quotes,
      * so the site doesn't look empty in the demo.
      * Run after QuoteSeeder: php artisan db:seed --class=DemoActivitySeeder (safe to run again, no duplicates).
      */
