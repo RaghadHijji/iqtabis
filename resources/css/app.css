@@ -17,15 +17,15 @@
     --color-tuwaiq-teal: #4fc9b0;
     --color-tuwaiq-text: #1F2A44;
 
-    /* Iqtabis palette (Raghad's): ivory + wine + aged gold + charcoal */
-    --color-page: #F7F1E7;      /* page background: warm ivory */
-    --color-card: #FFFDF8;      /* quote cards, inputs, chips */
-    --color-ink: #292522;       /* main text: warm charcoal */
-    --color-accent: #7B2D3E;    /* buttons, badges: soft wine (9:1 with its text) */
-    --color-on-accent: #FFFDF8; /* text on accent */
-    --color-sand: #8F6A3A;      /* aged gold, one step darker than #B28A55 so small text stays readable (4.8:1) */
-    --color-muted: #756B62;     /* secondary text */
-    --color-line: #DED3C3;      /* borders */
+    /* Iqtabis palette (Raghad's): ivory + muted burgundy + dusty mocha + espresso */
+    --color-page: #F7F3EC;      /* page background: ivory */
+    --color-card: #FFFCF7;      /* quote cards, inputs, chips: warm white */
+    --color-ink: #302927;       /* main text: espresso */
+    --color-accent: #713B46;    /* buttons, badges: muted burgundy (8.5:1 with its text) */
+    --color-on-accent: #FFFCF7; /* text on accent */
+    --color-sand: #886656;      /* dusty mocha, one step darker than #9A7666 so small text stays readable (5:1) */
+    --color-muted: #776C67;     /* secondary text: taupe */
+    --color-line: #DED5CA;      /* borders: warm stone */
     --color-bar: #080416;       /* the logo box: same as the logo background */
     --color-white: #ffffff;
 }
@@ -34,7 +34,7 @@
     --color-page: #232427;
     --color-card: #2E3034;
     --color-ink: #ECEDEE;
-    --color-accent: #E0A3B0;
+    --color-accent: #DDA7B1;
     --color-on-accent: #2A1218;
     --color-sand: #D9B48C;
 }
