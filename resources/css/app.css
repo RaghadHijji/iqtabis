@@ -139,6 +139,9 @@
 }
 /* the video shows whole, without the opening zoom */
 #hero-bg:has(video) { animation: none; }
+/* iPhones in low power mode show a play triangle on a paused video: hide it, the still frame shows instead */
+#hero-bg video { pointer-events: none; }
+#hero-bg video::-webkit-media-controls, #hero-bg video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
 /* thin line under the navbar that fills as you scroll down */
 @media (prefers-reduced-motion: reduce) {
     .js .reveal:not(.shown), .js .stagger:not(.shown) > * { opacity: 1; transform: none; }
