@@ -8,7 +8,7 @@
     <title>@yield('title', 'Iqtabis | اقتبس')</title>
     <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-    <meta name="theme-color" content="#2F6A9A">
+    <meta name="theme-color" content="#7B2D3E">
     {{-- link preview when the site is shared on WhatsApp, X, Telegram… --}}
     <meta name="description" content="{{ __('Iqtabis is a home for quotes: find words for every moment, browse by category, like and save the ones that touch you, and share your own.') }}">
     <meta property="og:type" content="website">

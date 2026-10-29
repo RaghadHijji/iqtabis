@@ -17,25 +17,30 @@
     --color-tuwaiq-teal: #4fc9b0;
     --color-tuwaiq-text: #1F2A44;
 
-    /* Iqtabis palette: old paper + sky blue, around the typewriter video */
-    --color-page: #F2F0EB;      /* page background: old paper */
-    --color-card: #FFFDF9;      /* quote cards, inputs, chips */
-    --color-ink: #1C2430;       /* main text: dark ink */
-    --color-accent: #2F6A9A;    /* buttons, badges: deep sky blue (5.5:1 with its text) */
-    --color-on-accent: #F7FAFC; /* text on accent */
-    --color-sand: #7A6040;      /* small warm touches: candle light (5.7:1 on cards) */
+    /* Iqtabis palette (Raghad's): ivory + wine + aged gold + charcoal */
+    --color-page: #F7F1E7;      /* page background: warm ivory */
+    --color-card: #FFFDF8;      /* quote cards, inputs, chips */
+    --color-ink: #292522;       /* main text: warm charcoal */
+    --color-accent: #7B2D3E;    /* buttons, badges: soft wine (9:1 with its text) */
+    --color-on-accent: #FFFDF8; /* text on accent */
+    --color-sand: #8F6A3A;      /* aged gold, one step darker than #B28A55 so small text stays readable (4.8:1) */
+    --color-muted: #756B62;     /* secondary text */
+    --color-line: #DED3C3;      /* borders */
     --color-bar: #080416;       /* the logo box: same as the logo background */
     --color-white: #ffffff;
 }
-/* dark mode: same 6 colors in soft greys, not black (the navbar stays the logo color) */
+/* dark mode: the same colors on soft greys, not black (the navbar stays the logo color) */
 .dark {
     --color-page: #232427;
     --color-card: #2E3034;
     --color-ink: #ECEDEE;
-    --color-accent: #8EC1E6;
-    --color-on-accent: #10202E;
+    --color-accent: #E0A3B0;
+    --color-on-accent: #2A1218;
     --color-sand: #D9B48C;
 }
+/* light mode: secondary text and borders use their own colors */
+:root:not(.dark) .text-ink\/70 { color: var(--color-muted); }
+:root:not(.dark) .border-ink\/10 { border-color: var(--color-line); }
 
 /* the sky picture at the top of every page, fading into the page color */
 .sky {
