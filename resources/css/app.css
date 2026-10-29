@@ -17,23 +17,23 @@
     --color-tuwaiq-teal: #4fc9b0;
     --color-tuwaiq-text: #1F2A44;
 
-    /* Iqtabis palette, taken from the quill video: old paper + indigo ink */
-    --color-page: #F3EFE7;      /* page background: old paper */
-    --color-card: #FFFCF7;      /* quote cards, inputs, chips */
-    --color-ink: #1E2133;       /* main text: dark ink */
-    --color-accent: #2B3A6E;    /* buttons, badges: indigo ink (10:1 with its text) */
-    --color-on-accent: #F7F4EC; /* text on accent */
+    /* Iqtabis palette: old paper + sky blue, around the typewriter video */
+    --color-page: #F2F0EB;      /* page background: old paper */
+    --color-card: #FFFDF9;      /* quote cards, inputs, chips */
+    --color-ink: #1C2430;       /* main text: dark ink */
+    --color-accent: #2F6A9A;    /* buttons, badges: deep sky blue (5.5:1 with its text) */
+    --color-on-accent: #F7FAFC; /* text on accent */
     --color-sand: #7A6040;      /* small warm touches: candle light (5.7:1 on cards) */
     --color-bar: #080416;       /* the logo box: same as the logo background */
     --color-white: #ffffff;
 }
 /* dark mode: same 6 colors, darker values (the navbar stays the logo color) */
 .dark {
-    --color-page: #12141F;
-    --color-card: #1B1E2C;
-    --color-ink: #ECE8DF;
-    --color-accent: #A3B0E6;
-    --color-on-accent: #12152A;
+    --color-page: #121820;
+    --color-card: #1A222C;
+    --color-ink: #E9EDF1;
+    --color-accent: #8EC1E6;
+    --color-on-accent: #10202E;
     --color-sand: #D9B48C;
 }
 

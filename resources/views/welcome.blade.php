@@ -23,7 +23,7 @@
     {{-- Opening screen: a full-screen picture with the quote of the day on it --}}
     @if ($browsing && $quoteOfDay)
         <section id="hero" class="relative -mt-[74px] flex min-h-[75svh] items-center justify-center overflow-hidden bg-bar text-white">
-            {{-- a quiet video on repeat (a hand writing with a quill by candlelight); the still picture shows until it loads --}}
+            {{-- a quiet video on repeat (hands typing on an old typewriter); the still picture shows until it loads --}}
             <div id="hero-bg" class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')">
                 <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="auto" poster="{{ asset('images/hero-video-poster.jpg') }}" aria-hidden="true">
                     <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
@@ -48,7 +48,7 @@
             </div>
 
             {{-- scroll down to see the rest --}}
-            <a href="#explore" class="scroll-hint absolute bottom-24 sm:bottom-16 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
+            <a href="#explore" class="scroll-hint absolute bottom-24 sm:bottom-5 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
                 {{ __('Scroll to explore') }}
                 <svg class="h-6 w-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
             </a>
