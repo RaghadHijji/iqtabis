@@ -2,7 +2,7 @@
 
 {{-- a small centered card for the password and email pages, on the arches photo like the log in pop-up --}}
 <div class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
-    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/hero.jpg') }}')"></div>
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-black/30 to-black/60"></div>
 </div>
 

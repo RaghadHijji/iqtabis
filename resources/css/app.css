@@ -17,36 +17,36 @@
     --color-tuwaiq-teal: #4fc9b0;
     --color-tuwaiq-text: #1F2A44;
 
-    /* Iqtabis palette, taken from the arches picture: stone + sea */
-    --color-page: #F7F4EF;      /* page background: light stone */
-    --color-card: #FFFFFF;      /* quote cards, inputs, chips */
-    --color-ink: #2E2A25;       /* main text: dark stone */
-    --color-accent: #23708A;    /* buttons, badges: the sea */
-    --color-on-accent: #FFFFFF; /* text on accent */
-    --color-sand: #8A6844;      /* small warm touches (5.1:1 on white) */
+    /* Iqtabis palette, taken from the quill video: old paper + indigo ink */
+    --color-page: #F3EFE7;      /* page background: old paper */
+    --color-card: #FFFCF7;      /* quote cards, inputs, chips */
+    --color-ink: #1E2133;       /* main text: dark ink */
+    --color-accent: #2B3A6E;    /* buttons, badges: indigo ink (10:1 with its text) */
+    --color-on-accent: #F7F4EC; /* text on accent */
+    --color-sand: #7A6040;      /* small warm touches: candle light (5.7:1 on cards) */
     --color-bar: #080416;       /* the logo box: same as the logo background */
     --color-white: #ffffff;
 }
 /* dark mode: same 6 colors, darker values (the navbar stays the logo color) */
 .dark {
-    --color-page: #141A1D;
-    --color-card: #1E262A;
-    --color-ink: #EDE7DE;
-    --color-accent: #7BC3D6;
-    --color-on-accent: #10181B;
+    --color-page: #12141F;
+    --color-card: #1B1E2C;
+    --color-ink: #ECE8DF;
+    --color-accent: #A3B0E6;
+    --color-on-accent: #12152A;
     --color-sand: #D9B48C;
 }
 
 /* the sky picture at the top of every page, fading into the page color */
 .sky {
     background-color: var(--color-page);
-    background-image: linear-gradient(to bottom, transparent 55%, var(--color-page) 100%), url('/images/hero.jpg');
+    background-image: linear-gradient(to bottom, transparent 55%, var(--color-page) 100%), url('/images/hero-video-poster.jpg');
     background-size: 100% 760px;
     background-repeat: no-repeat;
 }
 /* at night the sky gets darker */
 .dark .sky {
-    background-image: linear-gradient(to bottom, rgb(18 17 28 / 0.72) 0%, rgb(18 17 28 / 0.8) 55%, var(--color-page) 100%), url('/images/hero.jpg');
+    background-image: linear-gradient(to bottom, rgb(18 17 28 / 0.72) 0%, rgb(18 17 28 / 0.8) 55%, var(--color-page) 100%), url('/images/hero-video-poster.jpg');
 }
 /* frosted glass boxes on top of the sky */
 .glass {
@@ -136,6 +136,22 @@
 #hero-bg { will-change: transform; animation: hero-zoom 2.2s ease-out both; }
 @keyframes hero-zoom {
     from { scale: 1.12; }
+}
+/* the video shows whole, without the opening zoom */
+#hero-bg:has(video) { animation: none; }
+/* the name in the hero is "written" from right to left (left to right in English), the rest waits for it */
+.hero-in > .ink-write { animation: ink 2.2s cubic-bezier(.45,.05,.3,1) .2s both; }
+[dir="ltr"] .hero-in > .ink-write { animation-name: ink-ltr; }
+.hero-in > :nth-child(2) { animation-delay: 1.6s; }
+.hero-in > :nth-child(3) { animation-delay: 1.75s; }
+.hero-in > :nth-child(4) { animation-delay: 1.9s; }
+.hero-in > :nth-child(5) { animation-delay: 2.1s; }
+.hero-in > :nth-child(n+6) { animation-delay: 2.3s; }
+@keyframes ink {
+    from { clip-path: inset(0 0 0 100%); }
+}
+@keyframes ink-ltr {
+    from { clip-path: inset(0 100% 0 0); }
 }
 /* thin line under the navbar that fills as you scroll down */
 @media (prefers-reduced-motion: reduce) {
@@ -286,7 +302,8 @@ body.footer-in-view .float-lift { transform: translateY(calc(-1 * var(--footer-l
     #hero-bg { inset: 0; top: 0; height: 100%; animation: none; background-position: 50% 50%; }
     #hero-shade { background: linear-gradient(to bottom, rgb(0 0 0 / .5), rgb(0 0 0 / .15) 40%, rgb(0 0 0 / .6)); }
     #hero-content { padding: 4.4rem .75rem 1.25rem; gap: .1rem; }
-    #hero-content > p:first-child { font-size: .8rem; line-height: 1.2; }
+    #hero-content > p:first-of-type { font-size: .8rem; line-height: 1.2; }
+    #hero-content > h1 { font-size: 2rem; line-height: 1; padding: 0 .5rem; }
     #hero-content > span:first-of-type { width: 1.1rem; height: 1.1rem; margin-top: .2rem; }
     #hero-content blockquote { font-size: 1.05rem; line-height: 1.5; }
     #hero-content > p:nth-of-type(2) { font-size: .58rem; }

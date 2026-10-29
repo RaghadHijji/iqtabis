@@ -14,7 +14,7 @@
         });
 
         const photo = new Image();
-        photo.src = @json(asset('images/hero.jpg'));
+        photo.src = @json(asset('images/hero-video-poster.jpg'));
         // load the fonts early, so the picture is ready right after the tap (phones only allow sharing straight after a tap)
         ['700 64px Amiri', '700 72px "Aref Ruqaa"', '500 36px Tajawal'].forEach((f) => document.fonts.load(f));
 
