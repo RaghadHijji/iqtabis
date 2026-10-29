@@ -15,6 +15,19 @@
 
         const photo = new Image();
         photo.src = @json(asset('images/hero.jpg'));
+        // load the fonts early, so the picture is ready right after the tap (phones only allow sharing straight after a tap)
+        ['700 64px Amiri', '700 72px "Aref Ruqaa"', '500 36px Tajawal'].forEach((f) => document.fonts.load(f));
+
+        // phones: no download, so show the picture to press and hold (or tap Save)
+        const showPicture = (url) => {
+            const box = document.createElement('div');
+            box.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1.5rem;background:rgba(0,0,0,.88)';
+            box.innerHTML = `<img src="${url}" alt="" style="max-height:72vh;max-width:100%;border-radius:.75rem">
+                <p style="color:#fff;font-size:.9rem;text-align:center">${@json(__('Press and hold the picture to save it.'))}</p>
+                <button type="button" class="btn-primary px-6">${@json(__('Close'))}</button>`;
+            box.addEventListener('click', (e) => (e.target === box || e.target.tagName === 'BUTTON') && box.remove());
+            document.body.append(box);
+        };
 
         // split the text into lines that fit the width
         const wrap = (ctx, text, width) => {
@@ -100,9 +113,27 @@
             ctx.fillStyle = 'rgba(255, 255, 255, .75)';
             ctx.fillText(@json(__('A quote for every moment')) + ' · ' + location.host, canvas.width / 2, canvas.height - 250);
 
+            const url = canvas.toDataURL('image/png');
+            const phone = matchMedia('(pointer: coarse)').matches;
+
+            // phones: open the share sheet ("Save Image", Instagram, WhatsApp...)
+            if (phone && navigator.canShare) {
+                const bytes = Uint8Array.from(atob(url.split(',')[1]), (ch) => ch.charCodeAt(0));
+                const file = new File([bytes], 'iqtabis-quote.png', { type: 'image/png' });
+                if (navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({ files: [file] });
+                        return;
+                    } catch (error) {
+                        if (error.name === 'AbortError') return; // closed the share sheet
+                    }
+                }
+            }
+            if (phone) return showPicture(url);
+
             const link = document.createElement('a');
             link.download = 'iqtabis-quote.png';
-            link.href = canvas.toDataURL('image/png');
+            link.href = url;
             link.click();
         });
     })();

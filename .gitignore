@@ -28,5 +28,6 @@ Thumbs.db
 
 # my local backups and AI tool settings, not part of the project
 /_backups
+/_submission
 /.claude
 /.mcp.json

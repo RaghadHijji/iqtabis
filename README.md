@@ -2,7 +2,9 @@
 
 > لكل لحظة اقتباس يشبهها — A quote for every moment.
 
-Iqtabis is a bilingual (Arabic / English) quotes website built with Laravel. Anyone can read, filter and search quotes; registered users can share, edit and delete their own quotes, like and save quotes, comment, and report bad content. It also has an admin dashboard and a JSON API.
+Iqtabis is a bilingual (Arabic / English) quotes website built with Laravel.
+
+**Live site:** https://iqtabis-production-macu34.laravel.cloud/ Anyone can read, filter and search quotes; registered users can share, edit and delete their own quotes, like and save quotes, comment, and report bad content. It also has an admin dashboard and a JSON API.
 
 Final project of the Al-Qimmah Bootcamp (Tuwaiq Club × Umm Al-Qura University), Programming & Development track.
 
@@ -12,14 +14,14 @@ Final project of the Al-Qimmah Bootcamp (Tuwaiq Club × Umm Al-Qura University),
 - View all quotes without logging in, with who shared each one and the date.
 - Sign up (name 2–50 letters, unique email, password of at least 8), log in, log out.
 - Share a quote of 3–155 characters.
-- Edit and delete your own quotes only.
+- Edit your own quotes within 10 minutes of posting, and delete them any time. Nobody else can edit or delete them.
 
 **Added**
 - Likes, a private "Saved" list and a "My likes" tab.
 - 7 categories with filtering, search by text or by who said it, and sorting by newest or most liked.
 - Quote of the Day and the most liked quotes of each category.
 - A page for each quote (comments, similar quotes) and for each poster.
-- Comments, notifications, and reporting bad quotes or comments (hidden after 3 reports).
+- Comments (the writer can edit a comment within 10 minutes), notifications, and reporting bad quotes or comments (hidden after 3 reports).
 - Blocked words: quotes and comments about politics or with insults are refused.
 - Copy a quote, save it as a story-size picture (1080 × 1920), or open a random quote.
 - Email verification, password reset by email, "Remember me", and password confirmation on sign up.
@@ -28,15 +30,15 @@ Final project of the Al-Qimmah Bootcamp (Tuwaiq Club × Umm Al-Qura University),
 - Arabic / English interface, light / dark mode, Gregorian and Hijri dates.
 - JSON API with token authentication (Laravel Sanctum).
 
-The full list is in the SRS (FR-01 to FR-29, NFR-01 to NFR-15).
+The full list is in the SRS (FR-01 to FR-31, NFR-01 to NFR-16).
 
 ## Built with
 
 - Laravel 13 (PHP 8.3+), Blade layouts and components
 - Tailwind CSS 4 and Vite
-- SQLite (MySQL works by changing `DB_CONNECTION` in `.env`)
+- SQLite locally; the live site uses MySQL (change `DB_CONNECTION` in `.env`)
 - Laravel Sanctum for API tokens
-- PHPUnit for tests
+- Pest for tests
 
 ## Run it locally
 
@@ -65,7 +67,7 @@ php artisan serve
 
 Then open http://localhost:8000.
 
-- The seeder adds the 7 categories, 14 real quotes and a test account: `test@example.com` / `password`.
+- The seeder adds the 7 categories, 42 real quotes with who said them and a test account: `test@example.com` / `password`.
 - Emails (verification and password reset) go to `storage/logs/laravel.log` because `MAIL_MAILER=log`. In local mode the site also shows the verification link on the page, so you can confirm an account without a real mail server.
 
 ## Tests
@@ -111,7 +113,7 @@ Details, status codes and errors are in section 9 of the SRS.
 
 ## Documents
 
-- `Raghad_SRS.pdf`: Software Requirements Specification, version 2.2
+- `Raghad_SRS.pdf`: Software Requirements Specification, version 2.3
 - `Raghad_ERD.pdf`: Entity Relationship Diagram, 9 tables
 
 ## Author
