@@ -195,7 +195,7 @@
 
         {{-- Categories with counts (FR-10) --}}
         <nav id="categories" aria-label="{{ __('Categories') }}"
-            class="grid grid-cols-2 gap-3 rounded-3xl border border-ink/10 bg-card p-4 shadow-sm sm:grid-cols-4 lg:grid-cols-8">
+            class="grid grid-cols-2 gap-3 rounded-3xl border border-ink/10 bg-card p-4 shadow-sm sm:grid-cols-3 lg:grid-cols-9">
             @php $chip = 'flex min-h-16 flex-col justify-center rounded-2xl border px-4 py-2 transition duration-200'; @endphp
             <a data-soft href="{{ route('home', Arr::except($state, 'filter')) }}"
                 class="{{ $chip }} {{ $filter ? 'border-ink/10 bg-page text-ink hover:border-accent' : 'border-accent bg-accent text-on-accent' }}">
@@ -590,6 +590,13 @@
         const heroContent = document.getElementById('hero-content');
         // people who turn motion off keep the still picture
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) heroBg?.querySelector('video')?.remove();
+        // phones sometimes hold autoplay back: start it again now, and on the first touch
+        const heroVideo = heroBg?.querySelector('video');
+        if (heroVideo) {
+            const play = () => heroVideo.play().catch(() => {});
+            play();
+            addEventListener('touchstart', play, { once: true, passive: true });
+        }
         if (heroBg && !matchMedia('(prefers-reduced-motion: reduce)').matches && matchMedia('(min-width: 640px)').matches) {
             let ticking = false;
             const move = () => {

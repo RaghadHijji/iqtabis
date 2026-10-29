@@ -27,11 +27,11 @@
     --color-bar: #080416;       /* the logo box: same as the logo background */
     --color-white: #ffffff;
 }
-/* dark mode: same 6 colors, darker values (the navbar stays the logo color) */
+/* dark mode: same 6 colors in soft greys, not black (the navbar stays the logo color) */
 .dark {
-    --color-page: #121820;
-    --color-card: #1A222C;
-    --color-ink: #E9EDF1;
+    --color-page: #232427;
+    --color-card: #2E3034;
+    --color-ink: #ECEDEE;
     --color-accent: #8EC1E6;
     --color-on-accent: #10202E;
     --color-sand: #D9B48C;
@@ -46,7 +46,7 @@
 }
 /* at night the sky gets darker */
 .dark .sky {
-    background-image: linear-gradient(to bottom, rgb(18 17 28 / 0.72) 0%, rgb(18 17 28 / 0.8) 55%, var(--color-page) 100%), url('/images/hero-video-poster.jpg');
+    background-image: linear-gradient(to bottom, rgb(35 36 39 / 0.72) 0%, rgb(35 36 39 / 0.8) 55%, var(--color-page) 100%), url('/images/hero-video-poster.jpg');
 }
 /* frosted glass boxes on top of the sky */
 .glass {
@@ -55,7 +55,7 @@
     border: 1px solid rgb(255 255 255 / 0.7);
 }
 .dark .glass {
-    background-color: rgb(30 28 43 / 0.6);
+    background-color: rgb(46 48 52 / 0.6);
     border-color: rgb(255 255 255 / 0.08);
 }
 
@@ -189,7 +189,7 @@
 
 /* log in / sign up pop-up: frosted card with underlined fields */
 .auth-card { background-color: rgb(255 255 255 / 0.4); backdrop-filter: blur(24px) saturate(140%); }
-.dark .auth-card { background-color: rgb(20 26 29 / 0.55); }
+.dark .auth-card { background-color: rgb(40 42 46 / 0.55); }
 .auth-field { position: relative; display: block; margin-bottom: 1.25rem; border-bottom: 2px solid var(--color-ink); color: var(--color-ink); }
 .auth-field input { width: 100%; height: 2.75rem; background: transparent; outline: none; padding-inline: .25rem 2rem; padding-top: .9rem; color: var(--color-ink); }
 .auth-field span { position: absolute; inset-inline-start: .25rem; top: 50%; translate: 0 -50%; pointer-events: none; transition: all .2s; font-weight: 500; }

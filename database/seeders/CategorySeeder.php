@@ -8,11 +8,11 @@ use Illuminate\Database\Seeder;
 class CategorySeeder extends Seeder
 {
     /**
-     * The 7 categories of the site, in the order they show.
+     * The 8 categories of the site, in the order they show.
      */
     public function run(): void
     {
-        foreach (['Religious', 'Motivation', 'Love', 'Sad', 'Humor', 'Wisdom', 'Facts'] as $i => $name) {
+        foreach (['Religious', 'Motivation', 'Love', 'Sad', 'Humor', 'Wisdom', 'Poetry', 'Facts'] as $i => $name) {
             Category::updateOrCreate(['name' => $name], ['position' => $i + 1]);
         }
     }

@@ -18,7 +18,7 @@ Final project of the Al-Qimmah Bootcamp (Tuwaiq Club × Umm Al-Qura University),
 
 **Added**
 - Likes, a private "Saved" list and a "My likes" tab.
-- 7 categories with filtering, search by text or by who said it, and sorting by newest or most liked.
+- 8 categories (including poetry) with filtering, search by text or by who said it, and sorting by newest or most liked.
 - Quote of the Day and the most liked quotes of each category.
 - A page for each quote (comments, similar quotes) and for each poster.
 - Comments (the writer can edit a comment within 10 minutes), notifications, and reporting bad quotes or comments (hidden after 3 reports).
@@ -67,7 +67,7 @@ php artisan serve
 
 Then open http://localhost:8000.
 
-- The seeder adds the 7 categories, 42 real quotes with who said them and a test account: `test@example.com` / `password`.
+- The seeder adds the 8 categories, 48 real quotes with who said them and a test account: `test@example.com` / `password`.
 - Emails (verification and password reset) go to `storage/logs/laravel.log` because `MAIL_MAILER=log`. In local mode the site also shows the verification link on the page, so you can confirm an account without a real mail server.
 
 ## Tests

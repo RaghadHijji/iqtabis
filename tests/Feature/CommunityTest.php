@@ -21,7 +21,7 @@ class CommunityTest extends TestCase
     public function test_categories_order_and_names(): void
     {
         $this->seed(CategorySeeder::class);
-        $this->assertSame(['Religious', 'Motivation', 'Love', 'Sad', 'Humor', 'Wisdom', 'Facts'],
+        $this->assertSame(['Religious', 'Motivation', 'Love', 'Sad', 'Humor', 'Wisdom', 'Poetry', 'Facts'],
             Category::orderBy('position')->pluck('name')->all());
 
         // Arabic is the default language now
