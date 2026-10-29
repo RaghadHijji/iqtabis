@@ -17,15 +17,17 @@
     --color-tuwaiq-teal: #4fc9b0;
     --color-tuwaiq-text: #1F2A44;
 
-    /* Iqtabis palette (Raghad's): ivory + muted burgundy + dusty mocha + espresso */
-    --color-page: #F7F3EC;      /* page background: ivory */
-    --color-card: #FFFCF7;      /* quote cards, inputs, chips: warm white */
-    --color-ink: #302927;       /* main text: espresso */
-    --color-accent: #713B46;    /* buttons, badges: muted burgundy (8.5:1 with its text) */
-    --color-on-accent: #FFFCF7; /* text on accent */
-    --color-sand: #886656;      /* dusty mocha, one step darker than #9A7666 so small text stays readable (5:1) */
-    --color-muted: #776C67;     /* secondary text: taupe */
-    --color-line: #DED5CA;      /* borders: warm stone */
+    /* Iqtabis palette (Raghad's): 60% ivory, 20% deep teal, 15% brown/grey, 5% copper */
+    --color-page: #F6F1E7;      /* page background: ivory */
+    --color-card: #FFFCF6;      /* quote cards, inputs, chips */
+    --color-ink: #302A27;       /* headings and main text */
+    --color-accent: #245C5A;    /* main buttons, quote marks, active states: deep teal (7.4:1 with its text) */
+    --color-on-accent: #FFFCF6; /* text on accent */
+    --color-sand: #8E5B3B;      /* copper, darker than #B47752 so small text stays readable (5.5:1) */
+    --color-copper: #B47752;    /* thin lines and small details only */
+    --color-sage: #668A82;      /* secondary elements and hover */
+    --color-muted: #6B6560;     /* secondary text */
+    --color-line: #E2D9CB;      /* borders */
     --color-bar: #080416;       /* the logo box: same as the logo background */
     --color-white: #ffffff;
 }
@@ -34,8 +36,8 @@
     --color-page: #232427;
     --color-card: #2E3034;
     --color-ink: #ECEDEE;
-    --color-accent: #DDA7B1;
-    --color-on-accent: #2A1218;
+    --color-accent: #8CC7BE;
+    --color-on-accent: #10201F;
     --color-sand: #D9B48C;
 }
 /* light mode: secondary text and borders use their own colors */

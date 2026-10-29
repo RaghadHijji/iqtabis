@@ -34,7 +34,7 @@
 
             <div id="hero-content" class="hero-in relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pb-24 pt-24 text-center">
                 <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-3xl' : 'font-display text-2xl italic' }} text-white/85">{{ __('A quote for every moment') }}</p>
-                <span class="h-14 w-14 text-[#E8CFAE]/80">{!! $quoteMark !!}</span>
+                <span class="h-14 w-14 text-copper">{!! $quoteMark !!}</span>
                 <blockquote class="font-quote text-4xl leading-snug drop-shadow-lg md:text-6xl md:leading-snug" dir="auto">{{ $quoteOfDay->content }}</blockquote>
                 <p class="text-lg text-white/80">— {{ $quoteOfDay->author ?: $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
                 {{-- today in both calendars --}}
