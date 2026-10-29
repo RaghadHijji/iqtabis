@@ -33,8 +33,6 @@
             <div id="hero-shade" class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75"></div>
 
             <div id="hero-content" class="hero-in relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pb-36 pt-28 text-center">
-                {{-- the site name writes itself like handwriting, then the rest fades in --}}
-                <h1 class="ink-write {{ app()->getLocale() === 'ar' ? 'font-brand text-6xl md:text-8xl' : 'font-display text-6xl italic md:text-8xl' }} px-4 py-2 text-[#E8CFAE] drop-shadow-lg">{{ app()->getLocale() === 'ar' ? 'اقتبس' : 'Iqtabis' }}</h1>
                 <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-3xl' : 'font-display text-2xl italic' }} text-white/85">{{ __('A quote for every moment') }}</p>
                 <span class="h-14 w-14 text-[#E8CFAE]/80">{!! $quoteMark !!}</span>
                 <blockquote class="font-quote text-4xl leading-snug drop-shadow-lg md:text-6xl md:leading-snug" dir="auto">{{ $quoteOfDay->content }}</blockquote>
