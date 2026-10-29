@@ -22,7 +22,7 @@
 
     {{-- Opening screen: a full-screen picture with the quote of the day on it --}}
     @if ($browsing && $quoteOfDay)
-        <section id="hero" class="relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
+        <section id="hero" class="relative -mt-[74px] flex min-h-[75svh] items-center justify-center overflow-hidden bg-bar text-white">
             {{-- a quiet video on repeat (a hand writing with a quill by candlelight); the still picture shows until it loads --}}
             <div id="hero-bg" class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')">
                 <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="auto" poster="{{ asset('images/hero-video-poster.jpg') }}" aria-hidden="true">
@@ -32,7 +32,7 @@
             </div>
             <div id="hero-shade" class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75"></div>
 
-            <div id="hero-content" class="hero-in relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pb-36 pt-28 text-center">
+            <div id="hero-content" class="hero-in relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pb-24 pt-24 text-center">
                 <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-3xl' : 'font-display text-2xl italic' }} text-white/85">{{ __('A quote for every moment') }}</p>
                 <span class="h-14 w-14 text-[#E8CFAE]/80">{!! $quoteMark !!}</span>
                 <blockquote class="font-quote text-4xl leading-snug drop-shadow-lg md:text-6xl md:leading-snug" dir="auto">{{ $quoteOfDay->content }}</blockquote>
