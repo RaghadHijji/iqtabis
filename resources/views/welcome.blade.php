@@ -24,7 +24,7 @@
     @if ($browsing && $quoteOfDay)
         <section id="hero" class="relative -mt-[74px] flex min-h-[75svh] items-center justify-center overflow-hidden bg-bar text-white">
             {{-- a quiet video on repeat (hands typing on an old typewriter); the still picture shows until it loads --}}
-            <div id="hero-bg" class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')">
+            <div id="hero-bg" class="absolute inset-x-0 top-0 -bottom-px bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')">
                 <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="auto" poster="{{ asset('images/hero-video-poster.jpg') }}" aria-hidden="true">
                     <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
                     <source src="{{ asset('videos/hero.webm') }}" type="video/webm">
@@ -56,7 +56,7 @@
 
         {{-- a slow strip of the authors on the site; pressing a name shows their quotes --}}
         @if ($authors->count() >= 3)
-            <nav aria-label="{{ __('Authors') }}" class="marquee overflow-hidden border-y border-ink/10 bg-card py-3 text-ink">
+            <nav aria-label="{{ __('Authors') }}" class="marquee overflow-hidden border-b border-ink/10 bg-card py-3 text-ink">
                 <div class="marquee-track flex w-max">
                     @foreach ([false, true] as $repeat)
                         <ul class="flex shrink-0 items-center" @if ($repeat) aria-hidden="true" @endif>
