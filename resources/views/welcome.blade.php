@@ -54,9 +54,9 @@
             </a>
         </section>
 
-        {{-- a slow strip of the authors on the site, dark so it carries on from the video; pressing a name shows their quotes --}}
+        {{-- a slow strip of the authors on the site (colors in app.css); pressing a name shows their quotes --}}
         @if ($authors->count() >= 3)
-            <nav aria-label="{{ __('Authors') }}" class="marquee overflow-hidden bg-black py-3 text-white/85">
+            <nav aria-label="{{ __('Authors') }}" class="marquee overflow-hidden py-3">
                 <div class="marquee-track flex w-max">
                     @foreach ([false, true] as $repeat)
                         <ul class="flex shrink-0 items-center" @if ($repeat) aria-hidden="true" @endif>
@@ -64,7 +64,7 @@
                                 <li class="flex items-center">
                                     <a href="{{ route('home', ['q' => $author]) }}#quotes" @if ($repeat) tabindex="-1" @endif
                                         class="whitespace-nowrap px-6 font-bold transition hover:text-copper hover:underline">{{ $author }}</a>
-                                    <span class="h-4 w-4 text-copper">{!! $quoteMark !!}</span>
+                                    <span class="marquee-mark h-4 w-4">{!! $quoteMark !!}</span>
                                 </li>
                             @endforeach
                         </ul>

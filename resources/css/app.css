@@ -329,3 +329,11 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     .bar-btn:not(:has(svg)) { padding-top: 2px; }
     .bar-btn[href*="/lang/en"] { padding-top: 4px; }
 }
+
+/* the authors strip under the hero: copper with white names by day (teal on hover), black at night so it carries on from the video */
+.marquee { background-color: var(--color-copper); color: #fff; }
+.marquee a:hover { color: var(--color-accent); }
+.marquee-mark { color: rgb(255 255 255 / 0.7); }
+.dark .marquee { background-color: #000; color: rgb(255 255 255 / 0.85); }
+.dark .marquee-mark { color: var(--color-copper); }
+.dark .marquee a:hover { color: var(--color-copper); }
