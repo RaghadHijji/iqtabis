@@ -6,7 +6,7 @@
 @section('content')
     {{-- One quote on its own page, with its comments (FR-22) --}}
     <div class="page-photo pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
-        <div class="absolute inset-0 scale-110 bg-cover bg-center blur-md" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')"></div>
+        <div class="absolute inset-0 scale-110 bg-cover bg-center photo-warm" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-page/60 via-page/70 to-page/85"></div>
     </div>
 

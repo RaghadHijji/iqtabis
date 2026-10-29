@@ -330,10 +330,14 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     .bar-btn[href*="/lang/en"] { padding-top: 4px; }
 }
 
-/* the authors strip under the hero: copper with white names by day (teal on hover), black at night so it carries on from the video */
+/* the authors strip under the hero: copper with white names and teal marks by day, black at night so it carries on from the video */
 .marquee { background-color: var(--color-copper); color: #fff; }
-.marquee a:hover { color: var(--color-accent); }
-.marquee-mark { color: rgb(255 255 255 / 0.7); }
+.marquee a:hover { color: #fff; }
+.marquee-mark { color: var(--color-accent); }
 .dark .marquee { background-color: #000; color: rgb(255 255 255 / 0.85); }
 .dark .marquee-mark { color: var(--color-copper); }
 .dark .marquee a:hover { color: var(--color-copper); }
+
+/* the soft blurred photo behind the pages: warmed to a sugar-cream tone instead of grey */
+.photo-warm { filter: blur(12px) sepia(.6) saturate(1.4) brightness(1.2); }
+.dark .photo-warm { filter: blur(12px) sepia(.3); }
