@@ -115,7 +115,7 @@
                 @foreach ($stats as [$number, $label])
                     <div class="flex flex-col items-center gap-1">
                         <dt class="order-2 text-sm text-ink/70">{{ $label }}</dt>
-                        <dd class="order-1 text-3xl font-extrabold tabular-nums text-accent" data-count="{{ $number }}">{{ $number }}</dd>
+                        <dd class="order-1 text-3xl font-extrabold tabular-nums text-accent" dir="ltr" data-count="{{ $number }}">{{ $number }}</dd>
                     </div>
                 @endforeach
             </dl>
@@ -663,23 +663,27 @@
             addEventListener('resize', move);
         }
 
-        // the site's numbers count up from 0 the first time they come into view
+        // the site's numbers roll up from 0 like an odometer the first time they come into view:
+        // every digit is a column of 0-9 that slides smoothly to its place (the last digit turns the most)
         const stats = document.getElementById('stats');
         if (stats && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
             const numbers = stats.querySelectorAll('[data-count]');
-            numbers.forEach((dd) => (dd.textContent = '0'));
+            numbers.forEach((dd) => {
+                const digits = String(dd.dataset.count).split('');
+                dd.setAttribute('aria-label', dd.dataset.count);
+                dd.innerHTML = digits.map((digit, i) => {
+                    const turns = Math.max(2 - (digits.length - 1 - i), 0); // 2 extra turns for the last digit, 1 for the one before
+                    const strip = Array.from({ length: 30 }, (_, n) => `<span>${n % 10}</span>`).join('');
+                    return `<span class="odo" aria-hidden="true"><span class="odo-strip" data-to="${turns * 10 + Number(digit)}">${strip}</span></span>`;
+                }).join('');
+            });
             new IntersectionObserver(([entry], watcher) => {
                 if (!entry.isIntersecting) return;
                 watcher.disconnect();
-                // wait for the numbers to finish fading in, so the count is seen from 0
-                const start = performance.now() + 800;
-                const tick = (now) => {
-                    const t = Math.min(Math.max((now - start) / 2000, 0), 1);
-                    const eased = 1 - Math.pow(1 - t, 3); // fast at first, slows down at the end
-                    numbers.forEach((dd) => (dd.textContent = Math.round(dd.dataset.count * eased)));
-                    if (t < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
+                // wait for the numbers to finish fading in, so the roll is seen from 0
+                setTimeout(() => stats.querySelectorAll('.odo-strip').forEach((strip) => {
+                    strip.style.transform = `translateY(${-strip.dataset.to * 1.25}em)`;
+                }), 800);
             }, { threshold: 0.6 }).observe(stats);
         }
 

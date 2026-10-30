@@ -341,3 +341,8 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
 /* the soft blurred photo behind the pages: warmed to a sugar-cream tone instead of grey */
 .photo-warm { filter: blur(12px) sepia(.6) saturate(1.4) brightness(1.2); }
 .dark .photo-warm { filter: blur(12px) sepia(.3); }
+
+/* the About numbers roll like an odometer: each digit is a one-line window over a column of 0-9 */
+.odo { display: inline-block; height: 1.25em; line-height: 1.25; overflow: hidden; vertical-align: top; }
+.odo-strip { display: flex; flex-direction: column; transition: transform 2.4s cubic-bezier(.16, 1, .3, 1); }
+.odo-strip > span { height: 1.25em; }
