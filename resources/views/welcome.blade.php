@@ -149,9 +149,10 @@
             'طرفة بن العبد' => ['Pre-Islamic era', 'tarafa'],
             'William Shakespeare' => ['English playwright', 'shakespeare'], 'Oscar Wilde' => ['Irish writer', 'wilde'],
             'Albert Einstein' => ['Physicist', 'einstein'], 'Terry Pratchett' => ['English novelist', 'pratchett'],
+            'نزار قباني' => ['Modern era', 'nizar'], 'محمود درويش' => ['Modern era', 'darwish'],
         ];
         $onSite = $browsing ? \App\Models\Quote::visibleTo(auth()->user())->whereIn('author', array_keys($poets))->distinct()->pluck('author')->all() : [];
-        $shown = collect($poets)->only($onSite)->filter(fn ($poet) => file_exists(public_path("images/poets/{$poet[1]}.jpg")))->take(7);
+        $shown = collect($poets)->only($onSite)->filter(fn ($poet) => file_exists(public_path("images/poets/{$poet[1]}.jpg")))->take(9);
         // where each picture sits (top, side, width) and how fast it moves up: the higher ones are faster, so they spread apart
         $spots = [
             ['top-[10%]', 'start-[6%]', 'w-36 md:w-52', 0.9],
@@ -161,14 +162,16 @@
             ['top-[12%]', 'end-[32%]', 'w-32 hidden md:flex', 0.55],
             ['top-[70%]', 'end-[4%]', 'w-32 hidden md:flex', 0.2],
             ['top-[84%]', 'end-[30%]', 'w-36 hidden md:flex', 0.15],
+            ['top-[40%]', 'start-[1%]', 'w-28 hidden lg:flex', 0.45],
+            ['top-[42%]', 'end-[1%]', 'w-28 hidden lg:flex', 0.4],
         ];
     @endphp
     @if ($shown->count() >= 3)
-        <section id="poets" class="relative h-[150svh]" aria-labelledby="poets-title">
+        <section id="poets" class="relative" style="height: {{ 100 + $shown->count() * 40 }}svh" aria-labelledby="poets-title">
             <div class="sticky top-0 h-svh overflow-hidden">
                 <div class="absolute inset-0 z-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
                     <p class="text-sm font-bold tracking-wide text-copper">{{ __('From the voices') }}</p>
-                    <h2 id="poets-title" class="{{ app()->getLocale() === 'ar' ? 'font-brand text-6xl md:text-8xl' : 'font-display text-5xl italic md:text-7xl' }} max-w-3xl leading-tight text-ink">{{ __('Voices that time kept') }}</h2>
+                    <h2 id="poets-title" class="{{ app()->getLocale() === 'ar' ? 'font-brand text-6xl md:text-8xl' : 'font-display text-5xl italic md:text-7xl' }} max-w-3xl leading-tight text-ink">{{ __('Words that never grow old') }}</h2>
                 </div>
                 @foreach ($shown as $poet => [$era, $slug])
                     @php [$top, $side, $width, $speed] = $spots[$loop->index]; $picture = "images/poets/$slug.jpg"; @endphp
@@ -632,14 +635,22 @@
         }, { threshold: 0.12 });
         document.querySelectorAll('.reveal, .stagger').forEach((el) => observer.observe(el));
 
-        // poets: each card moves up at its own speed while the section is pinned, so they look like layers
+        // voices: while the section is pinned, the sentence shows first, then each scroll brings in one more picture,
+        // which keeps drifting up slowly at its own speed (like layers)
         const poets = document.getElementById('poets');
         if (poets && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            const cards = poets.querySelectorAll('.poet-card');
             const move = () => {
                 const box = poets.getBoundingClientRect();
                 const progress = Math.min(Math.max(-box.top / (box.height - innerHeight), 0), 1); // 0 .. 1
-                cards.forEach((card) => (card.style.translate = `0 ${-progress * card.dataset.speed * innerHeight}px`));
+                const cards = [...poets.querySelectorAll('.poet-card')].filter((card) => card.offsetParent); // the ones this screen shows
+                cards.forEach((card, i) => {
+                    const start = 0.08 + (i / cards.length) * 0.8; // when this picture comes in
+                    const shown = Math.min(Math.max((progress - start) / 0.08, 0), 1);
+                    const drift = Math.max(progress - start, 0) * card.dataset.speed * innerHeight * 0.35;
+                    card.style.opacity = shown;
+                    card.style.scale = 0.92 + shown * 0.08;
+                    card.style.translate = `0 ${(1 - shown) * 60 - drift}px`;
+                });
             };
             move();
             addEventListener('scroll', () => requestAnimationFrame(move), { passive: true });

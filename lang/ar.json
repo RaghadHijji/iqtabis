@@ -275,7 +275,6 @@
     "Your comment was updated.": "تم تعديل تعليقك.",
     "Editing closes :minutes minutes after posting.": "التعديل متاح لمدة :minutes دقائق بعد النشر فقط.",
     "You can edit your quote for :minutes minutes after posting.": "تقدر تعدّل اقتباسك خلال :minutes دقائق بعد نشره.",
-    "Voices that time kept": "أصواتٌ خلّدها الزمن",
     "Abbasid era": "العصر العباسي",
     "Modern era": "العصر الحديث",
     "Pre-Islamic era": "العصر الجاهلي",
@@ -288,5 +287,6 @@
     "William Shakespeare": "ويليام شكسبير",
     "Oscar Wilde": "أوسكار وايلد",
     "Albert Einstein": "ألبرت أينشتاين",
-    "Terry Pratchett": "تيري براتشيت"
+    "Terry Pratchett": "تيري براتشيت",
+    "Words that never grow old": "كلماتٌ لا تشيخ"
 }
