@@ -67,7 +67,7 @@ php artisan serve
 
 Then open http://localhost:8000.
 
-- The seeder adds the 8 categories, 50 real quotes with who said them and a test account: `test@example.com` / `password`.
+- The seeder adds the 8 categories, 94 real quotes with who said them and a test account: `test@example.com` / `password`.
 - Emails (verification and password reset) go to `storage/logs/laravel.log` because `MAIL_MAILER=log`. In local mode the site also shows the verification link on the page, so you can confirm an account without a real mail server.
 
 ## Tests

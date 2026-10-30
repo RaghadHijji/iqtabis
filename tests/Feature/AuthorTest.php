@@ -31,7 +31,7 @@ class AuthorTest extends TestCase
 
         // search finds quotes by who said it too
         $this->get('/?q=الشافعي')->assertOk()->assertSee('ومن لم يذق');
-        $this->getJson('/api/quotes?q=Einstein')->assertOk()->assertJsonCount(1);
+        $this->getJson('/api/quotes?q=Einstein')->assertOk()->assertJsonCount(2);
     }
 
     public function test_user_can_share_a_quote_with_who_said_it(): void
