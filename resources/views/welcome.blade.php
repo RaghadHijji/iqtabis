@@ -22,7 +22,7 @@
 
     {{-- Opening screen: a full-screen picture with the quote of the day on it --}}
     @if ($browsing && $quoteOfDay)
-        <section id="hero" class="relative -mt-[74px] flex min-h-[75svh] items-center justify-center overflow-hidden bg-bar text-white">
+        <section id="hero" class="relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
             {{-- a quiet video on repeat (hands typing on an old typewriter); the still picture shows until it loads --}}
             <div id="hero-bg" class="absolute inset-x-0 top-0 -bottom-px bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')">
                 <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="auto" poster="{{ asset('images/hero-video-poster.jpg') }}" aria-hidden="true">
@@ -54,7 +54,7 @@
             </a>
         </section>
 
-        {{-- a slow strip of the authors on the site (colors in app.css); pressing a name shows their quotes --}}
+        {{-- a slow strip of the authors on the site (colors in app.css; English names in lang/en.json); pressing a name shows their quotes --}}
         @if ($authors->count() >= 3)
             <nav aria-label="{{ __('Authors') }}" class="marquee overflow-hidden py-3">
                 <div class="marquee-track flex w-max">
@@ -63,7 +63,7 @@
                             @foreach ($authors as $author)
                                 <li class="flex items-center">
                                     <a href="{{ route('home', ['q' => $author]) }}#quotes" @if ($repeat) tabindex="-1" @endif
-                                        class="whitespace-nowrap px-6 font-bold transition hover:text-copper hover:underline">{{ $author }}</a>
+                                        class="whitespace-nowrap px-6 font-bold transition hover:text-copper hover:underline">{{ __($author) }}</a>
                                     <span class="marquee-mark h-4 w-4">{!! $quoteMark !!}</span>
                                 </li>
                             @endforeach
@@ -111,17 +111,17 @@
             </p>
 
             {{-- the site's real numbers --}}
-            <dl class="grid w-full grid-cols-2 gap-6 md:grid-cols-4">
+            <dl id="stats" class="stagger grid w-full grid-cols-2 gap-6 md:grid-cols-4">
                 @foreach ($stats as [$number, $label])
                     <div class="flex flex-col items-center gap-1">
                         <dt class="order-2 text-sm text-ink/70">{{ $label }}</dt>
-                        <dd class="order-1 text-3xl font-extrabold text-accent">{{ $number }}</dd>
+                        <dd class="order-1 text-3xl font-extrabold tabular-nums text-accent" data-count="{{ $number }}">{{ $number }}</dd>
                     </div>
                 @endforeach
             </dl>
 
             {{-- what the site offers, on one coloured band --}}
-            <div class="w-full rounded-3xl bg-accent px-6 py-6 text-on-accent shadow-lg md:px-10">
+            <div class="reveal w-full rounded-3xl bg-accent px-6 py-6 text-on-accent shadow-lg md:px-10">
                 <ul class="grid gap-6 {{ config('app.support_email') ? 'md:grid-cols-4' : 'md:grid-cols-3' }}">
                     @foreach ($offers as [$icon, $title, $text])
                         <li class="flex flex-col items-center gap-2 text-sm"><x-icon :name="$icon" class="h-6 w-6" />
@@ -132,6 +132,53 @@
                             <span class="text-base font-bold">{{ __('Questions or ideas?') }}</span><a href="mailto:{{ $supportEmail }}" class="underline" dir="ltr">{{ $supportEmail }}</a></li>
                     @endif
                 </ul>
+            </div>
+        </section>
+    @endif
+
+    {{-- Poets: a big title in the middle and the poets' pictures around it, drifting at different speeds as you scroll (like layers).
+         Pressing a picture shows that poet's quotes, like the authors strip. Pictures live in public/images/poets/<slug>.jpg (4:5);
+         only poets with a real picture show, so the old poets (no real portraits) wait until one is added --}}
+    @php
+        // who said it => [era or what they were, picture file name]
+        $poets = [
+            'أحمد شوقي' => ['Modern era', 'shawqi'], 'المتنبي' => ['Abbasid era', 'mutanabbi'],
+            'أبو القاسم الشابي' => ['Modern era', 'shabbi'], 'امرؤ القيس' => ['Pre-Islamic era', 'imru-al-qais'],
+            'حافظ إبراهيم' => ['Modern era', 'hafez'], 'الإمام الشافعي' => ['Abbasid era', 'shafii'],
+            'أبو فراس الحمداني' => ['Abbasid era', 'abu-firas'], 'الخنساء' => ['Early Islamic era', 'khansa'],
+            'طرفة بن العبد' => ['Pre-Islamic era', 'tarafa'],
+            'William Shakespeare' => ['English playwright', 'shakespeare'], 'Oscar Wilde' => ['Irish writer', 'wilde'],
+            'Albert Einstein' => ['Physicist', 'einstein'], 'Terry Pratchett' => ['English novelist', 'pratchett'],
+        ];
+        $onSite = $browsing ? \App\Models\Quote::visibleTo(auth()->user())->whereIn('author', array_keys($poets))->distinct()->pluck('author')->all() : [];
+        $shown = collect($poets)->only($onSite)->filter(fn ($poet) => file_exists(public_path("images/poets/{$poet[1]}.jpg")))->take(7);
+        // where each picture sits (top, side, width) and how fast it moves up: the higher ones are faster, so they spread apart
+        $spots = [
+            ['top-[10%]', 'start-[6%]', 'w-36 md:w-52', 0.9],
+            ['top-[22%]', 'end-[6%]', 'w-36 md:w-52', 0.6],
+            ['top-[60%]', 'start-[8%] md:start-[34%]', 'w-32 md:w-44', 0.3],
+            ['top-[66%]', 'end-[6%] md:end-auto md:start-[4%]', 'w-32 md:w-44', 0.35],
+            ['top-[12%]', 'end-[32%]', 'w-32 hidden md:flex', 0.55],
+            ['top-[70%]', 'end-[4%]', 'w-32 hidden md:flex', 0.2],
+            ['top-[84%]', 'end-[30%]', 'w-36 hidden md:flex', 0.15],
+        ];
+    @endphp
+    @if ($shown->count() >= 3)
+        <section id="poets" class="relative h-[150svh]" aria-labelledby="poets-title">
+            <div class="sticky top-0 h-svh overflow-hidden">
+                <div class="absolute inset-0 z-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+                    <p class="text-sm font-bold tracking-wide text-copper">{{ __('From the voices') }}</p>
+                    <h2 id="poets-title" class="{{ app()->getLocale() === 'ar' ? 'font-brand text-6xl md:text-8xl' : 'font-display text-5xl italic md:text-7xl' }} max-w-3xl leading-tight text-ink">{{ __('Voices that time kept') }}</h2>
+                </div>
+                @foreach ($shown as $poet => [$era, $slug])
+                    @php [$top, $side, $width, $speed] = $spots[$loop->index]; $picture = "images/poets/$slug.jpg"; @endphp
+                    <a href="{{ route('home', ['q' => $poet]) }}#quotes" data-speed="{{ $speed }}" aria-label="{{ __($poet) }}"
+                        class="poet-card group absolute z-10 {{ $top }} {{ $side }} {{ $width }} flex flex-col gap-1.5">
+                        <span class="text-[11px] md:whitespace-nowrap font-bold tracking-wide text-sand md:text-xs">{{ __($poet) }} · {{ __($era) }}</span>
+                        <img src="{{ asset($picture) }}" alt="" loading="lazy"
+                            class="aspect-[4/5] w-full rounded-xl object-cover shadow-lg grayscale transition duration-500 group-hover:grayscale-0 group-hover:shadow-xl">
+                    </a>
+                @endforeach
             </div>
         </section>
     @endif
@@ -174,7 +221,7 @@
 
     {{-- Slogan and search --}}
     <header id="explore" class="scroll-mt-24">
-        <div class="mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 pb-10 pt-16 text-center">
+        <div class="reveal mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 pb-10 pt-16 text-center">
             {{-- a sister line to the slogan, so it isn't repeated: Ruqaa script in Arabic, Playfair italic in English --}}
             <h1 class="{{ app()->getLocale() === 'ar' ? 'font-brand text-4xl sm:text-5xl md:text-6xl leading-snug' : 'font-display text-4xl italic sm:text-5xl md:text-6xl leading-tight' }} font-bold">{{ __('Find a quote that matches your moment') }}</h1>
 
@@ -195,7 +242,7 @@
 
         {{-- Categories with counts (FR-10) --}}
         <nav id="categories" aria-label="{{ __('Categories') }}"
-            class="grid grid-cols-2 gap-3 rounded-3xl border border-ink/10 bg-card p-4 shadow-sm sm:grid-cols-3 lg:grid-cols-9">
+            class="reveal grid grid-cols-2 gap-3 rounded-3xl border border-ink/10 bg-card p-4 shadow-sm sm:grid-cols-3 lg:grid-cols-9">
             @php $chip = 'flex min-h-16 flex-col justify-center rounded-2xl border px-4 py-2 transition duration-200'; @endphp
             <a data-soft href="{{ route('home', Arr::except($state, 'filter')) }}"
                 class="{{ $chip }} {{ $filter ? 'border-ink/10 bg-page text-ink hover:border-accent' : 'border-accent bg-accent text-on-accent' }}">
@@ -216,13 +263,13 @@
         <div id="trending-slot" class="contents">
         @if ($search === '' && ! $view && ! $poster && $trending->isNotEmpty())
             <section id="trending" class="flex flex-col gap-5">
-                <div>
+                <div class="reveal">
                     <h2 class="text-3xl font-extrabold text-ink">{{ __('Trending') }}</h2>
                     <p class="text-ink/70">
                         {{ $filter ? __('The most liked :category quotes.', ['category' => __($filter)]) : __('The most liked quotes right now.') }}
                     </p>
                 </div>
-                <div class="grid gap-5 md:grid-cols-3">
+                <div class="stagger grid gap-5 md:grid-cols-3">
                     @foreach ($trending as $quote)
                         {{-- the whole card opens the quote's page, with its comments --}}
                         <a href="{{ route('quotes.show', $quote) }}" class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 md:p-5 lg:p-7 text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
@@ -357,7 +404,7 @@
                             </div>
                         </form>
                     @else
-                        <article class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 text-ink shadow-sm transition hover:shadow-md">
+                        <article class="reveal flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 text-ink shadow-sm transition hover:shadow-md" style="--i: {{ $loop->index % 3 }}">
                             <div class="flex items-center gap-2">
                                 <span class="me-auto h-8 w-8 text-accent/40">{!! $quoteMark !!}</span>
 
@@ -584,6 +631,39 @@
             });
         }, { threshold: 0.12 });
         document.querySelectorAll('.reveal, .stagger').forEach((el) => observer.observe(el));
+
+        // poets: each card moves up at its own speed while the section is pinned, so they look like layers
+        const poets = document.getElementById('poets');
+        if (poets && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const cards = poets.querySelectorAll('.poet-card');
+            const move = () => {
+                const box = poets.getBoundingClientRect();
+                const progress = Math.min(Math.max(-box.top / (box.height - innerHeight), 0), 1); // 0 .. 1
+                cards.forEach((card) => (card.style.translate = `0 ${-progress * card.dataset.speed * innerHeight}px`));
+            };
+            move();
+            addEventListener('scroll', () => requestAnimationFrame(move), { passive: true });
+            addEventListener('resize', move);
+        }
+
+        // the site's numbers count up from 0 the first time they come into view
+        const stats = document.getElementById('stats');
+        if (stats && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const numbers = stats.querySelectorAll('[data-count]');
+            numbers.forEach((dd) => (dd.textContent = '0'));
+            new IntersectionObserver(([entry], watcher) => {
+                if (!entry.isIntersecting) return;
+                watcher.disconnect();
+                const start = performance.now();
+                const tick = (now) => {
+                    const t = Math.min((now - start) / 1800, 1);
+                    const eased = 1 - Math.pow(1 - t, 3); // fast at first, slows down at the end
+                    numbers.forEach((dd) => (dd.textContent = Math.round(dd.dataset.count * eased)));
+                    if (t < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            }, { threshold: 0.6 }).observe(stats);
+        }
 
         // opening picture: the photo moves slower than the page and the quote fades away (parallax)
         const heroBg = document.getElementById('hero-bg');

@@ -104,7 +104,7 @@
 /* parts of the page fade up when you scroll to them (only when JavaScript runs) */
 .js .reveal:not(.shown) {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(24px);
 }
 .js .reveal-side:not(.shown) {
     transform: translateX(-60px);
@@ -114,13 +114,13 @@
     transform: translateX(60px);
 }
 .js .reveal.shown:not(.settled) {
-    transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);
-    transition-delay: calc(var(--i, 0) * 110ms);
+    transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1);
+    transition-delay: calc(var(--i, 0) * 100ms);
 }
 /* boxes whose children come in one after the other */
 .js .stagger:not(.shown) > * {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
 }
 .js .stagger-zoom:not(.shown) > * {
     transform: translateY(30px) scale(0.9);
@@ -330,11 +330,11 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     .bar-btn[href*="/lang/en"] { padding-top: 4px; }
 }
 
-/* the authors strip under the hero: copper with white names and teal marks by day, black at night so it carries on from the video */
-.marquee { background-color: var(--color-copper); color: #fff; }
-.marquee a:hover { color: #fff; }
-.marquee-mark { color: var(--color-accent); }
-.dark .marquee { background-color: #000; color: rgb(255 255 255 / 0.85); }
+/* the authors strip under the hero: cream like old paper with a copper line on top by day, black at night so it carries on from the video */
+.marquee { background-color: #EDE3D1; color: var(--color-ink); border-top: 1px solid var(--color-copper); }
+.marquee a:hover { color: #8A5C08; } /* turmeric, dark enough to read on the cream */
+.marquee-mark { color: var(--color-copper); }
+.dark .marquee { background-color: #000; color: rgb(255 255 255 / 0.85); border-color: transparent; }
 .dark .marquee-mark { color: var(--color-copper); }
 .dark .marquee a:hover { color: var(--color-copper); }
 
