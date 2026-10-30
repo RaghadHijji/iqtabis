@@ -671,9 +671,10 @@
             new IntersectionObserver(([entry], watcher) => {
                 if (!entry.isIntersecting) return;
                 watcher.disconnect();
-                const start = performance.now();
+                // wait for the numbers to finish fading in, so the count is seen from 0
+                const start = performance.now() + 800;
                 const tick = (now) => {
-                    const t = Math.min((now - start) / 1800, 1);
+                    const t = Math.min(Math.max((now - start) / 2000, 0), 1);
                     const eased = 1 - Math.pow(1 - t, 3); // fast at first, slows down at the end
                     numbers.forEach((dd) => (dd.textContent = Math.round(dd.dataset.count * eased)));
                     if (t < 1) requestAnimationFrame(tick);
