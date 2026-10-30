@@ -78,5 +78,26 @@ class DemoActivitySeeder extends Seeder
                 $quote->comments()->firstOrCreate(['user_id' => $members["$who@iqtabis.test"]->id, 'body' => $body]);
             }
         }
+
+        // more sample members, each liking a fixed handful of the shared quotes
+        // (the same picks every run, so running it again adds nothing new)
+        $readers = collect([
+            'lujain' => 'لجين', 'maha' => 'مها', 'hessa' => 'حصة', 'aseel' => 'أسيل', 'dana' => 'دانة',
+            'shoug' => 'شوق', 'wajd' => 'وجد', 'rahaf' => 'رهف', 'jana' => 'جنى', 'layan' => 'ليان',
+            'atheer' => 'أثير', 'bayan' => 'بيان', 'faisal' => 'فيصل', 'saud' => 'سعود', 'majed' => 'ماجد',
+            'omar' => 'عمر', 'ziyad' => 'زياد', 'rakan' => 'راكان', 'hamad' => 'حمد', 'meshal' => 'مشعل',
+            'sultan' => 'سلطان', 'yazeed' => 'يزيد', 'talal' => 'طلال', 'hind' => 'هند', 'amal' => 'أمل',
+        ])->map(function ($name, $handle) {
+            $user = User::firstOrCreate(['email' => "$handle@iqtabis.test"], ['name' => $name, 'password' => str()->random(32)]);
+            $user->hasVerifiedEmail() || $user->markEmailAsVerified();
+
+            return $user;
+        });
+
+        $quotes = Quote::whereHas('user', fn ($query) => $query->where('email', 'like', '%@iqtabis.test'))->orderBy('id')->get();
+        foreach ($quotes as $quote) {
+            $likers = $readers->filter(fn ($reader, $handle) => crc32($handle.$quote->content) % 100 < 22);
+            $quote->likes()->syncWithoutDetaching($likers->pluck('id')->all());
+        }
     }
 }
