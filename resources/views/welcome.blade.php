@@ -136,9 +136,10 @@
         </section>
     @endif
 
-    {{-- Poets: a big title in the middle and the poets' pictures around it, drifting at different speeds as you scroll (like layers).
-         Pressing a picture shows that poet's quotes, like the authors strip. Pictures live in public/images/poets/<slug>.jpg (4:5);
-         only poets with a real picture show, so the old poets (no real portraits) wait until one is added --}}
+    {{-- Voices: while the section is pinned, a big sentence shows first and fades on the first scroll,
+         then each scroll brings in one more picture, each in its own place so none cover another.
+         Pressing a picture shows that person's quotes, like the authors strip. Pictures live in public/images/poets/<slug>.jpg (4:5);
+         only people with a real picture show, so the old poets (no real portraits) wait until one is added --}}
     @php
         // who said it => [era or what they were, picture file name]
         $poets = [
@@ -153,35 +154,28 @@
         ];
         $onSite = $browsing ? \App\Models\Quote::visibleTo(auth()->user())->whereIn('author', array_keys($poets))->distinct()->pluck('author')->all() : [];
         $shown = collect($poets)->only($onSite)->filter(fn ($poet) => file_exists(public_path("images/poets/{$poet[1]}.jpg")))->take(9);
-        // where each picture sits (top, side, width) and how fast it moves up: the higher ones are faster, so they spread apart
-        $spots = [
-            ['top-[10%]', 'start-[6%]', 'w-36 md:w-52', 0.9],
-            ['top-[22%]', 'end-[6%]', 'w-36 md:w-52', 0.6],
-            ['top-[60%]', 'start-[8%] md:start-[34%]', 'w-32 md:w-44', 0.3],
-            ['top-[66%]', 'end-[6%] md:end-auto md:start-[4%]', 'w-32 md:w-44', 0.35],
-            ['top-[12%]', 'end-[32%]', 'w-32 hidden md:flex', 0.55],
-            ['top-[70%]', 'end-[4%]', 'w-32 hidden md:flex', 0.2],
-            ['top-[84%]', 'end-[30%]', 'w-36 hidden md:flex', 0.15],
-            ['top-[40%]', 'start-[1%]', 'w-28 hidden lg:flex', 0.45],
-            ['top-[42%]', 'end-[1%]', 'w-28 hidden lg:flex', 0.4],
-        ];
     @endphp
     @if ($shown->count() >= 3)
-        <section id="poets" class="relative" style="height: {{ 100 + $shown->count() * 40 }}svh" aria-labelledby="poets-title">
+        <section id="poets" class="relative" style="height: {{ 100 + $shown->count() * 30 }}svh" aria-labelledby="poets-title">
             <div class="sticky top-0 h-svh overflow-hidden">
-                <div class="absolute inset-0 z-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+                <div id="poets-intro" class="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
                     <p class="text-sm font-bold tracking-wide text-copper">{{ __('From the voices') }}</p>
                     <h2 id="poets-title" class="{{ app()->getLocale() === 'ar' ? 'font-brand text-6xl md:text-8xl' : 'font-display text-5xl italic md:text-7xl' }} max-w-3xl leading-tight text-ink">{{ __('Words that never grow old') }}</h2>
                 </div>
-                @foreach ($shown as $poet => [$era, $slug])
-                    @php [$top, $side, $width, $speed] = $spots[$loop->index]; $picture = "images/poets/$slug.jpg"; @endphp
-                    <a href="{{ route('home', ['q' => $poet]) }}#quotes" data-speed="{{ $speed }}" aria-label="{{ __($poet) }}"
-                        class="poet-card group absolute z-10 {{ $top }} {{ $side }} {{ $width }} flex flex-col gap-1.5">
-                        <span class="text-[11px] md:whitespace-nowrap font-bold tracking-wide text-sand md:text-xs">{{ __($poet) }} · {{ __($era) }}</span>
-                        <img src="{{ asset($picture) }}" alt="" loading="lazy"
-                            class="aspect-[4/5] w-full rounded-xl object-cover shadow-lg grayscale transition duration-500 group-hover:grayscale-0 group-hover:shadow-xl">
-                    </a>
-                @endforeach
+                <div class="absolute inset-0 flex items-center justify-center px-4 pt-16">
+                    <div class="flex max-w-5xl flex-wrap items-start justify-center gap-x-3 gap-y-4 md:gap-x-6 md:gap-y-6">
+                        @foreach ($shown as $poet => [$era, $slug])
+                            {{-- every other picture sits a little lower, so the row looks laid by hand --}}
+                            <a href="{{ route('home', ['q' => $poet]) }}#quotes" aria-label="{{ __($poet) }}"
+                                class="poet-card group flex w-[29%] flex-col gap-1.5 sm:w-36 md:w-40 {{ $loop->even ? 'md:mt-8' : '' }}">
+                                <img src="{{ asset("images/poets/$slug.jpg") }}" alt="" loading="lazy"
+                                    class="aspect-[4/5] w-full rounded-xl object-cover shadow-lg grayscale transition duration-500 group-hover:grayscale-0 group-hover:shadow-xl">
+                                <span class="text-[11px] font-bold leading-snug text-ink md:text-sm">{{ __($poet) }}</span>
+                                <span class="-mt-1 text-[10px] text-sand md:text-xs">{{ __($era) }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </section>
     @endif
@@ -635,21 +629,25 @@
         }, { threshold: 0.12 });
         document.querySelectorAll('.reveal, .stagger').forEach((el) => observer.observe(el));
 
-        // voices: while the section is pinned, the sentence shows first, then each scroll brings in one more picture,
-        // which keeps drifting up slowly at its own speed (like layers)
+        // voices: while the section is pinned, the sentence shows first and fades on the first scroll,
+        // then each scroll brings in one more picture in its own place
         const poets = document.getElementById('poets');
-        if (poets && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (poets) {
+            const intro = document.getElementById('poets-intro');
+            const cards = [...poets.querySelectorAll('.poet-card')];
+            const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const clamp = (n) => Math.min(Math.max(n, 0), 1);
             const move = () => {
                 const box = poets.getBoundingClientRect();
-                const progress = Math.min(Math.max(-box.top / (box.height - innerHeight), 0), 1); // 0 .. 1
-                const cards = [...poets.querySelectorAll('.poet-card')].filter((card) => card.offsetParent); // the ones this screen shows
+                const progress = clamp(-box.top / (box.height - innerHeight)); // 0 .. 1
+                const gone = clamp((progress - 0.04) / 0.08); // the sentence leaves between 4% and 12%
+                intro.style.opacity = 1 - gone;
+                if (!still) intro.style.scale = 1 - gone * 0.06;
                 cards.forEach((card, i) => {
-                    const start = 0.08 + (i / cards.length) * 0.8; // when this picture comes in
-                    const shown = Math.min(Math.max((progress - start) / 0.08, 0), 1);
-                    const drift = Math.max(progress - start, 0) * card.dataset.speed * innerHeight * 0.35;
+                    const shown = clamp((progress - (0.14 + (i / cards.length) * 0.76)) / 0.06);
                     card.style.opacity = shown;
-                    card.style.scale = 0.92 + shown * 0.08;
-                    card.style.translate = `0 ${(1 - shown) * 60 - drift}px`;
+                    card.style.pointerEvents = shown ? '' : 'none';
+                    if (!still) card.style.translate = `0 ${(1 - shown) * 30}px`;
                 });
             };
             move();
