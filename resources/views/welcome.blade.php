@@ -287,7 +287,7 @@
         </div>
 
         {{-- All quotes --}}
-        <section id="quotes" class="flex flex-col gap-5">
+        <section id="quotes" class="flex scroll-mt-28 flex-col gap-5">
             {{-- the poster's page: who they are and how many likes their quotes got (FR-21) --}}
             @if ($poster)
                 <div class="flex flex-wrap items-center gap-5 rounded-3xl border border-ink/10 bg-card p-6 shadow-sm">
@@ -311,6 +311,14 @@
                     </div>
                 </div>
             @endif
+
+            {{-- searching, filtering or someone's page (e.g. after pressing a name in the strip or a picture): a clear way back to the full home page --}}
+            @unless ($browsing)
+                <a href="{{ route('home') }}" class="inline-flex w-fit items-center gap-2 rounded-full border border-ink/15 bg-card px-4 py-2 text-sm font-bold text-ink shadow-sm transition hover:border-accent hover:text-accent">
+                    <svg class="h-4 w-4 ltr:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    {{ __('Back to home') }}
+                </a>
+            @endunless
 
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <h2 class="text-3xl font-extrabold text-ink">
@@ -783,9 +791,16 @@
                 }
             };
 
+            // going back to the plain home page from a search or a filter loads it whole,
+            // so the opening video and the sections above the list come back
+            const wholeHome = (url) => {
+                const to = new URL(url, location.href);
+                return !document.getElementById('hero') && to.pathname === location.pathname && ![...to.searchParams.values()].some(Boolean);
+            };
+
             document.addEventListener('click', (e) => {
                 const link = e.target.closest('a[data-soft]');
-                if (!link || e.ctrlKey || e.metaKey) return;
+                if (!link || e.ctrlKey || e.metaKey || wholeHome(link.href)) return;
                 e.preventDefault();
                 swap(link.href).then(() => {
                     // a new page of quotes starts at the top of the list
@@ -800,7 +815,8 @@
                 form.closest('dialog')?.close();
                 const data = new FormData(form);
                 if (form.method.toLowerCase() === 'get') {
-                    swap(form.action + '?' + new URLSearchParams(data));
+                    const url = form.action + '?' + new URLSearchParams(data);
+                    wholeHome(url) ? (location.href = url) : swap(url);
                 } else {
                     swap(form.action, { method: 'POST', body: data, headers: { Accept: 'text/html' } });
                 }
