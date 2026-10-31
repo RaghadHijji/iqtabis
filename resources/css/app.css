@@ -450,25 +450,14 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     opacity: .18; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-/* words that sit straight on the painting turn light (night mode is light already);
-   cards, inputs and pop-ups keep the normal colors */
-:root:not(.dark) main:has(.page-photo) {
-    --color-ink: #F3E6D3;
-    --color-muted: #CDBBA4;
-    --color-sand: #D9B48C;
-    --color-line: rgb(243 230 211 / .2);
-}
-:root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog, input, select, textarea) {
-    --color-ink: #2E2116;
-    --color-muted: #6E5A45;
-    --color-sand: #8E5B3B;
-    --color-line: #DCC9A6;
-}
-/* red words on the painting use the lighter night red so they stay readable; red boxes and buttons stay deep */
-:root:not(.dark) main:has(.page-photo) .text-accent:not(:is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog) *) { color: #E3A08F; }
-/* text with no colour of its own takes the light ink too (zero weight, so any text-* class still wins) */
-:where(:root:not(.dark) main:has(.page-photo)),
-:where(:root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog)) { color: var(--color-ink); }
+/* day mode: the painting is washed out to a light parchment (dark text stays dark on it); at night it stays dark brown */
+:root:not(.dark) .page-photo { background-color: #EADBC0; }
+:root:not(.dark) .painting { filter: sepia(.6) saturate(1.1) brightness(1.05) contrast(.9); }
+:root:not(.dark) .painting-shade { background: linear-gradient(180deg, rgb(244 234 214 / .8), rgb(236 222 194 / .88)); }
+:root:not(.dark) .painting-vignette { background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgb(140 95 50 / .35) 100%); }
+:root:not(.dark) .painting-grain { opacity: .12; mix-blend-mode: multiply; }
+/* the bar on top: warm cream, not grey */
+:root:not(.dark) .glass { background-color: rgb(246 238 222 / .86); border-color: rgb(140 100 60 / .2); }
 
 /* ===== Opening screen: an old manuscript on a wooden desk ===== */
 /* the desk: dark wood grain and a warm lamp light from above (all gradients, no pictures) */
@@ -767,3 +756,4 @@ body:has(.desk-hero) #navbar.on-hero .nav-brand { opacity: 0; translate: 0 -6px;
     #navbar .nav-actions { flex: 1; }
     #navbar .nav-actions > :first-child, #navbar .nav-actions > .nav-logo { margin-inline-start: auto; }
 }
+
