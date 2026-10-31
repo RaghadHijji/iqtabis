@@ -682,7 +682,7 @@ p.ink, span.scroll-label.ink { display: block; }
 
 /* the footer: the bottom of an old sheet of paper, torn along the top edge (always paper colours, also at night) */
 .paper-footer {
-    --color-ink: #2E2116; --color-muted: #5E4A36; --color-accent: #7A2E25; --color-sand: #8E5B3B; --color-line: rgb(90 55 20 / .3);
+    --color-ink: #1F150C; --color-muted: #3A2A1B; --color-accent: #7A2E25; --color-sand: #6E4426; --color-line: rgb(90 55 20 / .35);
     position: relative; color: var(--color-muted);
     padding-top: 1.25rem;
     background-color: #CBA86F;
@@ -791,3 +791,11 @@ body:has(.desk-hero) #navbar.on-hero .nav-brand { opacity: 0; translate: 0 -6px;
     clip-path: polygon(2% 8%, 98% 0, 100% 90%, 3% 100%);
 }
 .poet-card > span:last-of-type { align-self: center; }
+/* footer words: darker ink so they read clearly on the old paper (also the faded "/70" ones) */
+.paper-footer, .paper-footer .text-ink\/70 { color: #3A2A1B; }
+.paper-footer a { font-weight: 500; }
+/* phones: the words take the middle of the bar too */
+@media (max-width: 1023px) {
+    #navbar .nav-actions { flex: 1; }
+    #navbar .nav-words { margin-inline: auto; }
+}
