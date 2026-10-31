@@ -32,15 +32,20 @@
             <div class="scroll-scene relative mx-auto w-full px-5 pb-24 pt-28">
                 <div class="scroll">
                     <span class="scroll-rod scroll-rod-top" aria-hidden="true"></span>
-                    <div class="scroll-sheet" dir="rtl">
+                    <div class="scroll-sheet">
                         <div class="scroll-frame">
-                            <p class="font-brand scroll-brand" data-ink>اقتبس</p>
+                            {{-- the name in the language of the page, so the quill writes it in the right direction --}}
+                            @if (app()->getLocale() === 'ar')
+                                <p class="font-brand scroll-brand" dir="rtl" data-ink>اقتبس</p>
+                            @else
+                                <p class="font-display scroll-brand italic" dir="ltr" data-ink>Iqtabis</p>
+                            @endif
                             {{-- after the slogan the quill goes back to the ink pot for more ink (data-ink-dip) --}}
                             <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-xl md:text-2xl' : 'font-display text-lg italic' }} opacity-80" data-ink data-ink-dip>{{ __('A quote for every moment') }}</p>
                             <span class="scroll-ornament" aria-hidden="true"></span>
                             <span class="scroll-label" data-ink>{{ __('QUOTE OF THE DAY') }}</span>
                             <blockquote data-ink-words class="font-quote text-2xl leading-relaxed md:text-3xl md:leading-relaxed" dir="auto">{{ $quoteOfDay->content }}</blockquote>
-                            <p class="scroll-who" data-ink>— {{ $quoteOfDay->author ?: $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
+                            <p class="scroll-who" data-ink>— {{ $quoteOfDay->author ? __($quoteOfDay->author) : $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
                             <p class="text-xs font-bold opacity-70" data-ink>{{ now()->hijri(true) }} · {{ now()->translatedFormat('j F Y') }}</p>
                             <div class="scroll-actions flex items-center gap-2">
                                 <span class="scroll-chip"><span class="h-4 w-4 text-rose-600">{!! $heart !!}</span>{{ $quoteOfDay->likes_count }}</span>
@@ -247,7 +252,7 @@
                             </div>
                             <p class="font-quote line-clamp-3 text-2xl leading-relaxed" dir="auto">{{ $quote->content }}</p>
                             @if ($quote->author)
-                                <p class="-mt-2 text-sm text-ink/70" dir="auto">— {{ $quote->author }}</p>
+                                <p class="-mt-2 text-sm text-ink/70" dir="auto">— {{ __($quote->author) }}</p>
                             @endif
                             <div class="flex items-center gap-1.5 border-t border-ink/10 pt-3 text-sm text-ink/70">
                                 <span class="h-4 w-4">{!! $heartLine !!}</span>{{ $quote->likes_count }}
@@ -323,7 +328,7 @@
                         </a>
                         </div>
                         <p class="notch-label">
-                            <span class="notch-who" dir="auto">{{ $quote->author ?: $quote->user->name }}</span>
+                            <span class="notch-who" dir="auto">{{ $quote->author ? __($quote->author) : $quote->user->name }}</span>
                         </p>
                         <span class="notch-cat">{{ __($quote->category->name) }}</span>
                         </div>
@@ -535,7 +540,7 @@
                         </div>
                         <p class="notch-label">
                             @if ($quote->author)
-                                <span class="notch-who" dir="auto">{{ $quote->author }}</span>
+                                <span class="notch-who" dir="auto">{{ __($quote->author) }}</span>
                             @endif
                         </p>
                         <span class="notch-cat">{{ __($quote->category->name) }}</span>
@@ -752,17 +757,17 @@
             const parts = [...sheet.querySelectorAll('[data-ink]')];
             const start = performance.now();
             // slow and calm: one word at a time, with a short lift of the quill between words
-            const dip = 2700; // going to the ink pot, dipping, and coming back
-            const lift = 250;
+            const dip = 2000; // going to the ink pot, dipping, and coming back
+            const lift = 170;
             let at = 3800; // the sheet has unrolled and the quill has reached the first word
             const steps = [];
             // after "quote of the day" the rest is written a little quicker
             let quick = false;
             parts.forEach((el) => {
                 // the name is short but big, so it gets more time, like writing it carefully
-                const time = el.classList.contains('scroll-brand') ? 1500 : quick
-                    ? Math.min(Math.max(el.textContent.trim().length * 65, 330), 1300)
-                    : Math.min(Math.max(el.textContent.trim().length * 90, 420), 1800);
+                const time = el.classList.contains('scroll-brand') ? 1000 : quick
+                    ? Math.min(Math.max(el.textContent.trim().length * 45, 250), 950)
+                    : Math.min(Math.max(el.textContent.trim().length * 60, 300), 1250);
                 if (el.classList.contains('scroll-label')) quick = true;
                 el.classList.add('ink');
                 el.style.setProperty('--ink-at', `${at}ms`);
@@ -793,8 +798,8 @@
                 const frames = [{ at: 0, transform: mouth() }, { at: 2900, transform: mouth() }];
                 steps.forEach(({ el, at, time, dip: dipping }) => {
                     if (dipping) {
-                        frames.push({ at: at + 900, transform: mouth(-.25) }, { at: at + 1300, transform: mouth(.1) },
-                            { at: at + 1700, transform: mouth(-.25) });
+                        frames.push({ at: at + 650, transform: mouth(-.25) }, { at: at + 950, transform: mouth(.1) },
+                            { at: at + 1250, transform: mouth(-.25) });
                         return;
                     }
                     const r = el.getBoundingClientRect();

@@ -2,7 +2,7 @@
 
 @section('title', Str::limit($quote->content, 40) . ' | اقتبس')
 @section('og_title', '«' . Str::limit($quote->content, 90) . '»')
-@section('og_description', ($quote->author ? '— ' . $quote->author . ' · ' : '') . __('A quote for every moment'))
+@section('og_description', ($quote->author ? '— ' . __($quote->author) . ' · ' : '') . __('A quote for every moment'))
 @section('content')
     {{-- One quote on its own page, with its comments (FR-22) --}}
     <x-painting-bg />
@@ -25,7 +25,7 @@
 
             <blockquote class="font-quote text-3xl leading-relaxed md:text-4xl md:leading-relaxed" dir="auto">{{ $quote->content }}</blockquote>
             @if ($quote->author)
-                <p class="-mt-3 text-lg font-bold text-sand" dir="auto">— {{ $quote->author }}</p>
+                <p class="-mt-3 text-lg font-bold text-sand" dir="auto">— {{ __($quote->author) }}</p>
             @endif
 
             <div class="flex flex-wrap items-center gap-2 border-t border-ink/5 pt-5">
@@ -158,7 +158,7 @@
                             class="flex flex-col gap-3 rounded-3xl border border-ink/10 bg-card p-5 text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md">
                             <p class="font-quote line-clamp-4 flex-1 text-lg leading-relaxed" dir="auto">{{ $other->content }}</p>
                             <div class="flex items-center justify-between gap-2 text-sm text-ink/70">
-                                <span class="truncate" dir="auto">— {{ $other->author ?: $other->user->name }}</span>
+                                <span class="truncate" dir="auto">— {{ $other->author ? __($other->author) : $other->user->name }}</span>
                                 <span class="flex shrink-0 items-center gap-1 font-bold text-rose-500"><x-icon name="heart" class="h-4 w-4" />{{ $other->likes_count }}</span>
                             </div>
                         </a>

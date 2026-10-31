@@ -4,7 +4,7 @@
     <div class="flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 md:px-8">
 
         {{-- the name: Ruqaa script with the colors flowing, English under it --}}
-        <a href="{{ route('home') }}" class="flex shrink-0 flex-col items-start sm:me-4" aria-label="Iqtabis | اقتبس">
+        <a href="{{ route('home') }}" class="nav-brand flex shrink-0 flex-col items-start sm:me-4" aria-label="Iqtabis | اقتبس">
             <span class="site-name">اقتبس</span>
             <span class="nav-text text-[9px] font-bold tracking-[0.4em] text-sand sm:text-[11px]">IQTABIS</span>
         </a>
@@ -19,7 +19,8 @@
             </button>
         @endauth
 
-        <div class="ms-auto flex items-center gap-1 sm:gap-2">
+        {{-- the buttons are written as ink words with an ornament between them, not boxes (see .nav-actions in app.css) --}}
+        <div class="nav-actions ms-auto flex items-center gap-1 sm:gap-2">
             @auth
                 {{-- admins get a shortcut to the dashboard (FR-25) --}}
                 @can('admin')

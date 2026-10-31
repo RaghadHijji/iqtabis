@@ -19,7 +19,7 @@
     ];
 @endphp
 
-<footer class="mt-12 border-t border-ink/10 bg-card text-sm text-ink/70">
+<footer class="paper-footer mt-12 text-sm text-ink/70">
     {{-- three equal columns: the name at the start, the categories in the middle, explore at the end --}}
     <div class="mx-auto grid max-w-6xl gap-6 px-6 py-8 md:grid-cols-3 md:items-start">
         <div class="flex flex-col gap-1">
