@@ -405,10 +405,11 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     .comment-btn:hover .typing-dot, .comment-btn:focus-visible .typing-dot { animation: none; opacity: 1; }
 }
 
-/* the whole cut-corner card lifts a little and its outline turns copper when you point at it */
-.notch-wrap { transition: translate .25s ease; }
-.notch-shape { transition: filter .25s ease; }
-.notch-wrap:hover, .notch-wrap:focus-within { translate: 0 -4px; }
+/* the whole cut-corner card lifts a little and its outline turns copper when you point at it.
+   The parts move, not the wrapper, so the mouse never slips off the edge and the colour stays until you leave. */
+.notch-wrap > * { transition: translate .25s ease; }
+/* no transition on the outline colour: fading it passed through yellow first */
+.notch-wrap:hover > *, .notch-wrap:focus-within > * { translate: 0 -4px; }
 .notch-wrap:hover > .notch-shape, .notch-wrap:focus-within > .notch-shape { --line: var(--color-sand); }
 
 /* calmer cards: copy / image / edit buttons stay faint until you point at the card (mouse only, phones keep them clear) */
@@ -416,3 +417,39 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     .card-tools > :not(:first-child) { opacity: .45; transition: opacity .2s; }
     .notch-wrap:hover .card-tools > *, .notch-wrap:focus-within .card-tools > * { opacity: 1; }
 }
+
+/* the painting behind the pages: sepia like an old print, drifting slowly (stops for people who turn motion off) */
+.painting {
+    filter: sepia(.75) saturate(1.3) brightness(.9) contrast(1.05);
+    animation: painting-drift 40s ease-in-out infinite alternate;
+}
+@keyframes painting-drift {
+    from { transform: scale(1.08) translate(0, 0); }
+    to { transform: scale(1.2) translate(-2%, -1.5%); }
+}
+@media (prefers-reduced-motion: reduce) { .painting { animation: none; transform: scale(1.08); } }
+.painting-vignette { background: radial-gradient(ellipse at center, transparent 35%, rgb(10 6 3 / .85) 100%); }
+/* a light old-paper grain */
+.painting-grain {
+    opacity: .18; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* words that sit straight on the painting turn light (night mode is light already);
+   cards, inputs and pop-ups keep the normal colors */
+:root:not(.dark) main:has(.page-photo) {
+    --color-ink: #F3E6D3;
+    --color-muted: #CDBBA4;
+    --color-sand: #D9B48C;
+    --color-line: rgb(243 230 211 / .2);
+}
+:root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog, input, select, textarea) {
+    --color-ink: #302A27;
+    --color-muted: #6B6560;
+    --color-sand: #8E5B3B;
+    --color-line: #E2D9CB;
+}
+/* teal words on the painting use the lighter night teal so they stay readable; teal boxes and buttons stay deep */
+:root:not(.dark) main:has(.page-photo) .text-accent:not(:is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog) *) { color: #8CC7BE; }
+/* text with no colour of its own takes the light ink too (zero weight, so any text-* class still wins) */
+:where(:root:not(.dark) main:has(.page-photo)),
+:where(:root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog)) { color: var(--color-ink); }

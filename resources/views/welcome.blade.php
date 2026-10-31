@@ -74,11 +74,8 @@
         @endif
     @endif
 
-    {{-- the arches photo stays behind the rest of the page, soft and light, so it keeps the same feel --}}
-    <div class="page-photo pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
-        <div class="absolute inset-0 scale-110 bg-cover bg-center photo-warm" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-page/60 via-page/70 to-page/85"></div>
-    </div>
+    {{-- under the opening video, the page sits on a dark painting instead of the blurred photo --}}
+    <x-painting-bg />
 
     {{-- members find the same text in "My account", so this shows for guests only --}}
     @if ($browsing && auth()->guest())
