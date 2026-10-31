@@ -404,3 +404,15 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
 @media (prefers-reduced-motion: reduce) {
     .comment-btn:hover .typing-dot, .comment-btn:focus-visible .typing-dot { animation: none; opacity: 1; }
 }
+
+/* the whole cut-corner card lifts a little and its outline turns copper when you point at it */
+.notch-wrap { transition: translate .25s ease; }
+.notch-shape { transition: filter .25s ease; }
+.notch-wrap:hover, .notch-wrap:focus-within { translate: 0 -4px; }
+.notch-wrap:hover > .notch-shape, .notch-wrap:focus-within > .notch-shape { --line: var(--color-sand); }
+
+/* calmer cards: copy / image / edit buttons stay faint until you point at the card (mouse only, phones keep them clear) */
+@media (hover: hover) {
+    .card-tools > :not(:first-child) { opacity: .45; transition: opacity .2s; }
+    .notch-wrap:hover .card-tools > *, .notch-wrap:focus-within .card-tools > * { opacity: 1; }
+}

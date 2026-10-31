@@ -269,14 +269,14 @@
                 <div class="stagger grid gap-5 md:grid-cols-3">
                     @foreach ($trending as $quote)
                         {{-- same cut-corner card as the quotes below; the whole card opens the quote's page, with its comments --}}
-                        <div class="notch-wrap transition hover:-translate-y-0.5">
+                        <div class="notch-wrap">
                         <div class="notch-shape">
                         <a href="{{ route('quotes.show', $quote) }}" class="notch flex flex-col gap-4 rounded-md bg-card p-6 text-ink focus:outline-none focus-visible:bg-accent/5">
                             <div class="flex items-center gap-3">
                                 <span class="me-auto flex h-9 w-9 items-center justify-center rounded-full bg-accent font-extrabold text-on-accent">{{ $loop->iteration }}</span>
                                 <span class="flex items-center gap-1.5 text-sm font-bold text-rose-500"><span class="h-4 w-4">{!! $heart !!}</span>{{ $quote->likes_count }}</span>
                             </div>
-                            <p class="font-quote flex-1 text-2xl leading-relaxed" dir="auto">{{ $quote->content }}</p>
+                            <p class="font-quote flex-1 text-xl leading-relaxed" dir="auto">{{ $quote->content }}</p>
                         </a>
                         </div>
                         <p class="notch-label">
@@ -417,7 +417,7 @@
                         <div class="notch-wrap reveal" style="--i: {{ $loop->index % 3 }}">
                         <div class="notch-shape">
                         <article class="notch flex flex-col gap-4 rounded-md bg-card p-6 text-ink">
-                            <div class="flex items-center gap-2">
+                            <div class="card-tools flex items-center gap-2">
                                 <span class="me-auto h-8 w-8 text-accent/40">{!! $quoteMark !!}</span>
 
                                 {{-- Only the owner sees edit / delete (FR-06, FR-07); edit closes after 10 minutes, delete stays --}}
@@ -457,7 +457,7 @@
                                     <span class="flex min-w-0 flex-col leading-tight">
                                         <span class="truncate text-sm font-bold group-hover:text-accent group-hover:underline">{{ auth()->id() === $quote->user_id ? __('You') : $quote->user->name }}</span>
                                         <span class="text-xs text-ink/70">{{ $quote->created_at->format('Y-m-d') }}</span>
-                                        <span class="hidden whitespace-nowrap text-xs text-ink/70 sm:block">{{ $quote->created_at->hijri() }}</span>
+                                        <span class="hidden whitespace-nowrap text-[0.7rem] text-ink/70 sm:block">{{ $quote->created_at->hijri() }}</span>
                                     </span>
                                 </a>
 
