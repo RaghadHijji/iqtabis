@@ -20,35 +20,61 @@
         $trash = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>';
     @endphp
 
-    {{-- Opening screen: a full-screen picture with the quote of the day on it --}}
+    {{-- Opening screen: an old book on a desk that opens to the quote of the day --}}
     @if ($browsing && $quoteOfDay)
-        <section id="hero" class="relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
-            {{-- a quiet video on repeat (hands typing on an old typewriter); the still picture shows until it loads --}}
-            <div id="hero-bg" class="absolute inset-x-0 top-0 -bottom-px bg-cover bg-center" style="background-image: url('{{ asset('images/hero-video-poster.jpg') }}')">
-                <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="auto" poster="{{ asset('images/hero-video-poster.jpg') }}" aria-hidden="true">
-                    <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
-                    <source src="{{ asset('videos/hero.webm') }}" type="video/webm">
-                </video>
+        <section id="hero" class="book-hero relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
+            {{-- an old wooden desk with a warm lamp light on it (all CSS, no pictures) --}}
+            <div id="hero-bg" class="wood absolute inset-0" aria-hidden="true">
+                <div class="wood-lamp absolute inset-0"></div>
             </div>
-            <div id="hero-shade" class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75"></div>
 
-            <div id="hero-content" class="hero-in relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pb-24 pt-24 text-center">
-                <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-3xl' : 'font-display text-2xl italic' }} text-white/85">{{ __('A quote for every moment') }}</p>
-                <span class="h-14 w-14 text-copper">{!! $quoteMark !!}</span>
-                <blockquote class="font-quote text-4xl leading-snug drop-shadow-lg md:text-6xl md:leading-snug" dir="auto">{{ $quoteOfDay->content }}</blockquote>
-                <p class="text-lg text-white/80">— {{ $quoteOfDay->author ?: $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
-                {{-- today in both calendars --}}
-                <p class="text-sm font-bold text-white/90 drop-shadow">{{ now()->hijri(true) }} · {{ now()->translatedFormat('j F Y') }}</p>
-                <div class="flex items-center gap-3">
-                    <span class="rounded-full bg-white/15 px-4 py-2 text-sm font-bold tracking-[0.2em] backdrop-blur rtl:tracking-normal">{{ __('QUOTE OF THE DAY') }}</span>
-                    <span class="flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 font-bold backdrop-blur"><span class="h-4 w-4 text-rose-300">{!! $heart !!}</span>{{ $quoteOfDay->likes_count }}</span>
-                    <button type="button" data-copy="{{ $quoteOfDay->content }}" data-author="{{ $quoteOfDay->author }}" title="{{ __('Copy quote') }}" aria-label="{{ __('Copy quote') }}"
-                        class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur transition hover:bg-white/30"><span class="h-[18px] w-[18px]">{!! $copy !!}</span></button>
+            {{-- an old book: the cover opens (to the right, like an Arabic book) and shows the name, the quote of the day is on the page under it --}}
+            <div class="book-scene relative mx-auto w-full px-5 pb-28 pt-28">
+                <div class="book" dir="ltr">
+                    <div class="book-page" dir="rtl">
+                        {{-- on phones the cover goes away, so the name is written on the page itself --}}
+                        <p class="book-page-brand font-brand md:hidden" data-ink>اقتبس</p>
+                        <span class="book-label" data-ink>{{ __('QUOTE OF THE DAY') }}</span>
+                        <span class="h-9 w-9 text-copper">{!! $quoteMark !!}</span>
+                        <blockquote data-ink-words class="font-quote text-2xl leading-relaxed md:text-3xl md:leading-relaxed" dir="auto">{{ $quoteOfDay->content }}</blockquote>
+                        <p class="book-who" data-ink>— {{ $quoteOfDay->author ?: $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
+                        <p class="text-xs font-bold opacity-70" data-ink>{{ now()->hijri(true) }} · {{ now()->translatedFormat('j F Y') }}</p>
+                        <div class="flex items-center gap-2">
+                            <span class="book-chip"><span class="h-4 w-4 text-rose-600">{!! $heart !!}</span>{{ $quoteOfDay->likes_count }}</span>
+                            <button type="button" data-copy="{{ $quoteOfDay->content }}" data-author="{{ $quoteOfDay->author }}" title="{{ __('Copy quote') }}" aria-label="{{ __('Copy quote') }}"
+                                class="book-chip w-10 justify-center px-0"><span class="h-[18px] w-[18px]">{!! $copy !!}</span></button>
+                        </div>
+                    </div>
+                    <div class="book-rest" aria-hidden="true"></div>
+
+                    <div class="book-cover" aria-hidden="true">
+                        {{-- outside: teal leather (the Iqtabis color) with a gold frame and a sun --}}
+                        <div class="book-face book-front">
+                            <div class="book-frame">
+                                <svg class="book-sun" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <circle cx="50" cy="50" r="16"/><circle cx="50" cy="50" r="10" fill="currentColor" fill-opacity=".25"/>
+                                    @for ($i = 0; $i < 24; $i++)
+                                        <line x1="50" y1="{{ $i % 2 ? 28 : 22 }}" x2="50" y2="32" transform="rotate({{ $i * 15 }} 50 50)"/>
+                                    @endfor
+                                    <circle cx="50" cy="50" r="38" stroke-dasharray="2 3"/>
+                                </svg>
+                                <span class="book-title font-brand">اقتبس</span>
+                            </div>
+                        </div>
+                        {{-- inside: the first page, with the name and the slogan --}}
+                        <div class="book-face book-back" dir="rtl">
+                            <span class="book-ornament"></span>
+                            <p class="font-brand book-brand" data-ink>اقتبس</p>
+                            <p class="text-xs font-bold tracking-[0.4em] text-[#8E5B3B]" data-ink>IQTABIS</p>
+                            <span class="book-ornament"></span>
+                            <p data-ink class="{{ app()->getLocale() === 'ar' ? 'font-brand text-2xl' : 'font-display text-xl italic' }} opacity-80">{{ __('A quote for every moment') }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             {{-- scroll down to see the rest --}}
-            <a href="#explore" class="scroll-hint absolute bottom-24 sm:bottom-5 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
+            <a href="#explore" class="scroll-hint absolute bottom-6 flex flex-col items-center gap-1 text-sm text-white/80 transition hover:text-white">
                 {{ __('Scroll to explore') }}
                 <svg class="h-6 w-6 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
             </a>
@@ -695,6 +721,29 @@
             }, { threshold: 0.6 }).observe(stats);
         }
 
+        // the opening book: once the cover is open, the words are written in ink one after the other, like an old pen
+        const book = document.querySelector('.book');
+        if (book && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            // the quote is written word by word (each word keeps its letters joined)
+            book.querySelectorAll('[data-ink-words]').forEach((quote) => {
+                quote.innerHTML = quote.textContent.trim().split(/\s+/)
+                    .map((word) => `<span data-ink>${word.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`)}</span>`).join(' ');
+            });
+            // big screens: the name on the inside of the cover first, then the page; phones only have the page
+            const wide = matchMedia('(min-width: 768px)').matches;
+            const parts = [...(wide ? book.querySelectorAll('.book-back [data-ink]') : []), ...book.querySelectorAll('.book-page [data-ink]')]
+                .filter((el) => el.offsetParent !== null || el.closest('.book-back'));
+            let at = 2600; // right after the cover has opened
+            parts.forEach((el) => {
+                const time = Math.min(Math.max(el.textContent.trim().length * 45, 260), 900);
+                el.classList.add('ink');
+                el.style.setProperty('--ink-at', `${at}ms`);
+                el.style.setProperty('--ink-time', `${time}ms`);
+                at += time * 0.85;
+            });
+            book.style.setProperty('--ink-done', `${at}ms`);
+        }
+
         // opening picture: the photo moves slower than the page and the quote fades away (parallax)
         const heroBg = document.getElementById('hero-bg');
         const heroContent = document.getElementById('hero-content');
@@ -712,8 +761,10 @@
             const move = () => {
                 const y = Math.min(window.scrollY, window.innerHeight);
                 heroBg.style.transform = `translateY(${y * 0.35}px) scale(${1 + y / 4000})`;
-                heroContent.style.transform = `translateY(${y * 0.25}px)`;
-                heroContent.style.opacity = 1 - y / (window.innerHeight * 0.75);
+                if (heroContent) {
+                    heroContent.style.transform = `translateY(${y * 0.25}px)`;
+                    heroContent.style.opacity = 1 - y / (window.innerHeight * 0.75);
+                }
                 ticking = false;
             };
             window.addEventListener('scroll', () => {
