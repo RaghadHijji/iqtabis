@@ -21,6 +21,7 @@
 
         {{-- the buttons are written as ink words with an ornament between them, not boxes (see .nav-actions in app.css) --}}
         <div class="nav-actions ms-auto flex items-center gap-1 sm:gap-2">
+            <div class="nav-words flex items-center gap-1 sm:gap-2">
             @auth
                 {{-- admins get a shortcut to the dashboard (FR-25) --}}
                 @can('admin')
@@ -108,6 +109,8 @@
                     <a href="{{ route('signup') }}" class="bar-btn hidden sm:inline-flex">{{ __('Sign Up') }}</a>
                 @endif
             @endauth
+
+            </div>
 
             {{-- logos without a box: white over the picture, dark on the light bar --}}
             <img src="{{ asset('images/logo-clear.png') }}" class="nav-logo ms-1 h-6 w-auto shrink-0 sm:ms-2 sm:h-12" alt="Tuwaiq Academy and university logos">

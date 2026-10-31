@@ -1,5 +1,5 @@
 {{-- "Are you sure?" for any form with data-confirm="question" (delete a quote, a comment…) --}}
-<dialog id="confirm-dialog" class="auth-card glass m-auto w-[90%] max-w-sm rounded-3xl p-0 text-ink shadow-2xl backdrop:bg-black/40">
+<dialog id="confirm-dialog" class="auth-card vintage m-auto w-[90%] max-w-sm p-0 text-ink backdrop:bg-[#120B06]/70 backdrop:backdrop-blur-sm">
     <div class="flex flex-col gap-4 p-7 text-center">
         <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-red-500/10 text-red-600"><x-icon name="trash" class="h-7 w-7" /></span>
         <h2 data-confirm-text class="text-xl font-extrabold"></h2>

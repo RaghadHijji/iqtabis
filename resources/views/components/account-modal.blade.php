@@ -13,7 +13,7 @@
 <div id="account-modal" data-open="{{ $openAccount ? '1' : '' }}"
     class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/35 p-4">
 
-    <div class="auth-card glass relative flex max-h-[88vh] w-full max-w-sm flex-col overflow-hidden rounded-3xl shadow-2xl">
+    <div class="auth-card vintage relative flex max-h-[88vh] w-full max-w-sm flex-col overflow-hidden">
         <button type="button" data-account-close aria-label="{{ __('Close') }}"
             class="absolute end-0 top-0 z-10 grid h-10 w-10 place-items-center rounded-es-2xl rounded-se-3xl bg-ink text-page transition hover:brightness-125">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -171,6 +171,8 @@
                         <span>{{ __('Your password') }}</span>
                     </label>
                     @error('delete_password') <p class="-mt-2 mb-3 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                    {{-- shown by the script when the password is empty (the browser's own bubble is easy to miss in this window) --}}
+                    <p data-delete-hint hidden class="-mt-2 mb-3 text-xs font-bold text-red-600">{{ __('Type your password first.') }}</p>
                     {{-- asks one last time before deleting (see #delete-account-dialog) --}}
                     <button type="button" data-delete-account class="h-10 w-full rounded-xl bg-red-600 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-lg">{{ __('Delete my account') }}</button>
                 </form>
@@ -180,7 +182,7 @@
 </div>
 
 {{-- "are you sure?" before the account is deleted for good --}}
-<dialog id="delete-account-dialog" class="auth-card glass m-auto w-[90%] max-w-sm rounded-3xl p-0 text-ink shadow-2xl backdrop:bg-black/50">
+<dialog id="delete-account-dialog" class="auth-card vintage m-auto w-[90%] max-w-sm p-0 text-ink backdrop:bg-[#120B06]/70 backdrop:backdrop-blur-sm">
     <div class="flex flex-col gap-4 p-7 text-center">
         <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-red-500/10 text-red-600">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
@@ -210,9 +212,18 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) hide(); });
         const confirmBox = document.getElementById('delete-account-dialog');
         const deleteForm = document.getElementById('delete-account-form');
+        deleteForm.querySelector('[name="delete_password"]').addEventListener('input', () => (deleteForm.querySelector('[data-delete-hint]').hidden = true));
         // check the password field first, then ask "are you sure?"
         modal.querySelector('[data-delete-account]').addEventListener('click', () => {
-            if (deleteForm.reportValidity()) confirmBox.showModal();
+            const field = deleteForm.querySelector('[name="delete_password"]');
+            const hint = deleteForm.querySelector('[data-delete-hint]');
+            if (!field.value) {
+                hint.hidden = false;
+                field.focus();
+                return;
+            }
+            hint.hidden = true;
+            confirmBox.showModal();
         });
         confirmBox.querySelector('[data-delete-account-yes]').addEventListener('click', () => deleteForm.submit());
         confirmBox.querySelector('[data-delete-account-no]').addEventListener('click', () => confirmBox.close());

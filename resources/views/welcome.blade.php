@@ -874,7 +874,7 @@
     @auth
         <x-report-dialog soft :title="__('Report this quote')" :question="__('Why is this quote not suitable?')" />
         {{-- "are you sure?" before deleting a quote --}}
-        <dialog id="delete-dialog" class="auth-card glass m-auto w-[90%] max-w-sm rounded-3xl p-0 text-ink shadow-2xl backdrop:bg-black/40">
+        <dialog id="delete-dialog" class="auth-card vintage m-auto w-[90%] max-w-sm p-0 text-ink backdrop:bg-[#120B06]/70 backdrop:backdrop-blur-sm">
             <form data-soft method="POST" action="" class="flex flex-col gap-4 p-7 text-center">
                 @csrf
                 @method('DELETE')

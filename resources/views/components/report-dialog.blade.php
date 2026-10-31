@@ -2,7 +2,7 @@
      Any button with data-report="url" opens it and sends the report to that url. --}}
 @props(['title', 'question', 'soft' => false])
 
-<dialog id="report-dialog" class="auth-card glass m-auto w-[90%] max-w-sm rounded-3xl p-0 text-ink shadow-2xl backdrop:bg-black/40">
+<dialog id="report-dialog" class="auth-card vintage m-auto w-[90%] max-w-sm p-0 text-ink backdrop:bg-[#120B06]/70 backdrop:backdrop-blur-sm">
     <form @if ($soft) data-soft @endif method="POST" action="" class="flex flex-col gap-4 p-7">
         @csrf
         <h2 class="text-xl font-extrabold">{{ $title }}</h2>

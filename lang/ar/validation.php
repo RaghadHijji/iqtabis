@@ -3,22 +3,22 @@
 // Arabic error messages for the forms (used when the site is in Arabic)
 return [
     'required' => 'حقل :attribute مطلوب.',
-    'email' => 'اكتب بريد إلكتروني صحيح.',
-    'unique' => ':attribute مسجّل من قبل.',
+    'email' => 'يرجى كتابة بريد إلكتروني صحيح.',
+    'unique' => ':attribute مسجّل مسبقًا.',
     'exists' => ':attribute غير موجود.',
-    'regex' => ':attribute لازم يكون حروف بس.',
-    'string' => 'حقل :attribute لازم يكون نص.',
+    'regex' => 'يجب أن يحتوي :attribute على حروف فقط.',
+    'string' => 'يجب أن يكون حقل :attribute نصًّا.',
     'current_password' => 'كلمة المرور غير صحيحة.',
     'confirmed' => 'تأكيد :attribute غير مطابق.',
-    'image' => ':attribute لازم تكون صورة.',
-    'mimes' => ':attribute لازم تكون من نوع: :values.',
-    'uploaded' => 'ما قدرنا نرفع :attribute، جرّب صورة أصغر.',
+    'image' => 'يجب أن تكون :attribute صورة.',
+    'mimes' => 'يجب أن تكون :attribute من نوع: :values.',
+    'uploaded' => 'تعذّر رفع :attribute، جرّب صورة أصغر.',
     'min' => [
-        'string' => 'حقل :attribute لازم يكون :min أحرف على الأقل.',
+        'string' => 'يجب ألا يقل حقل :attribute عن :min أحرف.',
     ],
     'max' => [
-        'string' => 'حقل :attribute لازم ما يزيد عن :max حرف.',
-        'file' => ':attribute لازم ما يزيد حجمها عن :max كيلوبايت.',
+        'string' => 'يجب ألا يزيد حقل :attribute عن :max حرفًا.',
+        'file' => 'يجب ألا يزيد حجم :attribute عن :max كيلوبايت.',
     ],
 
     'attributes' => [
