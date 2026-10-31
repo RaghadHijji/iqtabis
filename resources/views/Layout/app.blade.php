@@ -17,7 +17,7 @@
     <meta property="og:title" content="@yield('og_title', (app()->getLocale() === 'ar' ? 'اقتبس' : 'Iqtabis') . ' | ' . __('A quote for every moment'))">
     <meta property="og:description" content="@yield('og_description', __('Iqtabis is a home for quotes: find words for every moment, browse by category, like and save the ones that touch you, and share your own.'))">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('images/og-2.jpg') }}">
+    <meta property="og:image" content="{{ asset('images/og-3.jpg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="{{ app()->getLocale() === 'ar' ? 'ar_SA' : 'en_US' }}">
