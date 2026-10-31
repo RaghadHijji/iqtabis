@@ -409,7 +409,10 @@
                             </div>
                         </form>
                     @else
-                        <article class="reveal flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 text-ink shadow-sm transition hover:shadow-md" style="--i: {{ $loop->index % 3 }}">
+                        {{-- the card has a cut corner at the bottom, the author and category sit in it --}}
+                        <div class="notch-wrap reveal" style="--i: {{ $loop->index % 3 }}">
+                        <div class="notch-shape">
+                        <article class="notch flex flex-col gap-4 rounded-md bg-card p-6 text-ink">
                             <div class="flex items-center gap-2">
                                 <span class="me-auto h-8 w-8 text-accent/40">{!! $quoteMark !!}</span>
 
@@ -436,17 +439,13 @@
                                 <button type="button" data-image data-text="{{ $quote->content }}" data-author="{{ $quote->author }}" data-category="{{ __($quote->category->name) }}"
                                     title="{{ __('Save as image') }}" aria-label="{{ __('Save as image') }}" class="{{ $small }}"><x-icon name="image" class="h-4 w-4" /></button>
 
-                                <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent">{{ __($quote->category->name) }}</span>
                             </div>
 
                             <div class="flex flex-1 flex-col gap-2">
                                 <a href="{{ route('quotes.show', $quote) }}" class="font-quote text-xl leading-relaxed hover:text-accent" dir="auto">{{ $quote->content }}</a>
-                                @if ($quote->author)
-                                    <p class="text-sm font-bold text-sand" dir="auto">— {{ $quote->author }}</p>
-                                @endif
                             </div>
 
-                            <div class="flex items-center gap-2 border-t border-ink/5 pt-4">
+                            <div class="flex items-center gap-2 pt-2">
                                 {{-- the poster's name opens their page --}}
                                 <a data-soft data-to-quotes href="{{ route('home', ['by' => $quote->user_id]) }}" title="{{ __('Open :name\'s page', ['name' => $quote->user->name]) }}"
                                     class="group me-auto flex min-w-0 items-center gap-2">
@@ -466,7 +465,7 @@
                                     <form data-soft method="POST" action="{{ route('quotes.like', $quote) }}">
                                         @csrf
                                         <button type="submit" title="{{ $liked ? __('Unlike') : __('Like') }}" aria-pressed="{{ $liked ? 'true' : 'false' }}"
-                                            class="icon-btn {{ $liked ? 'text-red-600' : '' }}">{!! $liked ? $heart : $heartLine !!}{{ $quote->likes_count }}</button>
+                                            class="like-btn icon-btn {{ $liked ? 'text-red-600' : '' }}">{!! $liked ? $heart : $heartLine !!}{{ $quote->likes_count }}</button>
                                     </form>
 
                                     {{-- Save to my favorites (FR-09) --}}
@@ -478,7 +477,7 @@
                                     </form>
 
                                 @else
-                                    <a href="{{ route('login') }}" title="{{ __('Like') }}" class="icon-btn">{!! $heartLine !!}{{ $quote->likes_count }}</a>
+                                    <a href="{{ route('login') }}" title="{{ __('Like') }}" class="like-btn icon-btn">{!! $heartLine !!}{{ $quote->likes_count }}</a>
                                 @endauth
 
                                 {{-- comments are on the quote's own page (FR-22) --}}
@@ -486,6 +485,14 @@
                             </div>
                             </div>
                         </article>
+                        </div>
+                        <p class="notch-label">
+                            @if ($quote->author)
+                                <span class="notch-who" dir="auto">{{ $quote->author }}</span>
+                            @endif
+                        </p>
+                        <span class="notch-cat">{{ __($quote->category->name) }}</span>
+                        </div>
                     @endif
                 @empty
                     <p class="col-span-full rounded-3xl border border-dashed border-ink/20 p-10 text-center text-ink/70">

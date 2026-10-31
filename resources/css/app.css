@@ -346,3 +346,50 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
 .odo { display: inline-block; height: 1.25em; line-height: 1.25; overflow: hidden; vertical-align: top; }
 .odo-strip { display: flex; flex-direction: column; transition: transform 2.4s cubic-bezier(.16, 1, .3, 1); }
 .odo-strip > span { height: 1.25em; }
+
+/* Quote cards with a cut corner at the bottom (idea from landonorris.com helmets).
+   The mask keeps the top part, the right strip, and a slanted edge between them. */
+.notch-wrap { position: relative; display: flex; flex-direction: column; }
+.notch-wrap > .notch-shape { flex: 1; display: flex; }
+.notch-shape > .notch { flex: 1; }
+/* a thin outline that follows the cut (drop-shadows on the parent, because the mask cuts the card's own border) */
+.notch-shape {
+    --line: color-mix(in srgb, var(--color-ink) 22%, transparent);
+    filter: drop-shadow(1px 0 0 var(--line)) drop-shadow(-1px 0 0 var(--line)) drop-shadow(0 1px 0 var(--line)) drop-shadow(0 -1px 0 var(--line));
+}
+.notch {
+    --cut: 58%;
+    --h: 2.9rem;
+    padding-bottom: 3.6rem;
+    -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--h)) no-repeat,
+        linear-gradient(#000 0 0) right bottom / calc(100% - var(--cut) - 1.5rem) var(--h) no-repeat,
+        linear-gradient(to bottom right, transparent 50%, #000 50%) right calc(42% - 0.93rem) bottom 0 / 1.6rem var(--h) no-repeat;
+    mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--h)) no-repeat,
+        linear-gradient(#000 0 0) right bottom / calc(100% - var(--cut) - 1.5rem) var(--h) no-repeat,
+        linear-gradient(to bottom right, transparent 50%, #000 50%) right calc(42% - 0.93rem) bottom 0 / 1.6rem var(--h) no-repeat;
+}
+.notch-label {
+    position: absolute; left: 0; bottom: 0; width: 58%; height: 2.9rem;
+    display: flex; align-items: center; justify-content: right; gap: .5rem;
+    padding-inline: .6rem; font-size: .85rem; font-weight: 800; white-space: nowrap; overflow: hidden;
+}
+/* the sayer is written like a signature under a verse: quote font, copper dash */
+.notch-who { font-family: var(--font-quote); font-size: 1.15rem; font-weight: 400; color: var(--color-ink); overflow: hidden; text-overflow: ellipsis; }
+.notch-who::before { content: "— "; font-weight: 700; color: var(--color-sand); }
+/* the category sits in the card's bottom strip, on the other side */
+.notch-cat { position: absolute; right: calc(21% - .8rem); bottom: .7rem; transform: translateX(50%); padding: .2rem .7rem; border-radius: 999px; font-size: .75rem; font-weight: 800; background: var(--color-accent); color: var(--color-on-accent); }
+/* one column up, the next one down (like the helmets grid) */
+@media (min-width: 768px) {
+    #quotes .grid:has(> .notch-wrap) { padding-bottom: 3rem; }
+}
+@media (min-width: 768px) and (max-width: 1279px) {
+    #quotes .grid > .notch-wrap:nth-child(2n) { margin-top: 3rem; margin-bottom: -3rem; }
+}
+@media (min-width: 1280px) {
+    #quotes .grid > .notch-wrap:nth-child(3n+2) { margin-top: 3rem; margin-bottom: -3rem; }
+}
+
+/* the heart fills red when you point at it */
+.like-btn svg { transition: fill .2s, stroke .2s, transform .2s; }
+.like-btn:hover, .like-btn:focus-visible { color: #DC2626; }
+.like-btn:hover svg, .like-btn:focus-visible svg { fill: #DC2626; stroke: #DC2626; transform: scale(1.12); }

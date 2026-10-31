@@ -46,7 +46,7 @@
                     <form method="POST" action="{{ route('quotes.like', $quote) }}">
                         @csrf
                         <button type="submit" title="{{ $liked ? __('Unlike') : __('Like') }}" aria-pressed="{{ $liked ? 'true' : 'false' }}"
-                            class="icon-btn {{ $liked ? 'text-red-600' : '' }}"><x-icon name="heart" class="{{ $liked ? 'fill-current' : '' }}" />{{ $quote->likes_count }}</button>
+                            class="like-btn icon-btn {{ $liked ? 'text-red-600' : '' }}"><x-icon name="heart" class="{{ $liked ? 'fill-current' : '' }}" />{{ $quote->likes_count }}</button>
                     </form>
                     <form method="POST" action="{{ route('quotes.favorite', $quote) }}">
                         @csrf
@@ -54,7 +54,7 @@
                             class="icon-btn px-0 {{ $saved ? 'text-accent' : '' }}"><x-icon name="bookmark" class="{{ $saved ? 'fill-current' : '' }}" /></button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" title="{{ __('Like') }}" class="icon-btn"><x-icon name="heart" />{{ $quote->likes_count }}</a>
+                    <a href="{{ route('login') }}" title="{{ __('Like') }}" class="like-btn icon-btn"><x-icon name="heart" />{{ $quote->likes_count }}</a>
                 @endauth
 
                 <a href="#comments" title="{{ __('Comments') }}" aria-label="{{ __('Comments') }}" class="icon-btn"><x-icon name="comment" />{{ $quote->comments->count() }}</a>
