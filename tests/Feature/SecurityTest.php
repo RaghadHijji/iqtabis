@@ -69,10 +69,10 @@ class SecurityTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('property="og:title"', false)
-            ->assertSee('property="og:image" content="'.asset('images/og.jpg').'"', false)
+            ->assertSee('property="og:image" content="'.asset('images/og-2.jpg').'"', false)
             ->assertSee('name="twitter:card" content="summary_large_image"', false)
             ->assertSee('لكل لحظة اقتباس يشبهها');
 
-        $this->assertFileExists(public_path('images/og.jpg'));
+        $this->assertFileExists(public_path('images/og-2.jpg'));
     }
 }
