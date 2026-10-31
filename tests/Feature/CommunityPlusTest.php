@@ -109,7 +109,7 @@ class CommunityPlusTest extends TestCase
         Notification::assertSentTo($user, VerifyEmail::class);
 
         $this->get(route('verification.notice'))->assertOk()->assertSee('lama@example.com');
-        $this->get('/')->assertSee('أكّد إيميلك');
+        $this->get('/')->assertSee('أكّد بريدك');
         $this->post('/quotes', ['content' => 'My first quote', 'category_id' => Category::first()->id])
             ->assertRedirect(route('verification.notice'));
 
@@ -131,7 +131,7 @@ class CommunityPlusTest extends TestCase
         // an expired link offers a new one, sent to the account's own email
         $late = User::factory()->unverified()->create();
         $old = URL::temporarySignedRoute('verification.verify', now()->subMinute(), ['id' => $late->id, 'hash' => sha1($late->email)]);
-        $this->get($old)->assertForbidden()->assertSee('أرسل الرابط مرة ثانية');
+        $this->get($old)->assertForbidden()->assertSee('أعد إرسال الرابط');
         $this->assertFalse($late->fresh()->hasVerifiedEmail());
         $this->post(route('verification.resend', ['id' => $late->id, 'hash' => sha1($late->email)]))->assertSessionHas('status');
         Notification::assertSentTo($late, VerifyEmail::class);
