@@ -18,26 +18,26 @@
     --color-tuwaiq-text: #1F2A44;
 
     /* Iqtabis palette (Raghad's): 60% ivory, 20% deep teal, 15% brown/grey, 5% copper */
-    --color-page: #F6F1E7;      /* page background: ivory */
-    --color-card: #FFFCF6;      /* quote cards, inputs, chips */
-    --color-ink: #302A27;       /* headings and main text */
-    --color-accent: #245C5A;    /* main buttons, quote marks, active states: deep teal (7.4:1 with its text) */
+    --color-page: #EFE3CB;      /* page background: warm parchment, goes with the manuscript */
+    --color-card: #F7EEDC;      /* quote cards, inputs, chips: warm paper */
+    --color-ink: #2E2116;       /* headings and main text: warm ink brown */
+    --color-accent: #7A2E25;    /* main buttons, quote marks, active states: dark ink red, like red ink in old manuscripts (about 9:1 with its text) */
     --color-on-accent: #FFFCF6; /* text on accent */
     --color-sand: #8E5B3B;      /* copper, darker than #B47752 so small text stays readable (5.5:1) */
     --color-copper: #B47752;    /* thin lines and small details only */
     --color-sage: #668A82;      /* secondary elements and hover */
-    --color-muted: #6B6560;     /* secondary text */
-    --color-line: #E2D9CB;      /* borders */
-    --color-bar: #080416;       /* the logo box: same as the logo background */
+    --color-muted: #6E5A45;     /* secondary text */
+    --color-line: #DCC9A6;      /* borders: beige */
+    --color-bar: #1E140C;       /* dark buttons: dark wood, like the desk */
     --color-white: #ffffff;
 }
-/* dark mode: the same colors on soft greys, not black (the navbar stays the logo color) */
+/* dark mode: the same colors on warm dark browns, like the wooden desk at night */
 .dark {
-    --color-page: #232427;
-    --color-card: #2E3034;
-    --color-ink: #ECEDEE;
-    --color-accent: #8CC7BE;
-    --color-on-accent: #10201F;
+    --color-page: #1A130D;
+    --color-card: #261C14;
+    --color-ink: #F1E6D2;
+    --color-accent: #B0503F;
+    --color-on-accent: #F7EAD8;
     --color-sand: #D9B48C;
 }
 /* light mode: secondary text and borders use their own colors */
@@ -53,7 +53,7 @@
 }
 /* at night the sky gets darker */
 .dark .sky {
-    background-image: linear-gradient(to bottom, rgb(35 36 39 / 0.72) 0%, rgb(35 36 39 / 0.8) 55%, var(--color-page) 100%), url('/images/hero-video-poster.jpg');
+    background-image: linear-gradient(to bottom, rgb(26 19 13 / 0.72) 0%, rgb(26 19 13 / 0.8) 55%, var(--color-page) 100%), url('/images/hero-video-poster.jpg');
 }
 /* frosted glass boxes on top of the sky */
 .glass {
@@ -330,9 +330,9 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     .bar-btn[href*="/lang/en"] { padding-top: 4px; }
 }
 
-/* the authors strip under the hero: cream like old paper with a copper line on top by day, black at night so it carries on from the video */
-.marquee { background-color: #EDE3D1; color: var(--color-ink); border-top: 1px solid var(--color-copper); }
-.marquee a:hover { color: #8A5C08; } /* turmeric, dark enough to read on the cream */
+/* the authors strip under the hero: dark wood with cream names, so it carries on from the desk */
+.marquee { background-color: #1E140C; color: #E9D9BC; }
+.marquee a:hover { color: #D9B65A; } /* gold */
 .marquee-mark { color: var(--color-copper); }
 .dark .marquee { background-color: #000; color: rgb(255 255 255 / 0.85); border-color: transparent; }
 .dark .marquee-mark { color: var(--color-copper); }
@@ -443,13 +443,13 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     --color-line: rgb(243 230 211 / .2);
 }
 :root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog, input, select, textarea) {
-    --color-ink: #302A27;
-    --color-muted: #6B6560;
+    --color-ink: #2E2116;
+    --color-muted: #6E5A45;
     --color-sand: #8E5B3B;
-    --color-line: #E2D9CB;
+    --color-line: #DCC9A6;
 }
-/* teal words on the painting use the lighter night teal so they stay readable; teal boxes and buttons stay deep */
-:root:not(.dark) main:has(.page-photo) .text-accent:not(:is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog) *) { color: #8CC7BE; }
+/* red words on the painting use the lighter night red so they stay readable; red boxes and buttons stay deep */
+:root:not(.dark) main:has(.page-photo) .text-accent:not(:is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog) *) { color: #E3A08F; }
 /* text with no colour of its own takes the light ink too (zero weight, so any text-* class still wins) */
 :where(:root:not(.dark) main:has(.page-photo)),
 :where(:root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog)) { color: var(--color-ink); }
@@ -580,3 +580,92 @@ p.ink, span.scroll-label.ink { display: block; }
 /* the like and copy buttons come in after the writing is done */
 .scroll-sheet:has(.ink) .scroll-actions { opacity: 0; animation: fade-in .6s ease var(--ink-done) forwards; }
 @keyframes fade-in { to { opacity: 1; } }
+
+/* ===== Log in / sign up: an old sheet of paper on the desk, like the manuscript ===== */
+/* always paper colours, also at night, so the words keep their ink colour */
+.auth-card.vintage {
+    --color-ink: #2E2116; --color-page: #F3E6CC; --color-accent: #7A2E25; --color-muted: #6E5A45;
+    color: var(--color-ink);
+    border-radius: 3px;
+    backdrop-filter: none;
+    background-color: #D8BB84;
+    background-image:
+        /* the middle, where you write, is clearly lighter; the burnt look stays on the edges */
+        radial-gradient(ellipse 62% 55% at 50% 50%, rgb(248 236 206 / .8), rgb(248 236 206 / .5) 55%, transparent 100%),
+        radial-gradient(ellipse at 50% 50%, transparent 45%, rgb(95 50 15 / .65) 100%),
+        radial-gradient(ellipse 22% 16% at 85% 85%, rgb(120 70 25 / .3), transparent 70%),
+        radial-gradient(ellipse 16% 20% at 8% 35%, rgb(120 70 25 / .28), transparent 70%),
+        radial-gradient(circle at 93% 6%, transparent 1.6rem, rgb(110 65 25 / .25) 1.7rem, transparent 1.9rem),
+        radial-gradient(circle at 12% 9%, rgb(100 55 15 / .5) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 70% 62%, rgb(100 55 15 / .35) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 30% 92%, rgb(100 55 15 / .35) 0 2px, transparent 3px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .25 0 0 0 0 .1 0 0 0 .75 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .15 0 0 0 .25 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    box-shadow: inset 0 0 55px rgb(70 35 8 / .65), inset 0 0 10px rgb(50 25 5 / .6);
+    /* rough, torn edges on all four sides, like a real old sheet */
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 600' preserveAspectRatio='none'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.07' numOctaves='4' seed='9'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16'/%3E%3C/filter%3E%3Crect x='9' y='9' width='382' height='582' fill='white' filter='url(%23t)'/%3E%3C/svg%3E") 0 0 / 100% 100%;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 600' preserveAspectRatio='none'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.07' numOctaves='4' seed='9'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='16'/%3E%3C/filter%3E%3Crect x='9' y='9' width='382' height='582' fill='white' filter='url(%23t)'/%3E%3C/svg%3E") 0 0 / 100% 100%;
+}
+/* a thin brown frame inside the edge */
+.auth-card.vintage::before { content: ''; position: absolute; inset: 1rem; border: 1px solid rgb(110 70 30 / .35); pointer-events: none; }
+.auth-card.vintage { position: relative; }
+/* the title: Ruqaa script with a line and an Arabic ornament under it */
+.auth-card.vintage :is(h1, h2) { font-family: var(--font-brand); font-weight: 700; font-size: 2rem; line-height: 1.3; color: var(--color-ink); }
+.auth-card.vintage :is(h1, h2)::after {
+    content: '۞'; display: block; margin-top: .4rem; font-family: var(--font-quote); font-size: 1rem; line-height: 1; color: #8E5B3B;
+    background: linear-gradient(#8E5B3B, #8E5B3B) left 50% / 38% 1px no-repeat, linear-gradient(#8E5B3B, #8E5B3B) right 50% / 38% 1px no-repeat;
+}
+/* boxed fields with a brown line, like the old form */
+.auth-card.vintage .auth-field { border: 1px solid rgb(90 55 20 / .5); border-radius: 2px; background: rgb(110 70 25 / .07); padding-inline: .5rem; }
+.auth-card.vintage .auth-field:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgb(122 46 37 / .18); }
+.auth-card.vintage .auth-field svg { inset-inline-end: .65rem; opacity: .75; }
+.auth-card.vintage .auth-field .pw-toggle { inset-inline-end: .25rem; }
+/* the main button: dark wood, letters a bit apart */
+.auth-card.vintage button[type=submit] { border-radius: 2px; background: #2A1A0E; color: #EBDDBF; letter-spacing: .03em; box-shadow: inset 0 0 0 1px rgb(217 182 90 / .35), inset 0 0 12px rgb(0 0 0 / .5); }
+/* the "remember me" box drawn in ink too, not a bright white box */
+.auth-card.vintage input[type=checkbox] { appearance: none; width: 1rem; height: 1rem; border: 1.5px solid #5A3A1A; border-radius: 2px; background: rgb(110 70 25 / .07); display: grid; place-content: center; cursor: pointer; }
+.auth-card.vintage input[type=checkbox]:checked::after { content: '✓'; font-size: .8rem; font-weight: 900; line-height: 1; color: #2A1A0E; }
+
+/* ===== Search and categories, written on the page like a manuscript instead of boxes ===== */
+/* the title gets the same line and ornament as the log in paper */
+.explore-title::after {
+    content: '۞'; display: block; margin: .5rem auto 0; width: min(22rem, 80%); font-family: var(--font-quote); font-size: 1rem; line-height: 1; color: var(--color-sand);
+    background: linear-gradient(currentColor, currentColor) left 50% / 40% 1px no-repeat, linear-gradient(currentColor, currentColor) right 50% / 40% 1px no-repeat;
+}
+/* search: a torn slip of old paper on the painting, with the words in dark ink (same paper as the log in) */
+.ink-search {
+    --color-ink: #2E2116;
+    position: relative; padding: .55rem 1.25rem; color: var(--color-ink);
+    background-color: #DCC392;
+    background-image:
+        radial-gradient(ellipse 70% 80% at 50% 50%, rgb(248 236 206 / .85), rgb(248 236 206 / .4) 60%, transparent 100%),
+        radial-gradient(ellipse at 50% 50%, transparent 50%, rgb(95 50 15 / .55) 100%),
+        radial-gradient(circle at 8% 30%, rgb(100 55 15 / .4) 0 2px, transparent 3px),
+        radial-gradient(circle at 88% 75%, rgb(100 55 15 / .3) 0 1.5px, transparent 2.5px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .15 0 0 0 .25 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    box-shadow: inset 0 0 22px rgb(70 35 8 / .5);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 80' preserveAspectRatio='none'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='4' seed='3'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='10'/%3E%3C/filter%3E%3Crect x='6' y='6' width='588' height='68' fill='white' filter='url(%23t)'/%3E%3C/svg%3E") 0 0 / 100% 100%;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 80' preserveAspectRatio='none'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='4' seed='3'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='10'/%3E%3C/filter%3E%3Crect x='6' y='6' width='588' height='68' fill='white' filter='url(%23t)'/%3E%3C/svg%3E") 0 0 / 100% 100%;
+    rotate: -.6deg; transition: rotate .3s;
+}
+.ink-search:focus-within { rotate: 0deg; }
+.ink-search input::placeholder { color: rgb(46 33 22 / .55); }
+/* the search button: the word in red ink, no box */
+.ink-search-btn { display: flex; flex-shrink: 0; white-space: nowrap; align-items: center; gap: .4rem; padding: .4rem .9rem; font-family: var(--font-quote); font-weight: 700; font-size: 1.2rem; color: var(--color-accent); border-inline-start: 1px solid rgb(90 55 20 / .35); transition: color .2s, transform .2s; }
+.ink-search-btn:hover, .ink-search-btn:focus-visible { color: #2E2116; transform: scale(1.04); }
+/* categories: words in a row with an ornament between them, like the index of an old book */
+.ink-index { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; row-gap: .5rem; font-family: var(--font-quote); font-size: 1.4rem; }
+.ink-index a { position: relative; padding: .15rem 1rem .35rem; color: var(--color-ink); opacity: .8; transition: opacity .2s, color .2s; }
+.ink-index a + a::before { content: '۞'; position: absolute; inset-inline-start: -.4rem; top: 50%; translate: 0 -50%; font-size: .7rem; color: var(--color-sand); opacity: .75; pointer-events: none; }
+.ink-index a:hover, .ink-index a:focus-visible { opacity: 1; color: var(--color-sand); }
+.ink-index sup { margin-inline-start: .2rem; font-family: var(--font-sans); font-size: .6rem; font-weight: 700; opacity: .7; }
+/* the chosen one: full colour, with a hand-drawn stroke of red ink under it */
+.ink-index a[aria-current] {
+    opacity: 1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8 C20 4 40 10 60 6 S90 5 97 7' stroke='%23C0574A' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center bottom / 80% .6rem no-repeat;
+}
+@media (max-width: 639px) { .ink-index { font-size: 1.15rem; } .ink-index a { padding-inline: .7rem; } }
+
+/* the close button on the log in paper: a plain ink cross, nothing round or red */
+.auth-card.vintage [data-auth-close] { top: 1.2rem; inset-inline-end: 1.2rem; width: 2rem; height: 2rem; border-radius: 0; background: none; color: #5A3A1A; opacity: .75; }
+.auth-card.vintage [data-auth-close]:hover { opacity: 1; color: var(--color-accent); filter: none; }

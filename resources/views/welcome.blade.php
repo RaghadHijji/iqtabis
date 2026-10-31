@@ -263,37 +263,37 @@
     <header id="explore" class="scroll-mt-24">
         <div class="reveal mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 pb-10 pt-16 text-center">
             {{-- a sister line to the slogan, so it isn't repeated: Ruqaa script in Arabic, Playfair italic in English --}}
-            <h1 class="{{ app()->getLocale() === 'ar' ? 'font-brand text-4xl sm:text-5xl md:text-6xl leading-snug' : 'font-display text-4xl italic sm:text-5xl md:text-6xl leading-tight' }} font-bold">{{ __('Find a quote that matches your moment') }}</h1>
+            <h1 class="explore-title {{ app()->getLocale() === 'ar' ? 'font-brand text-4xl sm:text-5xl md:text-6xl leading-snug' : 'font-display text-4xl italic sm:text-5xl md:text-6xl leading-tight' }} font-bold">{{ __('Find a quote that matches your moment') }}</h1>
 
-            {{-- Search (FR-11) --}}
-            <form id="search-form" data-soft method="GET" action="{{ route('home') }}" class="flex w-full gap-2 rounded-2xl border border-ink/10 bg-card p-1.5 shadow-sm transition focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/30">
+            {{-- Search (FR-11): a torn slip of old paper, not a white box --}}
+            <form id="search-form" data-soft method="GET" action="{{ route('home') }}" class="ink-search flex w-full max-w-2xl items-center gap-3">
                 @foreach (Arr::except($state, 'q') as $key => $value)
                     <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                 @endforeach
                 <label for="search" class="sr-only">{{ __('Search quotes…') }}</label>
                 <input id="search" type="search" name="q" value="{{ $search }}" placeholder="{{ __('Search quotes…') }}" dir="auto"
-                    class="min-w-0 flex-1 bg-transparent px-3 text-ink outline-none placeholder:text-ink/60">
-                <button type="submit" class="rounded-xl bg-accent px-6 py-3 font-bold text-on-accent transition hover:brightness-110">{{ __('Search') }}</button>
+                    class="font-quote min-w-0 flex-1 bg-transparent px-1 py-2 text-xl text-ink outline-none placeholder:italic placeholder:text-ink/55 md:text-2xl">
+                <button type="submit" class="ink-search-btn">
+                    {{ __('Search') }}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                </button>
             </form>
         </div>
     </header>
 
     <div class="mx-auto flex max-w-6xl flex-col gap-14 px-6 pb-28">
 
-        {{-- Categories with counts (FR-10) --}}
-        <nav id="categories" aria-label="{{ __('Categories') }}"
-            class="reveal grid grid-cols-2 gap-3 rounded-3xl border border-ink/10 bg-card p-4 shadow-sm sm:grid-cols-3 lg:grid-cols-9">
-            @php $chip = 'flex min-h-16 flex-col justify-center rounded-2xl border px-4 py-2 transition duration-200'; @endphp
-            <a data-soft href="{{ route('home', Arr::except($state, 'filter')) }}"
-                class="{{ $chip }} {{ $filter ? 'border-ink/10 bg-page text-ink hover:border-accent' : 'border-accent bg-accent text-on-accent' }}">
-                <span class="font-bold">{{ __('All') }}</span>
-                <span class="text-xs opacity-70">{{ __(':count quotes', ['count' => $totalQuotes]) }}</span>
+        {{-- Categories with counts (FR-10): written like the index of an old book, words with an ornament between them;
+             the chosen one is underlined with a stroke of red ink --}}
+        <nav id="categories" aria-label="{{ __('Categories') }}" class="reveal ink-index">
+            <a data-soft href="{{ route('home', Arr::except($state, 'filter')) }}" @if (! $filter) aria-current="page" @endif
+                title="{{ __(':count quotes', ['count' => $totalQuotes]) }}">
+                {{ __('All') }}<sup>{{ $totalQuotes }}</sup>
             </a>
             @foreach ($categories as $cat)
-                <a data-soft href="{{ route('home', [...$state, 'filter' => $cat->name]) }}"
-                    class="{{ $chip }} {{ $filter === $cat->name ? 'border-accent bg-accent text-on-accent' : 'border-ink/10 bg-page text-ink hover:border-accent' }}">
-                    <span class="font-bold">{{ __($cat->name) }}</span>
-                    <span class="text-xs opacity-70">{{ __(':count quotes', ['count' => $cat->quotes_count]) }}</span>
+                <a data-soft href="{{ route('home', [...$state, 'filter' => $cat->name]) }}" @if ($filter === $cat->name) aria-current="page" @endif
+                    title="{{ __(':count quotes', ['count' => $cat->quotes_count]) }}">
+                    {{ __($cat->name) }}<sup>{{ $cat->quotes_count }}</sup>
                 </a>
             @endforeach
         </nav>

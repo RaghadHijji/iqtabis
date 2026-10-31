@@ -1,4 +1,4 @@
-{{-- Log in / sign up as a see-through pop-up in the middle of the page (FR-02, FR-03) --}}
+{{-- Log in / sign up as a pop-up in the middle of the page, on an old sheet of paper like the manuscript (FR-02, FR-03) --}}
 @php
     // open it straight away when the form came back with errors, or after /login or /signup
     $openForm = old('form') ?? request('auth');
@@ -8,9 +8,9 @@
 @endphp
 
 <div id="auth-modal" data-open="{{ $openForm }}"
-    class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/35 p-4">
+    class="fixed inset-0 z-[60] hidden items-center justify-center bg-[#120B06]/70 p-4 backdrop-blur-sm">
 
-    <div class="auth-card glass relative w-full max-w-sm rounded-3xl p-7 shadow-2xl">
+    <div class="auth-card vintage relative w-full max-w-sm p-8">
         <button type="button" data-auth-close aria-label="{{ __('Close') }}"
             class="absolute end-0 top-0 grid h-10 w-10 place-items-center rounded-es-2xl rounded-se-3xl bg-ink text-page transition hover:brightness-125">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
