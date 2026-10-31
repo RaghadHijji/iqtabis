@@ -454,7 +454,7 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
 :where(:root:not(.dark) main:has(.page-photo)),
 :where(:root:not(.dark) main:has(.page-photo) :is([class*="bg-card"], [class*="bg-page"], .glass, [popover], dialog)) { color: var(--color-ink); }
 
-/* ===== Opening screen: an old book on a wooden desk ===== */
+/* ===== Opening screen: an old manuscript on a wooden desk ===== */
 /* the desk: dark wood grain and a warm lamp light from above (all gradients, no pictures) */
 .wood {
     background-color: #24160D;
@@ -473,103 +473,87 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
     animation: lamp 6s ease-in-out infinite alternate;
 }
 @keyframes lamp { 50% { opacity: .8; } 100% { opacity: 1; } }
-@media (max-width: 639px) { #hero.book-hero { min-height: 100svh; } }
+@media (max-width: 639px) { #hero.desk-hero { min-height: 100svh; } }
 
-.book-scene { max-width: 62rem; perspective: 2200px; }
-.book {
-    position: relative; display: grid; grid-template-columns: 1fr 1fr;
-    transform-style: preserve-3d;
-    /* closed: only the left half (under the cover) is there, so move it to the middle; it slides back as it opens */
-    animation: book-center 1.8s cubic-bezier(.6, .05, .25, 1) .9s both;
-    /* no filter here: it would flatten the 3D turn of the cover */
+
+/* the manuscript: a wooden rod at the top and bottom, the sheet unrolls between them */
+.scroll-scene { max-width: 44rem; }
+.scroll { position: relative; filter: drop-shadow(0 30px 40px rgb(0 0 0 / .6)); }
+.scroll-rod {
+    position: absolute; z-index: 2; inset-inline: -1.25rem; height: 1.1rem; border-radius: 999px;
+    background: linear-gradient(180deg, #8A5A34, #4A2C16 55%, #2A170A);
+    box-shadow: 0 3px 6px rgb(0 0 0 / .5);
 }
-@keyframes book-center { from { transform: translateX(25%); } }
+/* gold knobs at the ends */
+.scroll-rod::before, .scroll-rod::after {
+    content: ''; position: absolute; top: 50%; width: 1.5rem; height: 1.5rem; border-radius: 50%; translate: 0 -50%;
+    background: radial-gradient(circle at 35% 35%, #F2D27A, #A8801F 60%, #5C430C);
+}
+.scroll-rod::before { left: -.6rem; }
+.scroll-rod::after { right: -.6rem; }
+.scroll-rod-top { top: -.55rem; }
+.scroll-rod-bottom { top: calc(100% - .55rem); animation: rod-down 1.8s cubic-bezier(.5, 0, .2, 1) .5s both; }
+@keyframes rod-down { from { top: -.55rem; } }
 
-/* old paper */
-.book-page, .book-back {
+/* old parchment */
+.scroll-sheet {
+    position: relative;
     background-color: #F1E4C8;
     background-image:
-        radial-gradient(ellipse at 50% 50%, transparent 55%, rgb(120 80 40 / .25) 100%),
+        radial-gradient(ellipse at 50% 50%, transparent 55%, rgb(120 80 40 / .28) 100%),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .15 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color: #3A2A1C;
+    padding: 1.5rem;
+    animation: unroll 1.8s cubic-bezier(.5, 0, .2, 1) .5s both;
 }
-.book-page {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .9rem;
-    min-height: 30rem; padding: 2.5rem 2.25rem; text-align: center;
-    border-radius: 6px 0 0 6px;
-    /* the page edges of the other pages under it, and a shadow at the spine */
-    box-shadow: -3px 3px 0 #E4D3B0, -6px 6px 0 #D8C49C, 0 30px 50px rgb(0 0 0 / .55), inset -28px 0 30px -18px rgb(80 50 20 / .45);
+@keyframes unroll { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* gold illumination around the text, like the frames in old Arabic manuscripts */
+.scroll-frame {
+    position: relative; display: flex; flex-direction: column; align-items: center; gap: .8rem;
+    padding: 2.25rem 2rem; text-align: center;
+    border: 2px solid #B8913A; outline: 1px solid rgb(184 145 58 / .55); outline-offset: 5px;
+    background:
+        radial-gradient(circle, #B8913A 1.6px, transparent 2px) 0 0 / 14px 14px repeat-x,
+        radial-gradient(circle, #B8913A 1.6px, transparent 2px) 0 100% / 14px 14px repeat-x;
 }
-.book-rest { border-radius: 0 6px 6px 0; }
-.book-label { font-size: .7rem; font-weight: 800; letter-spacing: .25em; color: #8E5B3B; }
-.book-who { font-size: .95rem; color: #6B4E36; }
-.book-chip {
+/* eight-point stars in the corners */
+.scroll-frame::before, .scroll-frame::after {
+    content: ''; position: absolute; width: 1.6rem; height: 1.6rem; top: -.85rem;
+    background: #B8913A;
+    clip-path: polygon(50% 0, 61% 26%, 85% 15%, 74% 39%, 100% 50%, 74% 61%, 85% 85%, 61% 74%, 50% 100%, 39% 74%, 15% 85%, 26% 61%, 0 50%, 26% 39%, 15% 15%, 39% 26%);
+}
+.scroll-frame::before { right: -.85rem; }
+.scroll-frame::after { left: -.85rem; }
+.scroll-brand { font-size: 4.5rem; line-height: 1.1; color: #2A1D12; }
+.scroll-ornament { width: 9rem; height: 1px; margin-block: .25rem; background: linear-gradient(90deg, transparent, #8E5B3B, transparent); }
+.scroll-label { font-size: .7rem; font-weight: 800; letter-spacing: .25em; color: #8E5B3B; }
+.scroll-who { font-size: .95rem; color: #6B4E36; }
+.scroll-chip {
     display: inline-flex; align-items: center; gap: .4rem; height: 2.5rem; padding-inline: .9rem;
     border: 1px solid rgb(142 91 59 / .35); border-radius: 999px; font-weight: 800; color: #3A2A1C; transition: background-color .2s;
 }
-button.book-chip:hover { background-color: rgb(142 91 59 / .12); }
-.book-page-brand { font-size: 3rem; line-height: 1.2; }
+button.scroll-chip:hover { background-color: rgb(142 91 59 / .12); }
 
-/* the cover sits on the left half and turns over its right edge (the spine) to lie on the right half */
-.book-cover {
-    position: absolute; inset: 0 50% 0 0;
-    transform-origin: right center; transform-style: preserve-3d;
-    animation: book-open 1.8s cubic-bezier(.6, .05, .25, 1) .9s both;
-}
-@keyframes book-open {
-    from { transform: rotateY(0deg); }
-    to { transform: rotateY(180deg); }
-}
-.book-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 6px 0 0 6px; }
-.book-front {
-    display: grid; place-items: center; padding: 1.25rem;
-    background:
-        radial-gradient(ellipse at 40% 35%, rgb(255 230 160 / .12), transparent 60%),
-        repeating-linear-gradient(45deg, rgb(0 0 0 / .05) 0 2px, transparent 2px 5px),
-        linear-gradient(135deg, #1A4544, #0A1F1E); /* the Iqtabis teal, a bit darker */
-    box-shadow: inset 0 0 0 2px rgb(0 0 0 / .4), inset -10px 0 18px rgb(0 0 0 / .45);
-}
-.book-frame {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
-    width: 100%; height: 100%; border: 2px solid #C9A227; outline: 1px solid rgb(201 162 39 / .5); outline-offset: -10px;
-    border-radius: 4px; color: #D9B65A;
-}
-.book-sun { width: 42%; max-width: 11rem; filter: drop-shadow(0 0 10px rgb(255 200 90 / .35)); }
-.book-title { font-size: 2.6rem; color: #D9B65A; text-shadow: 0 1px 0 rgb(0 0 0 / .6); }
-.book-back {
-    transform: rotateY(180deg); border-radius: 0 6px 6px 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .9rem; padding: 2rem; text-align: center;
-    box-shadow: inset 28px 0 30px -18px rgb(80 50 20 / .45);
-}
-.book-brand { font-size: 5.5rem; line-height: 1.1; color: #2A1D12; }
-.book-ornament { width: 7rem; height: 1px; background: linear-gradient(90deg, transparent, #8E5B3B, transparent); }
+/* the quill is hidden until the writing starts (see the script in welcome.blade.php) */
+.quill { position: absolute; top: 0; left: 0; z-index: 3; width: 3.25rem; height: 3.25rem; opacity: 0; pointer-events: none; filter: drop-shadow(2px 4px 3px rgb(0 0 0 / .35)); }
 
-/* phones: one page; the cover opens and fades away, the name is on the page */
 @media (max-width: 767px) {
-    .book { grid-template-columns: 1fr; animation: none; }
-    .book-rest { display: none; }
-    .book-cover { inset: 0; animation-name: book-open-phone; }
-    .book-page { min-height: 26rem; padding: 2rem 1.4rem; border-radius: 6px; }
-    .book-face { border-radius: 6px; }
-}
-@keyframes book-open-phone {
-    from { transform: rotateY(0deg); opacity: 1; }
-    70% { opacity: 1; }
-    to { transform: rotateY(170deg); opacity: 0; visibility: hidden; }
+    .scroll-scene { padding-inline: 2.25rem; }
+    .scroll-sheet { padding: 1rem; }
+    .scroll-frame { padding: 1.75rem 1rem; }
+    .scroll-brand { font-size: 3.25rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .book { animation: none; }
-    .book-cover { animation: none; transform: rotateY(180deg); }
-    .wood-lamp { animation: none; }
+    .scroll-sheet, .scroll-rod-bottom, .wood-lamp { animation: none; }
 }
-@media (max-width: 767px) and (prefers-reduced-motion: reduce) { .book-cover { display: none; } }
 
 /* ink: each word or line shows from the start of the line to its end, dark and a bit blurry like wet ink, then it dries */
 .ink { display: inline-block; clip-path: inset(0 0 0 100%); animation: ink-write var(--ink-time) linear var(--ink-at) forwards, ink-dry 1.2s ease-out var(--ink-at) backwards; }
 .ink:dir(ltr) { clip-path: inset(0 100% 0 0); }
-p.ink, span.book-label.ink { display: block; }
+p.ink, span.scroll-label.ink { display: block; }
 @keyframes ink-write { to { clip-path: inset(0 0 0 0); } }
 @keyframes ink-dry { from { filter: blur(.6px); text-shadow: 0 0 1px rgb(30 15 5 / .9); } }
 /* the like and copy buttons come in after the writing is done */
-.book:has(.ink) .book-page > div:last-child { opacity: 0; animation: fade-in .6s ease var(--ink-done) forwards; }
+.scroll-sheet:has(.ink) .scroll-actions { opacity: 0; animation: fade-in .6s ease var(--ink-done) forwards; }
 @keyframes fade-in { to { opacity: 1; } }

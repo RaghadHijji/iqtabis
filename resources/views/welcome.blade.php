@@ -20,56 +20,41 @@
         $trash = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>';
     @endphp
 
-    {{-- Opening screen: an old book on a desk that opens to the quote of the day --}}
+    {{-- Opening screen: an old manuscript on a desk that unrolls, then the quote of the day is written on it --}}
     @if ($browsing && $quoteOfDay)
-        <section id="hero" class="book-hero relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
+        <section id="hero" class="desk-hero relative -mt-[74px] flex min-h-svh items-center justify-center overflow-hidden bg-bar text-white">
             {{-- an old wooden desk with a warm lamp light on it (all CSS, no pictures) --}}
             <div id="hero-bg" class="wood absolute inset-0" aria-hidden="true">
                 <div class="wood-lamp absolute inset-0"></div>
             </div>
 
-            {{-- an old book: the cover opens (to the right, like an Arabic book) and shows the name, the quote of the day is on the page under it --}}
-            <div class="book-scene relative mx-auto w-full px-5 pb-28 pt-28">
-                <div class="book" dir="ltr">
-                    <div class="book-page" dir="rtl">
-                        {{-- on phones the cover goes away, so the name is written on the page itself --}}
-                        <p class="book-page-brand font-brand md:hidden" data-ink>اقتبس</p>
-                        <span class="book-label" data-ink>{{ __('QUOTE OF THE DAY') }}</span>
-                        <span class="h-9 w-9 text-copper">{!! $quoteMark !!}</span>
-                        <blockquote data-ink-words class="font-quote text-2xl leading-relaxed md:text-3xl md:leading-relaxed" dir="auto">{{ $quoteOfDay->content }}</blockquote>
-                        <p class="book-who" data-ink>— {{ $quoteOfDay->author ?: $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
-                        <p class="text-xs font-bold opacity-70" data-ink>{{ now()->hijri(true) }} · {{ now()->translatedFormat('j F Y') }}</p>
-                        <div class="flex items-center gap-2">
-                            <span class="book-chip"><span class="h-4 w-4 text-rose-600">{!! $heart !!}</span>{{ $quoteOfDay->likes_count }}</span>
-                            <button type="button" data-copy="{{ $quoteOfDay->content }}" data-author="{{ $quoteOfDay->author }}" title="{{ __('Copy quote') }}" aria-label="{{ __('Copy quote') }}"
-                                class="book-chip w-10 justify-center px-0"><span class="h-[18px] w-[18px]">{!! $copy !!}</span></button>
-                        </div>
-                    </div>
-                    <div class="book-rest" aria-hidden="true"></div>
-
-                    <div class="book-cover" aria-hidden="true">
-                        {{-- outside: teal leather (the Iqtabis color) with a gold frame and a sun --}}
-                        <div class="book-face book-front">
-                            <div class="book-frame">
-                                <svg class="book-sun" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
-                                    <circle cx="50" cy="50" r="16"/><circle cx="50" cy="50" r="10" fill="currentColor" fill-opacity=".25"/>
-                                    @for ($i = 0; $i < 24; $i++)
-                                        <line x1="50" y1="{{ $i % 2 ? 28 : 22 }}" x2="50" y2="32" transform="rotate({{ $i * 15 }} 50 50)"/>
-                                    @endfor
-                                    <circle cx="50" cy="50" r="38" stroke-dasharray="2 3"/>
-                                </svg>
-                                <span class="book-title font-brand">اقتبس</span>
+            {{-- an old manuscript: it unrolls from top to bottom, then the words are written on it in ink with a quill --}}
+            <div class="scroll-scene relative mx-auto w-full px-5 pb-24 pt-28">
+                <div class="scroll">
+                    <span class="scroll-rod scroll-rod-top" aria-hidden="true"></span>
+                    <div class="scroll-sheet" dir="rtl">
+                        <div class="scroll-frame">
+                            <p class="font-brand scroll-brand" data-ink>اقتبس</p>
+                            <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-xl md:text-2xl' : 'font-display text-lg italic' }} opacity-80" data-ink>{{ __('A quote for every moment') }}</p>
+                            <span class="scroll-ornament" aria-hidden="true"></span>
+                            <span class="scroll-label" data-ink>{{ __('QUOTE OF THE DAY') }}</span>
+                            <blockquote data-ink-words class="font-quote text-2xl leading-relaxed md:text-3xl md:leading-relaxed" dir="auto">{{ $quoteOfDay->content }}</blockquote>
+                            <p class="scroll-who" data-ink>— {{ $quoteOfDay->author ?: $quoteOfDay->user->name }} · {{ __($quoteOfDay->category->name) }}</p>
+                            <p class="text-xs font-bold opacity-70" data-ink>{{ now()->hijri(true) }} · {{ now()->translatedFormat('j F Y') }}</p>
+                            <div class="scroll-actions flex items-center gap-2">
+                                <span class="scroll-chip"><span class="h-4 w-4 text-rose-600">{!! $heart !!}</span>{{ $quoteOfDay->likes_count }}</span>
+                                <button type="button" data-copy="{{ $quoteOfDay->content }}" data-author="{{ $quoteOfDay->author }}" title="{{ __('Copy quote') }}" aria-label="{{ __('Copy quote') }}"
+                                    class="scroll-chip w-10 justify-center px-0"><span class="h-[18px] w-[18px]">{!! $copy !!}</span></button>
                             </div>
                         </div>
-                        {{-- inside: the first page, with the name and the slogan --}}
-                        <div class="book-face book-back" dir="rtl">
-                            <span class="book-ornament"></span>
-                            <p class="font-brand book-brand" data-ink>اقتبس</p>
-                            <p class="text-xs font-bold tracking-[0.4em] text-[#8E5B3B]" data-ink>IQTABIS</p>
-                            <span class="book-ornament"></span>
-                            <p data-ink class="{{ app()->getLocale() === 'ar' ? 'font-brand text-2xl' : 'font-display text-xl italic' }} opacity-80">{{ __('A quote for every moment') }}</p>
-                        </div>
+                        {{-- the quill that follows the words while they are written --}}
+                        <svg class="quill" viewBox="0 0 64 64" aria-hidden="true">
+                            <path d="M6 58 L14 46 C22 30 36 14 60 4 C52 22 40 38 22 50 Z" fill="#F4EBDD" stroke="#8E5B3B" stroke-width="1.5"/>
+                            <path d="M6 58 L44 18" stroke="#8E5B3B" stroke-width="1.2" fill="none"/>
+                            <path d="M6 58 L11 50" stroke="#1D1006" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
                     </div>
+                    <span class="scroll-rod scroll-rod-bottom" aria-hidden="true"></span>
                 </div>
             </div>
 
@@ -721,27 +706,50 @@
             }, { threshold: 0.6 }).observe(stats);
         }
 
-        // the opening book: once the cover is open, the words are written in ink one after the other, like an old pen
-        const book = document.querySelector('.book');
-        if (book && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // the opening manuscript: once it has unrolled, the words are written in ink one after the other, and a quill follows them
+        const sheet = document.querySelector('.scroll-sheet');
+        if (sheet && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
             // the quote is written word by word (each word keeps its letters joined)
-            book.querySelectorAll('[data-ink-words]').forEach((quote) => {
+            sheet.querySelectorAll('[data-ink-words]').forEach((quote) => {
                 quote.innerHTML = quote.textContent.trim().split(/\s+/)
                     .map((word) => `<span data-ink>${word.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`)}</span>`).join(' ');
             });
-            // big screens: the name on the inside of the cover first, then the page; phones only have the page
-            const wide = matchMedia('(min-width: 768px)').matches;
-            const parts = [...(wide ? book.querySelectorAll('.book-back [data-ink]') : []), ...book.querySelectorAll('.book-page [data-ink]')]
-                .filter((el) => el.offsetParent !== null || el.closest('.book-back'));
-            let at = 2600; // right after the cover has opened
-            parts.forEach((el) => {
+            const parts = [...sheet.querySelectorAll('[data-ink]')];
+            const start = performance.now();
+            let at = 2300; // right after the sheet has unrolled
+            const steps = parts.map((el) => {
                 const time = Math.min(Math.max(el.textContent.trim().length * 45, 260), 900);
                 el.classList.add('ink');
                 el.style.setProperty('--ink-at', `${at}ms`);
                 el.style.setProperty('--ink-time', `${time}ms`);
+                const step = { el, at, time };
                 at += time * 0.85;
+                return step;
             });
-            book.style.setProperty('--ink-done', `${at}ms`);
+            sheet.style.setProperty('--ink-done', `${at}ms`);
+
+            // the quill: from the start of each word to its end (right to left in Arabic), then it lifts away
+            const quill = sheet.querySelector('.quill');
+            document.fonts.ready.then(() => {
+                const late = performance.now() - start; // fonts may take a moment, keep in time with the ink
+                const box = sheet.getBoundingClientRect();
+                const point = (x, y) => ({ transform: `translate(${x - box.left}px, ${y - box.top - quill.clientHeight}px)` });
+                const frames = [];
+                steps.forEach(({ el, at, time }) => {
+                    const r = el.getBoundingClientRect();
+                    const rtl = getComputedStyle(el).direction === 'rtl';
+                    const y = r.top + r.height * 0.8;
+                    // words overlap a little, so the quill jumps to the next word as soon as it starts
+                    const from = Math.max(at, frames.at(-1)?.at ?? 0);
+                    frames.push({ at: from, ...point(rtl ? r.right : r.left, y) }, { at: Math.max(at + time, from), ...point(rtl ? r.left : r.right, y) });
+                });
+                const first = frames[0].at;
+                const total = frames.at(-1).at - first;
+                quill.animate(frames.map(({ at, transform }) => ({ transform, offset: (at - first) / total })),
+                    { duration: total, delay: Math.max(first - late, 0), fill: 'both', easing: 'linear' });
+                quill.animate([{ opacity: 0 }, { opacity: 1, offset: .05 }, { opacity: 1, offset: .95 }, { opacity: 0 }],
+                    { duration: total + 400, delay: Math.max(first - late - 200, 0), fill: 'both' });
+            });
         }
 
         // opening picture: the photo moves slower than the page and the quote fades away (parallax)
