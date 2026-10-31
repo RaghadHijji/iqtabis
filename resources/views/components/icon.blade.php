@@ -3,7 +3,7 @@
 {{-- small line icons that take the text color: <x-icon name="comment" class="h-4 w-4" /> --}}
 @php
     $paths = [
-        'comment' => '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+        'comment' => '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><circle class="typing-dot" cx="9.5" cy="12" r="1.2"/><circle class="typing-dot" cx="13" cy="12" r="1.2"/><circle class="typing-dot" cx="16.5" cy="12" r="1.2"/>',
         'image' => '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
         'bell' => '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
         'shield' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',

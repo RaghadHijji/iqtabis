@@ -481,7 +481,7 @@
                                 @endauth
 
                                 {{-- comments are on the quote's own page (FR-22) --}}
-                                <a href="{{ route('quotes.show', $quote) }}#comments" title="{{ __('Comments') }}" aria-label="{{ __('Comments') }}" class="icon-btn"><x-icon name="comment" />{{ $quote->comments_count }}</a>
+                                <a href="{{ route('quotes.show', $quote) }}#comments" title="{{ __('Comments') }}" aria-label="{{ __('Comments') }}" class="comment-btn icon-btn"><x-icon name="comment" />{{ $quote->comments_count }}</a>
                             </div>
                             </div>
                         </article>

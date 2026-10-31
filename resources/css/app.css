@@ -391,5 +391,16 @@ body:has(#fab-menu:popover-open) .fab-phone svg { rotate: 45deg; }
 
 /* the heart fills red when you point at it */
 .like-btn svg { transition: fill .2s, stroke .2s, transform .2s; }
-.like-btn:hover, .like-btn:focus-visible { color: #DC2626; }
+.like-btn:hover, .like-btn:focus-visible { color: #DC2626; background-color: transparent; }
 .like-btn:hover svg, .like-btn:focus-visible svg { fill: #DC2626; stroke: #DC2626; transform: scale(1.12); }
+
+/* three dots appear in the comment bubble, like someone is typing */
+.typing-dot { fill: currentColor; stroke: none; opacity: 0; }
+.comment-btn:hover, .comment-btn:focus-visible { background-color: transparent; }
+.comment-btn:hover .typing-dot, .comment-btn:focus-visible .typing-dot { animation: typing 1s ease-in-out infinite; }
+.comment-btn:hover .typing-dot:nth-of-type(2), .comment-btn:focus-visible .typing-dot:nth-of-type(2) { animation-delay: .15s; }
+.comment-btn:hover .typing-dot:nth-of-type(3), .comment-btn:focus-visible .typing-dot:nth-of-type(3) { animation-delay: .3s; }
+@keyframes typing { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+    .comment-btn:hover .typing-dot, .comment-btn:focus-visible .typing-dot { animation: none; opacity: 1; }
+}

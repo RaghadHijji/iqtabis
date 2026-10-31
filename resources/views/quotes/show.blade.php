@@ -57,7 +57,7 @@
                     <a href="{{ route('login') }}" title="{{ __('Like') }}" class="like-btn icon-btn"><x-icon name="heart" />{{ $quote->likes_count }}</a>
                 @endauth
 
-                <a href="#comments" title="{{ __('Comments') }}" aria-label="{{ __('Comments') }}" class="icon-btn"><x-icon name="comment" />{{ $quote->comments->count() }}</a>
+                <a href="#comments" title="{{ __('Comments') }}" aria-label="{{ __('Comments') }}" class="comment-btn icon-btn"><x-icon name="comment" />{{ $quote->comments->count() }}</a>
 
                 <button type="button" data-copy="{{ $quote->content }}" data-author="{{ $quote->author }}" title="{{ __('Copy quote') }}" aria-label="{{ __('Copy quote') }}" class="icon-btn px-0"><x-icon name="copy" /></button>
                 <button type="button" data-image data-text="{{ $quote->content }}" data-author="{{ $quote->author }}" data-category="{{ __($quote->category->name) }}"
