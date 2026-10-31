@@ -268,18 +268,22 @@
                 </div>
                 <div class="stagger grid gap-5 md:grid-cols-3">
                     @foreach ($trending as $quote)
-                        {{-- the whole card opens the quote's page, with its comments --}}
-                        <a href="{{ route('quotes.show', $quote) }}" class="flex flex-col gap-4 rounded-3xl border border-ink/10 bg-card p-6 md:p-5 lg:p-7 text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30">
+                        {{-- same cut-corner card as the quotes below; the whole card opens the quote's page, with its comments --}}
+                        <div class="notch-wrap transition hover:-translate-y-0.5">
+                        <div class="notch-shape">
+                        <a href="{{ route('quotes.show', $quote) }}" class="notch flex flex-col gap-4 rounded-md bg-card p-6 text-ink focus:outline-none focus-visible:bg-accent/5">
                             <div class="flex items-center gap-3">
-                                <span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-extrabold text-on-accent">{{ $loop->iteration }}</span>
-                                <span class="text-sm font-bold tracking-[0.15em] text-accent rtl:tracking-normal">{{ __($quote->category->name) }}</span>
+                                <span class="me-auto flex h-9 w-9 items-center justify-center rounded-full bg-accent font-extrabold text-on-accent">{{ $loop->iteration }}</span>
+                                <span class="flex items-center gap-1.5 text-sm font-bold text-rose-500"><span class="h-4 w-4">{!! $heart !!}</span>{{ $quote->likes_count }}</span>
                             </div>
                             <p class="font-quote flex-1 text-2xl leading-relaxed" dir="auto">{{ $quote->content }}</p>
-                            <div class="flex items-center justify-between text-sm text-ink/70">
-                                <span dir="auto">— {{ $quote->author ?: $quote->user->name }}</span>
-                                <span class="flex items-center gap-1.5 font-bold text-rose-500"><span class="h-4 w-4">{!! $heart !!}</span>{{ $quote->likes_count }}</span>
-                            </div>
                         </a>
+                        </div>
+                        <p class="notch-label">
+                            <span class="notch-who" dir="auto">{{ $quote->author ?: $quote->user->name }}</span>
+                        </p>
+                        <span class="notch-cat">{{ __($quote->category->name) }}</span>
+                        </div>
                     @endforeach
                 </div>
             </section>
