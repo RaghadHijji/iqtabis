@@ -35,7 +35,8 @@
                     <div class="scroll-sheet" dir="rtl">
                         <div class="scroll-frame">
                             <p class="font-brand scroll-brand" data-ink>اقتبس</p>
-                            <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-xl md:text-2xl' : 'font-display text-lg italic' }} opacity-80" data-ink>{{ __('A quote for every moment') }}</p>
+                            {{-- after the slogan the quill goes back to the ink pot for more ink (data-ink-dip) --}}
+                            <p class="{{ app()->getLocale() === 'ar' ? 'font-brand text-xl md:text-2xl' : 'font-display text-lg italic' }} opacity-80" data-ink data-ink-dip>{{ __('A quote for every moment') }}</p>
                             <span class="scroll-ornament" aria-hidden="true"></span>
                             <span class="scroll-label" data-ink>{{ __('QUOTE OF THE DAY') }}</span>
                             <blockquote data-ink-words class="font-quote text-2xl leading-relaxed md:text-3xl md:leading-relaxed" dir="auto">{{ $quoteOfDay->content }}</blockquote>
@@ -47,14 +48,48 @@
                                     class="scroll-chip w-10 justify-center px-0"><span class="h-[18px] w-[18px]">{!! $copy !!}</span></button>
                             </div>
                         </div>
-                        {{-- the quill that follows the words while they are written --}}
-                        <svg class="quill" viewBox="0 0 64 64" aria-hidden="true">
-                            <path d="M6 58 L14 46 C22 30 36 14 60 4 C52 22 40 38 22 50 Z" fill="#F4EBDD" stroke="#8E5B3B" stroke-width="1.5"/>
-                            <path d="M6 58 L44 18" stroke="#8E5B3B" stroke-width="1.2" fill="none"/>
-                            <path d="M6 58 L11 50" stroke="#1D1006" stroke-width="2.5" stroke-linecap="round"/>
-                        </svg>
                     </div>
                     <span class="scroll-rod scroll-rod-bottom" aria-hidden="true"></span>
+
+                    {{-- an old brass ink pot on a little tray, its lid open, on the desk next to the manuscript (under it on phones) --}}
+                    <svg class="inkwell" viewBox="0 0 64 64" aria-hidden="true">
+                        <defs>
+                            <radialGradient id="brass" cx=".35" cy=".3" r=".8">
+                                <stop offset="0" stop-color="#F1D58A"/><stop offset=".45" stop-color="#B8862E"/><stop offset="1" stop-color="#5A3A0C"/>
+                            </radialGradient>
+                        </defs>
+                        <ellipse cx="32" cy="60" rx="29" ry="3.5" fill="#000" opacity=".45"/>
+                        <ellipse cx="32" cy="55.5" rx="28" ry="6" fill="#6E4A14"/>
+                        <ellipse cx="32" cy="54.5" rx="25" ry="4.6" fill="url(#brass)"/>
+                        <path d="M14 53 C14 35 22 25 32 25 C42 25 50 35 50 53 Z" fill="url(#brass)" stroke="#5A3A0C" stroke-width=".6"/>
+                        <path d="M15.5 44 Q32 49 48.5 44" stroke="#5A3A0C" stroke-width=".8" fill="none"/>
+                        <path d="M17 47.5 Q32 52 47 47.5" stroke="#5A3A0C" stroke-width=".5" fill="none"/>
+                        @for ($i = 0; $i < 7; $i++)
+                            <circle cx="{{ 19 + $i * 4.3 }}" cy="{{ 45.6 + ($i === 0 || $i === 6 ? -.6 : ($i === 3 ? 1.5 : 1)) }}" r=".7" fill="#5A3A0C"/>
+                        @endfor
+                        <path d="M19 44 C19 34 24 29 28 28" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".3"/>
+                        <rect x="24" y="16" width="16" height="10" rx="2" fill="url(#brass)" stroke="#5A3A0C" stroke-width=".5"/>
+                        <ellipse cx="32" cy="16" rx="9" ry="2.6" fill="#E3C46E"/>
+                        <ellipse cx="32" cy="16.3" rx="6.5" ry="1.8" fill="#0B0705"/>
+                        <path d="M41 15.5 C43 6 51 3 57 7 C55 12 48 15.5 41 15.5 Z" fill="url(#brass)" stroke="#5A3A0C" stroke-width=".5"/>
+                        <circle cx="55.5" cy="5.5" r="1.6" fill="#E3C46E" stroke="#5A3A0C" stroke-width=".4"/>
+                    </svg>
+                    {{-- the quill: it waits in the ink pot, writes, dips again, and goes back (see the script below) --}}
+                    <svg class="quill" viewBox="0 0 64 64" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="quill-vane" x1="0" y1="1" x2="1" y2="0">
+                                <stop offset="0" stop-color="#9C7A55"/><stop offset=".6" stop-color="#E9D9BC"/><stop offset="1" stop-color="#F7EEDC"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M9 55 C14 40 30 18 61 3 C57 20 45 38 19 52 Z" fill="url(#quill-vane)" stroke="#5C3A1E" stroke-width=".8"/>
+                        @for ($i = 0; $i < 7; $i++)
+                            @php $t = .25 + $i * .1; $x = 5 + 45 * $t; $y = 59 - 47 * $t; @endphp
+                            <path d="M{{ $x }} {{ $y }} l{{ 6 + $i }} {{ 3 - $i * .6 }}" stroke="#7A5634" stroke-width=".5" fill="none"/>
+                            <path d="M{{ $x }} {{ $y }} l{{ -1 - $i * .4 }} {{ -5 - $i }}" stroke="#7A5634" stroke-width=".5" fill="none"/>
+                        @endfor
+                        <path d="M5 59 L52 10" stroke="#5C3A1E" stroke-width="1.4" fill="none"/>
+                        <path d="M3 61 L8 52 L11 55 Z" fill="#2A1A0C"/>
+                    </svg>
                 </div>
             </div>
 
@@ -716,39 +751,70 @@
             });
             const parts = [...sheet.querySelectorAll('[data-ink]')];
             const start = performance.now();
-            let at = 2300; // right after the sheet has unrolled
-            const steps = parts.map((el) => {
-                const time = Math.min(Math.max(el.textContent.trim().length * 45, 260), 900);
+            // slow and calm: one word at a time, with a short lift of the quill between words
+            const dip = 2700; // going to the ink pot, dipping, and coming back
+            const lift = 250;
+            let at = 3800; // the sheet has unrolled and the quill has reached the first word
+            const steps = [];
+            // after "quote of the day" the rest is written a little quicker
+            let quick = false;
+            parts.forEach((el) => {
+                // the name is short but big, so it gets more time, like writing it carefully
+                const time = el.classList.contains('scroll-brand') ? 1500 : quick
+                    ? Math.min(Math.max(el.textContent.trim().length * 65, 330), 1300)
+                    : Math.min(Math.max(el.textContent.trim().length * 90, 420), 1800);
+                if (el.classList.contains('scroll-label')) quick = true;
                 el.classList.add('ink');
                 el.style.setProperty('--ink-at', `${at}ms`);
                 el.style.setProperty('--ink-time', `${time}ms`);
-                const step = { el, at, time };
-                at += time * 0.85;
-                return step;
+                steps.push({ el, at, time });
+                at += time;
+                if (el.hasAttribute('data-ink-dip')) {
+                    steps.push({ dip: true, at });
+                    at += dip;
+                } else {
+                    at += quick ? lift * 0.7 : lift;
+                }
             });
             sheet.style.setProperty('--ink-done', `${at}ms`);
 
-            // the quill: from the start of each word to its end (right to left in Arabic), then it lifts away
-            const quill = sheet.querySelector('.quill');
+            // the quill: it rests in the ink pot, goes over each word from its start to its end (right to left in Arabic), dips again half way, and goes back
+            const scroll = sheet.parentElement;
+            const quill = scroll.querySelector('.quill');
+            const well = scroll.querySelector('.inkwell');
             document.fonts.ready.then(() => {
                 const late = performance.now() - start; // fonts may take a moment, keep in time with the ink
-                const box = sheet.getBoundingClientRect();
-                const point = (x, y) => ({ transform: `translate(${x - box.left}px, ${y - box.top - quill.clientHeight}px)` });
-                const frames = [];
-                steps.forEach(({ el, at, time }) => {
+                const box = scroll.getBoundingClientRect();
+                const point = (x, y, tilt = 0) => `translate(${x - box.left}px, ${y - box.top - quill.clientHeight}px) rotate(${tilt}deg)`;
+                const w = well.getBoundingClientRect();
+                const mouth = (down = 0) => point(w.left + w.width * .5, w.top + w.height * (.2 + down));
+                // while writing the quill moves across at an even speed (exactly with the ink), but its tip goes up and down
+                // and it tilts a little, like a hand drawing the letters; between words it eases
+                const frames = [{ at: 0, transform: mouth() }, { at: 2900, transform: mouth() }];
+                steps.forEach(({ el, at, time, dip: dipping }) => {
+                    if (dipping) {
+                        frames.push({ at: at + 900, transform: mouth(-.25) }, { at: at + 1300, transform: mouth(.1) },
+                            { at: at + 1700, transform: mouth(-.25) });
+                        return;
+                    }
                     const r = el.getBoundingClientRect();
                     const rtl = getComputedStyle(el).direction === 'rtl';
-                    const y = r.top + r.height * 0.8;
-                    // words overlap a little, so the quill jumps to the next word as soon as it starts
-                    const from = Math.max(at, frames.at(-1)?.at ?? 0);
-                    frames.push({ at: from, ...point(rtl ? r.right : r.left, y) }, { at: Math.max(at + time, from), ...point(rtl ? r.left : r.right, y) });
+                    const [from, to] = rtl ? [r.right, r.left] : [r.left, r.right];
+                    const base = r.top + r.height * 0.8;
+                    const strokes = Math.max(3, Math.round(time / 180)); // gentle strokes, not one per letter, so it is calm to watch
+                    for (let i = 0; i <= strokes; i++) {
+                        const t = i / strokes;
+                        // up for the tall letters, down to the line, with a little randomness so no two strokes look the same
+                        const lift = i === 0 || i === strokes ? 0 : (i % 2 ? .12 + Math.random() * .08 : Math.random() * .04);
+                        const tilt = i % 2 ? -2 - Math.random() : 1 + Math.random();
+                        frames.push({ at: at + time * t, transform: point(from + (to - from) * t, base - r.height * lift, tilt), easing: i < strokes ? 'ease-in-out' : undefined });
+                    }
                 });
-                const first = frames[0].at;
-                const total = frames.at(-1).at - first;
-                quill.animate(frames.map(({ at, transform }) => ({ transform, offset: (at - first) / total })),
-                    { duration: total, delay: Math.max(first - late, 0), fill: 'both', easing: 'linear' });
-                quill.animate([{ opacity: 0 }, { opacity: 1, offset: .05 }, { opacity: 1, offset: .95 }, { opacity: 0 }],
-                    { duration: total + 400, delay: Math.max(first - late - 200, 0), fill: 'both' });
+                frames.push({ at: frames.at(-1).at + 1200, transform: mouth() });
+                const total = frames.at(-1).at;
+                quill.style.opacity = 1;
+                quill.animate(frames.map(({ at, transform, easing = 'ease-in-out' }) => ({ transform, easing, offset: at / total })),
+                    { duration: total, delay: -late, fill: 'both' });
             });
         }
 
